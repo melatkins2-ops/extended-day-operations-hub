@@ -38,3 +38,11 @@ V5 VISUAL REDESIGN
 - Added intentional mobile layouts.
 - Removed prototype language from the public-facing homepage.
 - Added a local GRPS logo asset slot. The included SVG is a temporary GRPS wordmark placeholder; replace grps-logo.svg with the official approved GRPS logo asset when available.
+
+V6 REBUILD
+- Removed the fabricated GRPS logo.
+- Uses the official GRPS My Choice logo published by GRPS Communications at:
+  https://grps-cdn.fxbrt.com/downloads/communications/grpsmychoicelogo.png
+- Simplified the hero and made Program Status the primary action.
+- Replaced the large workflow with compact task-based navigation.
+- Added cleaner Principal/Program Lead and OEL role entry points.

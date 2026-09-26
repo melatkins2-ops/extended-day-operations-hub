@@ -10,9 +10,9 @@
 <header class="topbar">
   <a class="brand" href="#" data-home>
     <div class="logo-wrap">
-      <img class="grps-logo" src="grps-logo.svg" alt="Grand Rapids Public Schools">
+      <img class="grps-logo" src="https://grps-cdn.fxbrt.com/downloads/communications/grpsmychoicelogo.png" alt="Grand Rapids Public Schools">
     </div>
-    <div><span>GRAND RAPIDS PUBLIC SCHOOLS</span><strong>Extended Day</strong></div>
+    <div class="brand-title"><strong>Extended Day</strong><span>Operations Hub</span></div>
   </a>
   <nav>
     <button data-panel="status">Program Status</button>
@@ -27,7 +27,7 @@
     <div class="hero-copy">
       <p class="eyebrow">EXTENDED DAY OPERATIONS HUB</p>
       <h1>Plan programs. Manage approvals.<br>Support implementation. Understand results.</h1>
-      <p class="lede">One place to move Extended Day work from idea to implementation without searching across multiple processes and folders.</p>
+      <p class="lede">Start with your program. See its status. Take the next action.</p>
       <div class="hero-search">
         <label for="homeSearch">Find my school or program</label>
         <div class="search-line">
@@ -44,23 +44,16 @@
     </aside>
   </div>
 
-  <section class="workflow">
-    <div class="section-head">
-      <div><p class="eyebrow">THE WORKFLOW</p><h2>Move the work forward</h2></div>
-      <p>Start where you are. The Hub routes you to the right tools and requirements.</p>
-    </div>
-    <div class="flowline">
-      <button data-panel="start"><span>01</span><b>Plan</b><small>Need, design, partner</small></button>
-      <i>→</i>
-      <button data-panel="fund"><span>02</span><b>Fund</b><small>Budget, source, allowability</small></button>
-      <i>→</i>
-      <button data-panel="approve"><span>03</span><b>Approve</b><small>Review, MOU, BOE</small></button>
-      <i>→</i>
-      <button data-panel="run"><span>04</span><b>Operate</b><small>Launch, attendance, documentation</small></button>
-      <i>→</i>
-      <button data-panel="monitor"><span>05</span><b>Evaluate</b><small>Observe, improve, decide</small></button>
-    </div>
-  </section>
+  <section class="task-strip">
+  <div class="task-intro"><p class="eyebrow">WHAT DO YOU NEED TO DO?</p><h2>Go directly to the work.</h2></div>
+  <div class="task-links">
+    <button data-panel="start"><b>Plan a program</b><span>Start or revise a proposal</span></button>
+    <button data-panel="fund"><b>Build or check a budget</b><span>Funding and allowability</span></button>
+    <button data-panel="approve"><b>Get ready to launch</b><span>Approval, MOU, BOE</span></button>
+    <button data-panel="run"><b>Run my program</b><span>Attendance and operations</span></button>
+    <button data-panel="monitor"><b>Review results</b><span>Monitor, evaluate, decide</span></button>
+  </div>
+</section>
 
   <section class="quick">
     <div class="section-head"><div><p class="eyebrow">QUICK ACCESS</p><h2>Common tasks</h2></div></div>
@@ -72,10 +65,11 @@
     </div>
   </section>
 
-  <section class="audiences">
-    <div><p class="eyebrow">FOR PRINCIPALS & PROGRAM LEADS</p><h2>My programs</h2><p>Focus on your budget, program decisions, required revisions, and launch readiness.</p><button data-panel="status">Open Program Status →</button></div>
-    <div><p class="eyebrow">FOR OEL</p><h2>District management</h2><p>Review program portfolios, approvals, funding, open actions, implementation, and evaluation.</p><button data-panel="status">Open Management View →</button></div>
-  </section>
+  <section class="role-row">
+  <div><p class="eyebrow">CHOOSE YOUR VIEW</p><h2>Different roles need different information.</h2></div>
+  <button data-panel="status"><span>PRINCIPAL / PROGRAM LEAD</span><b>My school & programs →</b></button>
+  <button data-panel="status"><span>OFFICE OF EXTENDED LEARNING</span><b>District management →</b></button>
+</section>
 </section>
 
 <section id="panel" class="panel hidden">

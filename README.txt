@@ -27,3 +27,14 @@ V4 APPROVAL WORKFLOW MAPPING
 - This reveals that “Where Is My Program?” should show both a school-level budget/portfolio view and a program-level approval/revision view.
 - The School Approvals source currently contains negative Remaining values for several sampled schools; V4 displays source values without reinterpreting them.
 - Vendor Submissions tab could not be parsed through the connector because its visible tab name begins with an apostrophe. No vendor-tab values were guessed or substituted.
+
+V5 VISUAL REDESIGN
+- Rebuilt the homepage as an operational workspace rather than a card dashboard.
+- Program Status is now the primary action.
+- Added prominent school/program search.
+- Reframed navigation as Plan → Fund → Approve → Operate → Evaluate.
+- Separated principal/program-lead and OEL management entry points.
+- Moved reference resources to supporting navigation.
+- Added intentional mobile layouts.
+- Removed prototype language from the public-facing homepage.
+- Added a local GRPS logo asset slot. The included SVG is a temporary GRPS wordmark placeholder; replace grps-logo.svg with the official approved GRPS logo asset when available.

@@ -1,21 +1,101 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GRPS Extended Day Operations Hub</title><link rel="stylesheet" href="styles.css"></head><body>
-<header><div class="brand"><div class="mark">GRPS</div><div><strong>Extended Day Operations Hub</strong><span>2026–27</span></div></div><nav><button data-view="home">Home</button><button data-view="status">Where is my program?</button><button data-view="changed">Something changed</button></nav></header>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GRPS Extended Day Operations Hub</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" data-home>
+    <div class="logo-wrap">
+      <img class="grps-logo" src="grps-logo.svg" alt="Grand Rapids Public Schools">
+    </div>
+    <div><span>GRAND RAPIDS PUBLIC SCHOOLS</span><strong>Extended Day</strong></div>
+  </a>
+  <nav>
+    <button data-panel="status">Program Status</button>
+    <button data-panel="change">Something Changed?</button>
+    <button data-panel="resources">Resources</button>
+  </nav>
+</header>
+
 <main>
-<section id="home" class="view active"><div class="hero"><p class="eyebrow">EXTENDED DAY</p><h1>Plan it. Approve it. Run it. Know if it worked.</h1><p>One place to move from a scholar need to an approved, well-run, evaluated Extended Day program.</p><div class="notice"><b>Important:</b> Program approval and clearance to launch are different. Do not begin services until all applicable requirements are complete.</div></div>
-<h2>What are you trying to do?</h2><div class="grid">
-<button class="card" data-panel="start"><b>Start or change a program</b><span>Plan • Apply • Revise an approved program</span></button>
-<button class="card" data-panel="fund"><b>Budget & funding</b><span>Allocation • Per-scholar cost • 31a • 32n • 21st CCLC</span></button>
-<button class="card" data-view="status"><b>Approval & status</b><span>$30,321 threshold • MOU • BOE • Launch clearance</span></button>
-<button class="card" data-panel="run"><b>Run my program</b><span>Launch • Attendance • Vendors • Supplies • Documentation</span></button>
-<button class="card" data-panel="monitor"><b>Monitor & evaluate</b><span>Observations • Improvement • Outcomes • Closeout</span></button>
-</div><div class="quick"><h3>Frequently used</h3><div><button data-panel="application">Application</button><button data-view="status">Program status</button><button data-panel="attendance">Attendance</button><button data-panel="supplies">Supply order</button><button data-panel="observation">Observation</button><button data-panel="faq">FAQ</button><button data-panel="resources">Resource directory</button></div></div>
+<section id="home" class="home">
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">EXTENDED DAY OPERATIONS HUB</p>
+      <h1>Plan programs. Manage approvals.<br>Support implementation. Understand results.</h1>
+      <p class="lede">One place to move Extended Day work from idea to implementation without searching across multiple processes and folders.</p>
+      <div class="hero-search">
+        <label for="homeSearch">Find my school or program</label>
+        <div class="search-line">
+          <input id="homeSearch" type="search" placeholder="Search school, program, or provider">
+          <button id="homeSearchBtn" class="primary">Search Program Status</button>
+        </div>
+      </div>
+    </div>
+    <aside class="attention">
+      <p class="eyebrow">PROGRAM STATUS</p>
+      <h2>What needs your attention?</h2>
+      <p>See approvals, revisions, budgets, launch readiness, and exactly what needs to happen next.</p>
+      <button class="text-action" data-panel="status">View Program Status →</button>
+    </aside>
+  </div>
+
+  <section class="workflow">
+    <div class="section-head">
+      <div><p class="eyebrow">THE WORKFLOW</p><h2>Move the work forward</h2></div>
+      <p>Start where you are. The Hub routes you to the right tools and requirements.</p>
+    </div>
+    <div class="flowline">
+      <button data-panel="start"><span>01</span><b>Plan</b><small>Need, design, partner</small></button>
+      <i>→</i>
+      <button data-panel="fund"><span>02</span><b>Fund</b><small>Budget, source, allowability</small></button>
+      <i>→</i>
+      <button data-panel="approve"><span>03</span><b>Approve</b><small>Review, MOU, BOE</small></button>
+      <i>→</i>
+      <button data-panel="run"><span>04</span><b>Operate</b><small>Launch, attendance, documentation</small></button>
+      <i>→</i>
+      <button data-panel="monitor"><span>05</span><b>Evaluate</b><small>Observe, improve, decide</small></button>
+    </div>
+  </section>
+
+  <section class="quick">
+    <div class="section-head"><div><p class="eyebrow">QUICK ACCESS</p><h2>Common tasks</h2></div></div>
+    <div class="quick-grid">
+      <button data-panel="change"><b>Something changed?</b><span>Route a budget, staffing, schedule, vendor, location, or program change.</span></button>
+      <button data-panel="vendor"><b>Work with a vendor</b><span>Intake, review, MOU, documentation, invoicing, and closeout.</span></button>
+      <button data-panel="fund"><b>Funding guidance</b><span>31a, 32n, 21st CCLC, other, and blended funding.</span></button>
+      <button data-panel="faq"><b>FAQ & procedures</b><span>Answers and authoritative Extended Day operating resources.</span></button>
+    </div>
+  </section>
+
+  <section class="audiences">
+    <div><p class="eyebrow">FOR PRINCIPALS & PROGRAM LEADS</p><h2>My programs</h2><p>Focus on your budget, program decisions, required revisions, and launch readiness.</p><button data-panel="status">Open Program Status →</button></div>
+    <div><p class="eyebrow">FOR OEL</p><h2>District management</h2><p>Review program portfolios, approvals, funding, open actions, implementation, and evaluation.</p><button data-panel="status">Open Management View →</button></div>
+  </section>
 </section>
-<section id="status" class="view"><div class="sectionhead"><button class="back" data-view="home">← Home</button><p class="eyebrow">PROGRAM STATUS</p><h1>Where is my program?</h1><p>Search by school, program, provider, program type, approval status, or funding source. This version maps the actual 2026–27 Submission Tracker structure and shows a small set of tracker records.</p></div><div class="searchbar"><input id="programSearch" type="search" placeholder="Search school, program, provider, funding, or status"><select id="fundFilter"><option value="">All funding</option><option>31a</option><option>32n</option><option>21st CCLC</option><option>Other</option><option>Blended</option></select></div><div class="school-summary-wrap">
-<h2>School approval snapshot</h2>
-<p class="note">Select a school to see its requested total, available budget, remaining amount, and program-level clear/revise decisions from the existing School Approvals tab.</p>
-<div class="searchbar"><select id="schoolSelect"><option value="">Choose a school</option></select></div>
-<div id="schoolSummary" class="school-summary"><p class="note">Choose a school above.</p></div>
-</div><div class="tracker-note"><b>Source:</b> Ext. Day Submission Tracking 2026–2027 • mapped from the existing tracker, not a replacement tracker. <a href="https://docs.google.com/spreadsheets/d/1U61UoEc9YNI6Naoc1hVX-27_IuR2dgrhGJiP068aR-I/edit" target="_blank" rel="noopener">Open source tracker</a></div><div class="programtablewrap"><table class="programtable"><thead><tr><th>School / Site</th><th>Program</th><th>Provider / Lead</th><th>Type</th><th>Threshold</th><th>Approval Letter</th><th>OEL</th><th>MOU</th></tr></thead><tbody id="programRows"></tbody></table></div><div id="programDetail" class="programdetail"><p class="note">Select a sample program row to preview the program record.</p></div><div class="statusbox demo-detail"><div><small>MANAGEMENT VIEW</small><strong>Program record preview</strong></div><div><small>DATA SOURCE</small><strong>Submission Tracker + linked tools</strong></div><div><small>STATUS</small><strong>Prototype structure</strong></div></div><p class="note">The source workbook contains separate tabs for Submission Tracking, Vendor Submissions, School Approvals, Approval Letter Info, and AutoCrat settings. The Hub should read from those existing structures rather than maintain a second master record.</p></section>
-<section id="changed" class="view"><div class="sectionhead"><button class="back" data-view="home">← Home</button><p class="eyebrow">ROUTING TOOL</p><h1>Something changed.</h1><p>Select what changed. The Hub should tell you what level of review is needed.</p></div><div id="changebuttons" class="chips"></div><div id="changeresult" class="result"><b>Select a change above.</b></div><div class="pending"><b>Pending leadership standard:</b> Final routing rules for material post-approval changes must be approved before this becomes policy.</div></section>
-<section id="panel" class="view"><div class="sectionhead"><button class="back" data-view="home">← Home</button><p class="eyebrow" id="panelEyebrow"></p><h1 id="panelTitle"></h1><p id="panelIntro"></p></div><div id="panelBody"></div></section>
-</main><footer><b>GRPS Extended Day</b><span>Operations Hub prototype • Source tools remain authoritative until revised/adopted.</span></footer><script src="app.js"></script></body></html>
+
+<section id="panel" class="panel hidden">
+  <button class="back" data-home>← Back to Extended Day Home</button>
+  <div id="panelContent"></div>
+</section>
+</main>
+
+<footer>
+  <div><b>GRPS Extended Day</b><span>Office of Extended Learning</span></div>
+  <button data-home>Home</button>
+</footer>
+<script src="app.js"></script>
+<script>
+document.getElementById('homeSearchBtn')?.addEventListener('click',()=>{
+ const q=document.getElementById('homeSearch').value;
+ document.querySelector('[data-panel="status"]').click();
+ setTimeout(()=>{const s=document.getElementById('programSearch');if(s){s.value=q;s.dispatchEvent(new Event('input'));s.focus()}},0);
+});
+document.getElementById('homeSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('homeSearchBtn').click()});
+</script>
+</body>
+</html>

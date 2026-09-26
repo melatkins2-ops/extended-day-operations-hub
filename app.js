@@ -98,3 +98,27 @@ showProgram=function(p){
  const d=document.getElementById('programDetail');
  d.innerHTML += `<div class="approval-context"><h3>Approval / revision context</h3><div class="metrics"><div><small>DECISION</small><b>${a.approval}</b></div><div><small>REVISION DUE</small><b>${a.due}</b></div><div><small>SITE BUDGET</small><b>${a.budget}</b></div></div>${a.notes.length?'<h4>Requested revisions</h4>'+a.notes.map(n=>`<p>• ${n}</p>`).join(''):'<p>No revision notes shown in the sampled Approval Letter Info record.</p>'}<p class="note"><b>Program letter:</b> ${a.letter}<br><b>Vendor letter:</b> ${a.vendorLetter}</p></div>`;
 }
+
+
+function injectStatusWorkspace(){
+ const content=document.getElementById('panelContent');
+ if(!content || !document.querySelector('#panel:not(.hidden)')) return;
+ const title=content.querySelector('h1,h2');
+ if(!title || title.textContent.trim()!=='PROGRAM STATUS') return;
+ if(document.getElementById('programRows')) return;
+ content.insertAdjacentHTML('beforeend',`
+ <div class="status-workspace">
+ <div class="school-summary-wrap">
+ <div class="subhead"><div><p class="eyebrow">SCHOOL VIEW</p><h2>School approval snapshot</h2></div><p>Requested amount, available budget, and program decisions.</p></div>
+ <div class="searchbar"><select id="schoolSelect"><option value="">Choose a school</option></select></div>
+ <div id="schoolSummary" class="school-summary"><p class="note">Choose a school above.</p></div>
+ </div>
+ <div class="program-browser">
+ <div class="subhead"><div><p class="eyebrow">PROGRAM VIEW</p><h2>Find a program</h2></div><a class="source-link" href="https://docs.google.com/spreadsheets/d/1U61UoEc9YNI6Naoc1hVX-27_IuR2dgrhGJiP068aR-I/edit" target="_blank" rel="noopener">Open source tracker ↗</a></div>
+ <div class="searchbar"><input id="programSearch" type="search" placeholder="Search school, program, provider, type, or status"></div>
+ <div class="programtablewrap"><table class="programtable"><thead><tr><th>School / Site</th><th>Program</th><th>Provider / Lead</th><th>Type</th><th>Threshold</th><th>Decision</th><th>OEL</th><th>MOU</th></tr></thead><tbody id="programRows"></tbody></table></div>
+ <div id="programDetail" class="programdetail"><p class="note">Select a program to see its details.</p></div>
+ </div></div>`);
+ setupSchools(); renderPrograms();
+}
+document.querySelectorAll('[data-panel]').forEach(btn=>btn.addEventListener('click',()=>setTimeout(injectStatusWorkspace,0)));

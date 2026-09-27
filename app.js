@@ -1,7 +1,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pages=$$('.page');
 function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo(0,0);if(id==='status'){renderPrograms();}}
-$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change'].includes(id))go(id);else showContent(id)}));
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq'].includes(id))go(id);else showContent(id)}));
 
 const content={
 plan:['PLAN A PROGRAM','Start with scholar need, then design the program.',['Identify the scholar need or opportunity.','Define target scholars and realistic projected participation.','Define program model, provider, schedule, site, staffing and intended outcomes.','Use the current Extended Day application.']],
@@ -77,7 +77,7 @@ if(topicWrap){
 }
 const quickQs=['What is the Board of Education approval threshold?','Is an approved program automatically ready to begin?','Are all Extended Day programs funded through 31a?','What if something changes after the program is approved?'];
 const quick=document.getElementById('faqQuick');
-if(quick)quick.innerHTML=FAQ_DATA.filter(x=>quickQs.includes(x.q)).map(faqCard).join('');
+if(quick)quick.innerHTML='<button class="faq-help-cta" onclick="document.getElementById(\'faqSearch\').focus()"><b>Not sure where to start?</b><span>Search one word—budget, vendor, 32n, attendance, transportation, approval…</span></button>';
 function searchFAQ(){
  const q=(document.getElementById('faqSearch').value||'').trim().toLowerCase();
  if(!q){showFaqTopics();return}

@@ -88,3 +88,9 @@
  .hero-visual{grid-template-rows:240px auto auto}
  .photo-frame{height:240px}
 }
+
+/* V12: calmer FAQ landing — topics first, answers only on request */
+.faq-common{grid-template-columns:210px 1fr;align-items:start}
+.faq-help-cta{width:100%;border:0;border-left:5px solid var(--orange);background:#f6f8fa;text-align:left;padding:18px 20px;cursor:pointer}
+.faq-help-cta b,.faq-help-cta span{display:block}.faq-help-cta b{color:var(--navy);font-size:16px}.faq-help-cta span{color:var(--muted);font-size:12px;margin-top:5px;line-height:1.5}
+.faq-help-cta:hover{background:#eef3f6}.faq-topic-cards button{min-height:140px}.faq-topic-cards strong{bottom:14px}

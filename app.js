@@ -1,7 +1,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pages=$$('.page');
 function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo(0,0);if(id==='status'){renderPrograms();}}
-$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq','action'].includes(id))go(id);else showContent(id)}));
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq','action','whatsnew','nextstep'].includes(id))go(id);else showContent(id)}));
 
 const content={
 plan:['PLAN A PROGRAM','Start with scholar need, then design the program.',['Identify the scholar need or opportunity.','Define target scholars and realistic projected participation.','Define program model, provider, schedule, site, staffing and intended outcomes.','Use the current Extended Day application.']],
@@ -87,3 +87,21 @@ function searchFAQ(){
 document.getElementById('faqSearchBtn')?.addEventListener('click',searchFAQ);
 document.getElementById('faqSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')searchFAQ()});
 document.getElementById('faqBackTopics')?.addEventListener('click',showFaqTopics);
+
+// V19 next-action resolver: resolves common real-world situations without forcing users to search.
+const V19_RESOLUTIONS={
+ approved:{label:'APPROVED PROGRAM',title:'Confirm launch readiness before Day 1.',text:'Approval is a program decision. Confirm that the budget/funding, required agreements or vendor steps, staffing, schedule/location, and other launch requirements are complete before the program begins.',go:'launch',cta:'Open launch readiness →'},
+ revision:{label:'REVISION REQUESTED',title:'Update the item identified in the review.',text:'Use the review feedback to revise the affected part of the program or budget, then return it through the established review route. Do not rebuild unrelated parts of the submission unless the feedback requires it.',go:'plan',cta:'Open plan/revise workflow →'},
+ budget:{label:'BUDGET / FUNDING CHANGE',title:'Recheck the funding and approval implications.',text:'A budget or funding-source change can affect allowability, the approved amount, and whether another approval step is needed. Route the change before treating the revised budget as final.',go:'fund',cta:'Open funding guidance →'},
+ partner:{label:'PARTNER / VENDOR CHANGE',title:'Recheck responsibilities, agreements, and purchasing steps.',text:'A partner or vendor change may affect the scope of work, agreement/MOU, purchasing requirements, budget, and launch readiness. Route the change rather than substituting a provider informally.',go:'change',cta:'Route the change →'},
+ schedule:{label:'PROGRAM CHANGE',title:'Route the change and check whether the original decision is affected.',text:'Changes to schedule, location, staffing, or participation can affect implementation and the basis on which the program was reviewed. Document the change and use the change route.',go:'change',cta:'Route the change →'},
+ running:{label:'PROGRAM OPERATING',title:'Track participation, delivery, documentation, and emerging issues.',text:'Once the program is running, keep participation/attendance, implementation, required documentation, expenditures, and significant changes visible so monitoring and closeout are based on actual delivery.',go:'operate',cta:'Open operating guidance →'}
+};
+document.querySelectorAll('[data-resolve]').forEach(btn=>btn.addEventListener('click',()=>{
+ const x=V19_RESOLUTIONS[btn.dataset.resolve], box=document.getElementById('v19Resolution');
+ if(!x||!box)return;
+ box.hidden=false;
+ box.innerHTML=`<span>${x.label}</span><h2>${x.title}</h2><p>${x.text}</p><button data-resolution-go="${x.go}">${x.cta}</button>`;
+ box.querySelector('button').addEventListener('click',()=>showContent(x.go));
+ box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}));

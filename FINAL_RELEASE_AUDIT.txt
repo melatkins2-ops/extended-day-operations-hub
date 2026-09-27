@@ -23,3 +23,5 @@ PASS — Internal source-tracker link removed from the public interface
 LIMITATION
 This is a static GitHub Pages build. The bundled tracker is a snapshot, not a live private-Google-Sheet API connection.
 The internal Submission Tracker remains authoritative for the newest record and is not linked from the public interface.
+
+PASS — Persistent Back/Home controls are present before app.js and receive their click handlers

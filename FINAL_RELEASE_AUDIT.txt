@@ -25,3 +25,6 @@ This is a static GitHub Pages build. The bundled tracker is a snapshot, not a li
 The internal Submission Tracker remains authoritative for the newest record and is not linked from the public interface.
 
 PASS — Persistent Back/Home controls are present before app.js and receive their click handlers
+
+PASS — Removed obsolete fixed Start Here control that overlapped Back/Home
+PASS — Persistent Back/Home controls forced into isolated two-button flex layout

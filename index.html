@@ -17,6 +17,17 @@
     </div>
   </div>
 
+  <section class="v20-role">
+    <div><span>PERSONALIZE THE CENTER</span><b>I'm using this as a…</b></div>
+    <div class="v20-role-buttons">
+      <button data-role="school">School / Principal</button>
+      <button data-role="partner">Partner / Vendor</button>
+      <button data-role="csa">CSA Reviewer</button>
+      <button data-role="general">Just show everything</button>
+    </div>
+    <p id="v20RoleHint">Choose a role to prioritize the actions and guidance most relevant to you. Nothing is hidden.</p>
+  </section>
+
   <div class="v18-actions">
     <button data-go="status" class="v18-action primary">
       <i>01</i><span>FIND MY PROGRAM</span>
@@ -53,7 +64,7 @@
 
   <div class="v18-rule">
     <span>THE PURPOSE OF THIS CENTER</span>
-    <p><b>Reduce searching.</b> Clarify the decision. Identify the next action. Connect people to the right resource.</p>
+    <p><b>Reduce searching.</b> Clarify the decision. Identify the next action. Connect people to the right resource. <button data-go="guide" class="v20-inline">Open Operations Guide →</button></p>
   </div>
 </section>
 
@@ -97,19 +108,35 @@
 
 <section id="nextstep" class="page">
   <div class="v18-pagehead">
-    <span>NEXT-ACTION FINDER</span>
-    <h1>What happened?</h1>
-    <p>Choose the situation. You will get the shortest route to the next step.</p>
+    <span>EXTENDED DAY DECISION ROUTER</span>
+    <h1>Tell us what changed.</h1>
+    <p>Answer only what is needed. The Center will route you to the shortest next step.</p>
   </div>
-  <div class="v19-resolver">
-    <button data-resolve="approved"><b>My program was approved.</b><span>What still has to happen before we begin?</span></button>
-    <button data-resolve="revision"><b>We were asked to revise something.</b><span>What should I update and resubmit?</span></button>
-    <button data-resolve="budget"><b>Our budget or funding changed.</b><span>What needs another look?</span></button>
-    <button data-resolve="partner"><b>Our partner/vendor changed.</b><span>What agreements or approvals are affected?</span></button>
-    <button data-resolve="schedule"><b>Our schedule, location, staffing, or participation changed.</b><span>Does this need to be routed?</span></button>
-    <button data-resolve="running"><b>Our program is already running.</b><span>What should we be tracking?</span></button>
+  <div class="v20-router">
+    <div id="v20Trail" class="v20-trail"><span>START</span></div>
+    <div id="v20Question" class="v20-question"></div>
+    <div id="v20Choices" class="v20-choices"></div>
+    <div id="v20Result" class="v20-result" hidden></div>
+    <button id="v20Restart" class="v20-restart" hidden>← Start over</button>
   </div>
-  <div id="v19Resolution" class="v19-resolution" hidden></div>
+</section>
+
+<section id="guide" class="page">
+  <div class="v18-pagehead">
+    <span>EXTENDED DAY OPERATIONS GUIDE</span>
+    <h1>Need the full procedure?</h1>
+    <p>The Decision Center tells you what to do next. The Operations Guide explains how the process works in full.</p>
+  </div>
+  <div class="v20-guide-map">
+    <button data-go="plan"><span>01</span><b>Program Planning & Review</b><small>Need, design, application, revision</small></button>
+    <button data-go="fund"><span>02</span><b>Budget & Funding</b><small>31a, 32n, 21st CCLC, blended funding</small></button>
+    <button data-go="vendor"><span>03</span><b>Partners & Vendors</b><small>Roles, agreements, purchasing, documentation</small></button>
+    <button data-go="launch"><span>04</span><b>Approval & Launch</b><small>Decision, BOE pathway, readiness, Day 1</small></button>
+    <button data-go="operate"><span>05</span><b>Program Operations</b><small>Participation, attendance, documentation, issues</small></button>
+    <button data-go="change"><span>06</span><b>Changes</b><small>Budget, provider, staffing, schedule, location</small></button>
+    <button data-go="evaluate"><span>07</span><b>Monitoring & Closeout</b><small>Quality, results, expenditures, next decision</small></button>
+  </div>
+  <div class="v20-guide-note"><b>Architecture:</b> Decision Center = what to do. Operations Guide = how it works. Source resources = what governs or documents the work.</div>
 </section>
 
 <section id="action" class="page">
@@ -132,6 +159,13 @@
   <div class="faq-search-v10"><input id="faqSearch" placeholder="Try “BOE threshold,” “32n,” “vendor,” or “attendance”"><button id="faqSearchBtn">Search FAQ</button></div>
 </div>
 
+<div class="v20-guidance-key">
+  <span>HOW TO READ ANSWERS</span>
+  <div><b class="key district">DISTRICT</b><small>District operating requirement or process</small></div>
+  <div><b class="key funding">FUNDING</b><small>Requirement tied to a funding source</small></div>
+  <div><b class="key practice">PRACTICE</b><small>Recommended operating practice</small></div>
+  <div><b class="key pending">PENDING</b><small>Leadership decision not yet finalized</small></div>
+</div>
 <div id="faqStart" class="faq-start v13-faq-start">
   <div class="v13-faq-prompt"><span>START WITH THE QUESTION BEHIND YOUR QUESTION</span><h2>What are you trying to figure out?</h2></div>
   <div id="faqTopicCards" class="v13-topic-cards"></div>

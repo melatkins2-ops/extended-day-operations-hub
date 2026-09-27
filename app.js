@@ -1,7 +1,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pages=$$('.page');
 function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo(0,0);if(id==='status'){renderPrograms();}}
-$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq','action','whatsnew','nextstep'].includes(id))go(id);else showContent(id)}));
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq','action','whatsnew','nextstep','guide'].includes(id))go(id);else showContent(id)}));
 
 const content={
 plan:['PLAN A PROGRAM','Start with scholar need, then design the program.',['Identify the scholar need or opportunity.','Define target scholars and realistic projected participation.','Define program model, provider, schedule, site, staffing and intended outcomes.','Use the current Extended Day application.']],
@@ -105,3 +105,65 @@ document.querySelectorAll('[data-resolve]').forEach(btn=>btn.addEventListener('c
  box.querySelector('button').addEventListener('click',()=>showContent(x.go));
  box.scrollIntoView({behavior:'smooth',block:'nearest'});
 }));
+
+// V20 role-aware prioritization. Nothing is hidden; the role only changes emphasis.
+const V20_ROLE_HINTS={
+ school:'Prioritizing program status, launch readiness, changes, funding, and school actions.',
+ partner:'Prioritizing agreements, vendor responsibilities, budget/funding, launch, and documentation.',
+ csa:'Prioritizing review, decision status, funding, changes, monitoring, and closeout.',
+ general:'Showing the Decision Center without role-based emphasis.'
+};
+document.querySelectorAll('[data-role]').forEach(b=>b.addEventListener('click',()=>{
+ const role=b.dataset.role;
+ document.body.dataset.role=role;
+ document.querySelectorAll('[data-role]').forEach(x=>x.classList.toggle('active',x===b));
+ const hint=document.getElementById('v20RoleHint'); if(hint)hint.textContent=V20_ROLE_HINTS[role];
+}));
+
+// V20 branching decision router. It avoids inventing a final policy where leadership decisions remain pending.
+const V20_TREE={
+ start:{q:'What best describes your situation?',choices:[
+  ['My program was approved','approved'],['We were asked to revise something','revision'],
+  ['Something changed after submission/approval','changed'],['My program is already running','running']
+ ]},
+ changed:{q:'What changed?',choices:[
+  ['Budget or funding','budgetChange'],['Partner or vendor','partnerChange'],
+  ['Staffing, schedule, or location','opsChange'],['Participation / enrollment','participationChange']
+ ]},
+ budgetChange:{q:'Did the total cost or funding source change?',choices:[
+  ['Yes','budgetMaterial'],['No — allocation within the approved budget changed','budgetInternal'],['I am not sure','budgetUnknown']
+ ]},
+ partnerChange:{q:'Is this a new or replacement partner/vendor?',choices:[
+  ['Yes','partnerNew'],['No — scope/responsibility changed','partnerScope'],['I am not sure','partnerUnknown']
+ ]},
+ approved:{result:['APPROVED PROGRAM','Confirm launch readiness before Day 1.','Approval is a decision point. Confirm funding/budget, applicable agreements or vendor steps, staffing, schedule/location, and other launch requirements before beginning.','launch','Open launch readiness →','district']},
+ revision:{result:['REVISION REQUESTED','Revise only what the review identified.','Use the review feedback to update the affected program or budget item and return it through the established review route. Avoid rebuilding unrelated parts unless the feedback requires it.','plan','Open plan/revise workflow →','district']},
+ budgetMaterial:{result:['BUDGET / FUNDING CHANGE','Route the change before treating the revised budget as final.','A change in total cost or funding source can affect allowability, the approved amount, and approval steps. Recheck the funding rules and BOE implications where applicable.','fund','Open budget & funding →','funding']},
+ budgetInternal:{result:['BUDGET ADJUSTMENT','Document the adjustment and verify whether re-review is required.','The current source materials do not establish one universal rule for every internal budget adjustment. Use the funding guidance and change route rather than assuming no review is needed.','change','Route the change →','pending']},
+ budgetUnknown:{result:['BUDGET QUESTION','Start with the funding source and approved amount.','Compare the proposed change with the approved budget and funding rules. If the effect on approval is unclear, route the change for review.','fund','Check funding guidance →','funding']},
+ partnerNew:{result:['PARTNER / VENDOR CHANGE','Recheck agreement, purchasing, budget, and launch implications.','A new or replacement provider can affect scope, agreement/MOU, purchasing requirements, budget, and readiness. Route the change before substituting the provider.','change','Route partner/vendor change →','district']},
+ partnerScope:{result:['PARTNER SCOPE CHANGE','Document the changed responsibility and route it for review.','A material scope or responsibility change may affect the reviewed program, agreement, budget, or monitoring expectations.','vendor','Open partner/vendor guidance →','district']},
+ partnerUnknown:{result:['PARTNER / VENDOR QUESTION','Do not assume the original approval covers the change.','Review the partner/vendor guidance and route the issue if the provider, scope, agreement, purchasing, or budget may be affected.','vendor','Open partner/vendor guidance →','district']},
+ opsChange:{result:['PROGRAM OPERATING CHANGE','Document and route the change.','Staffing, schedule, or location changes can affect implementation and the basis of the original review. The current materials support routing material changes rather than silently absorbing them.','change','Route the change →','district']},
+ participationChange:{result:['PARTICIPATION CHANGE','Compare actual participation with the approved plan and monitor the effect.','Participation is part of implementation and results. Where low participation triggers a specific intervention or closure decision, use the Decision Center only if that leadership standard has been finalized.','operate','Open operating guidance →','pending']},
+ running:{result:['PROGRAM OPERATING','Keep actual delivery visible.','Track participation/attendance, implementation, required documentation, expenditures, and significant changes so monitoring and closeout reflect what actually occurred.','operate','Open operating guidance →','practice']}
+};
+let v20Node='start',v20Trail=[];
+function renderV20(node='start'){
+ v20Node=node; const data=V20_TREE[node],q=document.getElementById('v20Question'),c=document.getElementById('v20Choices'),r=document.getElementById('v20Result'),trail=document.getElementById('v20Trail'),restart=document.getElementById('v20Restart');
+ if(!q||!c||!r)return;
+ restart.hidden=node==='start'&&v20Trail.length===0;
+ trail.innerHTML='<span>START</span>'+v20Trail.map(x=>`<i>→</i><b>${x}</b>`).join('');
+ if(data.result){
+   const [label,title,text,go,cta,type]=data.result;
+   q.innerHTML='';c.innerHTML='';r.hidden=false;
+   r.innerHTML=`<span class="v20-type ${type}">${type.toUpperCase()}</span><small>${label}</small><h2>${title}</h2><p>${text}</p><button data-v20-go="${go}">${cta}</button>`;
+   r.querySelector('button').onclick=()=>showContent(go);
+ }else{
+   r.hidden=true;q.innerHTML=`<h2>${data.q}</h2>`;
+   c.innerHTML=data.choices.map(([label,next])=>`<button data-next="${next}">${label}<strong>→</strong></button>`).join('');
+   c.querySelectorAll('button').forEach(btn=>btn.onclick=()=>{v20Trail.push(btn.childNodes[0].textContent.trim());renderV20(btn.dataset.next)});
+ }
+}
+document.getElementById('v20Restart')?.addEventListener('click',()=>{v20Trail=[];renderV20('start')});
+renderV20('start');

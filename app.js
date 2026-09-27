@@ -1,7 +1,8 @@
+document.body.dataset.view='home';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pages=$$('.page');
-function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo(0,0);if(id==='status'){renderPrograms();}}
-$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq','action','whatsnew','nextstep','guide','decisions'].includes(id))go(id);else showContent(id)}));
+function go(id){document.body.dataset.view=id;pages.forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo({top:0,left:0,behavior:'instant'});}
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>routeTo(b.dataset.go)));
 
 const content={
 plan:['PLAN A PROGRAM','Start with scholar need, then design the program.',['Identify the scholar need or opportunity.','Define target scholars and realistic projected participation.','Define program model, provider, schedule, site, staffing and intended outcomes.','Use the current Extended Day application.']],
@@ -10,83 +11,11 @@ launch:['APPROVAL & LAUNCH','Approved and cleared to launch are not the same sta
 operate:['RUN MY PROGRAM','Manage the approved program without creating parallel processes.',['Track accurate attendance.','Use existing supply and inventory processes.','Use existing invoice/documentation procedures.','Follow closure/emergency procedures when needed.']],
 evaluate:['MONITOR & EVALUATE','Use existing observation and evaluation tools.',['Review participation and delivery against what was approved.','Use the existing Observation Tool.','Assign action owner, due date and follow-up when improvement is needed.','Evaluate participation, implementation, quality, outcomes, investment, operations and partner performance.']],
 vendor:['WORKING WITH A VENDOR','Use the existing vendor process from intake through closeout.',['Vendor intake/review.','Program and budget approval.','Insurance, staffing/background and other applicable requirements.','MOU/agreement.','Attendance, invoice and documentation expectations.','Evaluation and closeout.']],
-resources:['FORMS & RESOURCES','Use authoritative GRPS tools rather than duplicate forms.',['2026–27 Submission Tracker','Current Extended Day application','School/quadrant allocation information','Vendor Intake / Third-Party Vendor Protocol','MOU / approval materials','Attendance resources','Supply ordering and inventory','Observation Tool','Vendor Evaluation Template','Extended Day Evaluation Plan','Closure / emergency SOP']],
+resources:['RESOURCES','Use authoritative GRPS tools rather than duplicate forms.',['2026–27 Submission Tracker','Current Extended Day application','School/quadrant allocation information','Vendor Intake / Third-Party Vendor Protocol','MOU / approval materials','Attendance resources','Supply ordering and inventory','Observation Tool','Vendor Evaluation Template','Extended Day Evaluation Plan','Closure / emergency SOP']],
 faq:['2026–27 FAQ','Extended Day changes, approvals, funding, operations, monitoring, and next steps.',["Why is GRPS changing the Extended Day process? — GRPS is strengthening how programs are planned, reviewed, approved, monitored, and evaluated. The goal is clearer decisions, stronger alignment to scholar need, intentional use of resources, and better information about participation and results—not more paperwork.", "What is changing for 2026–27? — Greater emphasis is being placed on scholar need, projected participation, program design, available funding, total and per-scholar cost, funding-source requirements, partner responsibilities, approval status, actual attendance, observations, spending, and results.", "Does every school receive the same Extended Day allocation? — No. Schools should use current district allocation information when planning. Available funds do not automatically mean every proposed expense or program will be approved.", "Should schools design a program around the amount of money available? — No. Start with Scholar Need → Program Design → Expected Participation → Cost → Funding.", "What will be considered when a program is reviewed? — Need, design, expected participation, schedule/duration, outcomes, total cost, per-scholar cost, staffing, vendor/administrative costs, funding requirements, feasibility, prior performance when available, and evaluation approach.", "Why is per-scholar cost being reviewed? — It provides another lens on the proposed investment: Total Proposed Cost ÷ Expected Participating Scholars. It is one factor, not an automatic approval rule.", "Is there a maximum allowable cost per scholar? — The reviewed GRPS materials do not establish one universal maximum. Cost should be considered with design, participation, outcomes, funding requirements, and overall investment.", "What is the Board of Education approval threshold? — The confirmed GRPS threshold for this process is $30,321. Programs above the applicable threshold require the additional approval pathway. Other approvals may still apply below the threshold.", "Does submitting an application mean the program is approved? — No. Submission begins review. Program decisions should use Approved, Approved with Conditions, Revision Required, or Not Recommended.", "Is an approved program automatically ready to begin? — Not necessarily. Program approval and clearance to launch are separate. Final budget, funding, BOE approval when required, MOU, onboarding, site readiness, staffing, and other requirements may still be outstanding.", "Can a school use an outside vendor or community partner? — Yes. Existing GRPS procedures require intake/review and may include program information, schedule, reporting capacity, staff/background requirements, insurance, outcomes, MOU, and other documentation.", "Are all Extended Day programs funded through 31a? — No. Programs may use 31a, 32n, 21st CCLC, other sources, or blended funding. Identify the funding source before final approval.", "How does Section 32n affect Extended Day? — GRPS has partnered with outside organizations on 32n applications. An outside organization may be the applicant/fiscal agent while GRPS serves as a program or site partner. GRPS expectations and final grant/partnership requirements both apply.", "What happens if a 32n or other grant award is different from the application? — Reconcile the final award before implementation: amount, sites, budget, dosage, participation, activities, outcomes, reporting, and responsibilities. The final award/approved operating plan controls.", "What attendance information is required? — Maintain accurate attendance and compare projected participation, enrollment, actual scholars served, and attendance patterns. Attendance may also support invoices, evaluation, or grant requirements.", "What happens if participation is much lower than projected? — Identify the cause, understand barriers, adjust when appropriate, monitor the response, and involve OEL if concerns persist. GRPS has not established one automatic districtwide cancellation percentage. On Track / Watch / Action Required is the recommended management approach pending leadership decision.", "Can a vendor invoice GRPS for programming that did not occur? — No. Existing procedures require invoices to reflect services actually delivered and be supported by applicable documentation.", "What if something changes after the program is approved? — Material changes involving budget, funding source, vendor/partner, design, schedule, location, staffing model, projected participation, or other major elements should be routed through OEL. The proposed routing levels are Document Only, OEL Review, Funding/MOU Review, and Additional Approval; final districtwide routing standards still require leadership action.", "What should be confirmed before Day 1? — Program and budget approval, funding, MOU/agreements, required clearance/onboarding, staffing, sites, schedule, family communication, attendance/data expectations, invoicing expectations, supplies/technology, and applicable safety/operational readiness.", "What are the supervision expectations? — A districtwide GRPS baseline is still a leadership decision. Any stricter licensing, age, activity, facility, grant, provider, or program requirement governs when applicable.", "What are the dismissal, transportation, and late-pickup expectations? — A minimum districtwide framework is still being finalized. Before launch, programs should have a defined dismissal process, authorized release/pickup expectations, transportation responsibility, late-pickup procedure, family contact process, and escalation route.", "What happens if a program cannot operate on a scheduled day? — Use the existing closure/emergency procedure. Follow applicable notification, supervision, documentation, make-up, and billing requirements. GRPS should not be billed for programming that did not occur.", "What documentation is expected for payment and operations? — Use existing vendor invoice procedures and applicable attendance, lesson/topic, staffing, receipt/inventory, MOU, and funding-source documentation.", "How are supplies, equipment, and district property handled? — Use existing ordering and inventory processes: Approve → Purchase → Receive → Inventory → Use → Store/Return.", "How will programs be monitored? — Use existing observation and evaluation tools to review participation, implementation, engagement, quality, staffing, alignment, documentation, funding/program requirements, and follow-up actions. Management follow-up should identify an action owner, due date, follow-up, and resolution.", "How will GRPS decide whether a program should continue? — Use multiple evidence domains: participation, implementation, quality, outcomes, investment, operations, and partner performance. The next-year recommendation should be Continue, Improve, Expand, or Redesign/End; no single measure determines the decision.", "What happens at program closeout? — Finalize attendance, documentation, invoices, expenditures, evaluation, corrective actions, inventory/property, unresolved concerns, and the next-year recommendation.", "Where will schools find forms, procedures, and program status? — The Extended Day Operations Hub should be the primary entry point and link to current authoritative tools rather than creating duplicate forms or parallel processes.", "Who should I contact when I am unsure? — Start with the Office of Extended Learning. OEL can route questions requiring State & Federal Programs, Finance, Human Resources, Legal, another district department, or an external grant partner."]]
 };
 function showContent(key){const d=content[key];$('#contentEyebrow').textContent=d[0];$('#contentTitle').textContent=d[0];$('#contentIntro').textContent=d[1];$('#contentBody').innerHTML='<div class="contentlist">'+d[2].map((x,i)=>`<div class="contentitem"><b>${i+1}.</b> ${x}</div>`).join('')+'</div>';go('content')}
-
-function renderPrograms(q=''){const list=$('#programList');if(!list)return;const term=(q||$('#programSearch').value||'').toLowerCase();const rows=PROGRAMS.filter(p=>Object.values(p).join(' ').toLowerCase().includes(term));list.innerHTML=rows.length?rows.map((p,i)=>`<div class="programrow"><span>${p.school}</span><button data-prog="${PROGRAMS.indexOf(p)}">${p.program}</button><span>${p.provider}</span><span class="badge ${p.decision.startsWith('Approve')?'approve':'revise'}">${p.decision}</span></div>`).join(''):'<div class="result muted">No matching program found.</div>';$$('[data-prog]').forEach(b=>b.onclick=()=>showProgram(PROGRAMS[+b.dataset.prog]));}
-function showProgram(p){$('#programDetail').innerHTML=`<div class="detail"><p class="eyebrow">PROGRAM DETAIL</p><h2>${p.program}</h2><p>${p.school} • ${p.provider}</p><div class="metrics"><div class="metric"><small>DECISION</small><b>${p.decision}</b></div><div class="metric"><small>OEL</small><b>${p.oel}</b></div><div class="metric"><small>MOU</small><b>${p.mou}</b></div><div class="metric"><small>REVIEW</small><b>${p.tier}</b></div><div class="metric"><small>START</small><b>${p.start}</b></div><div class="metric"><small>DURATION</small><b>${p.duration}</b></div></div><p><b>Schedule:</b> ${p.schedule}</p><p><b>Outcomes connection:</b> ${p.outcomes}</p><p><b>Threshold shown in source:</b> ${p.threshold}</p>${p.threshold.includes('31,320')?'<p class="revise"><b>Source correction needed:</b> this source label conflicts with the confirmed $30,321 BOE threshold.</p>':''}</div>`}
-$('#programSearch').addEventListener('input',e=>renderPrograms(e.target.value));
-
-SCHOOLS.forEach((s,i)=>$('#schoolSelect').insertAdjacentHTML('beforeend',`<option value="${i}">${s.school}</option>`));
-$('#schoolSelect').addEventListener('change',e=>{const el=$('#schoolResult');if(e.target.value===''){el.className='result muted';el.textContent='Choose a school to see its budget and program decisions.';return}const s=SCHOOLS[+e.target.value];el.className='result';el.innerHTML=`<h2>${s.school}</h2><p>${s.principal}</p><div class="metrics"><div class="metric"><small>REQUESTED</small><b>${s.requested}</b></div><div class="metric"><small>AVAILABLE BUDGET</small><b>${s.budget}</b></div><div class="metric"><small>REMAINING</small><b>${s.remaining}</b></div></div>${s.items.map(x=>`<div class="programrow"><span>${x[0]}</span><span>${x[1]}</span><span class="badge ${x[2].toLowerCase()}">${x[2]}</span><span></span></div>`).join('')}<p><b>Revision due:</b> ${s.due}</p>`});
-
-const changes={
-'Budget':['FUNDING / MOU REVIEW','Check total cost, line items, funding source, vendor scope, MOU, and whether approval requirements change.'],
-'Funding source':['FUNDING REVIEW','Do not switch funding sources informally. Route through OEL and applicable funding staff.'],
-'Schedule':['OEL REVIEW','Meaningful schedule or dosage changes require review; minor operational adjustments may only need documentation.'],
-'Location':['OEL REVIEW','Check site readiness, safety/licensing implications, agreement terms, and program approval.'],
-'Staffing':['OEL REVIEW','Check budget, supervision, clearance, MOU, and funding implications.'],
-'Vendor / partner':['ADDITIONAL REVIEW','A new provider may require intake, clearance, insurance, MOU, budget, and approval review.'],
-'Program design':['OEL REVIEW','Determine whether the change materially alters the approved program or award requirements.'],
-'Participation':['PROGRAM REVIEW','Compare projected and actual participation, identify barriers, adjust, monitor, and escalate persistent concerns.'],
-'Program cannot operate today':['USE CLOSURE SOP','Follow the existing closure/emergency procedure and applicable notification, supervision, documentation, make-up, and billing rules.']
-};
-Object.entries(changes).forEach(([k,v])=>{const b=document.createElement('button');b.textContent=k;b.onclick=()=>{$('#changeResult').className='result';$('#changeResult').innerHTML=`<p class="eyebrow">${v[0]}</p><h2>${k}</h2><p>${v[1]}</p>`};$('#changeButtons').appendChild(b)});
-
-$('#findBtn').onclick=()=>{const q=$('#homeSearch').value;go('status');$('#programSearch').value=q;renderPrograms(q);$('#programSearch').focus()};
-$('#homeSearch').addEventListener('keydown',e=>{if(e.key==='Enter')$('#findBtn').click()});
-renderPrograms();
-
-// V10 focused FAQ: topic landing, quick answers, reveal-on-demand
-const FAQ_DATA=[{"cat": "Start Here", "q": "Why is GRPS changing the Extended Day process?", "a": "GRPS is strengthening how programs are planned, reviewed, approved, monitored, and evaluated. The goal is clearer decisions, stronger alignment to scholar need, intentional use of resources, and better information about participation and results—not more paperwork.", "flag": ""}, {"cat": "Start Here", "q": "What is changing for 2026–27?", "a": "Greater emphasis is being placed on scholar need, projected participation, program design, available funding, total and per-scholar cost, funding-source requirements, partner responsibilities, approval status, actual attendance, observations, spending, and results.", "flag": ""}, {"cat": "Plan & Review", "q": "Does every school receive the same Extended Day allocation?", "a": "No. Schools should use current district allocation information when planning. Available funds do not automatically mean every proposed expense or program will be approved.", "flag": ""}, {"cat": "Plan & Review", "q": "Should schools design a program around the amount of money available?", "a": "No. Start with Scholar Need → Program Design → Expected Participation → Cost → Funding.", "flag": ""}, {"cat": "Plan & Review", "q": "What will be considered when a program is reviewed?", "a": "Need, design, expected participation, schedule and duration, outcomes, total cost, per-scholar cost, staffing, vendor or administrative costs, funding requirements, feasibility, prior performance when available, and evaluation approach.", "flag": ""}, {"cat": "Budget & Funding", "q": "Why is per-scholar cost being reviewed?", "a": "It provides another lens on the proposed investment. Calculate Total Proposed Cost ÷ Expected Participating Scholars. It is one factor, not an automatic approval rule.", "flag": ""}, {"cat": "Budget & Funding", "q": "Is there a maximum allowable cost per scholar?", "a": "The reviewed GRPS materials do not establish one universal maximum. Cost should be considered with design, participation, outcomes, funding requirements, and overall investment.", "flag": ""}, {"cat": "Approval & Launch", "q": "What is the Board of Education approval threshold?", "a": "The confirmed GRPS threshold for this process is $30,321. Programs above the applicable threshold require the additional approval pathway. Other approvals may still apply below the threshold.", "flag": ""}, {"cat": "Approval & Launch", "q": "Does submitting an application mean the program is approved?", "a": "No. Submission begins review. Program decisions should use Approved, Approved with Conditions, Revision Required, or Not Recommended.", "flag": ""}, {"cat": "Approval & Launch", "q": "Is an approved program automatically ready to begin?", "a": "No. Program approval and clearance to launch are separate. Final budget, funding, BOE approval when required, MOU, onboarding, site readiness, staffing, and other requirements may still be outstanding.", "flag": ""}, {"cat": "Approval & Launch", "q": "What should be confirmed before Day 1?", "a": "Confirm program and budget approval, funding, MOU or agreements, required clearance and onboarding, staffing, sites, schedule, family communication, attendance and data expectations, invoicing expectations, supplies and technology, and applicable safety or operational readiness.", "flag": ""}, {"cat": "Partners & Vendors", "q": "Can a school use an outside vendor or community partner?", "a": "Yes. Existing GRPS procedures require intake and review and may include program information, schedule, reporting capacity, staff and background requirements, insurance, outcomes, MOU, and other documentation.", "flag": ""}, {"cat": "Budget & Funding", "q": "Are all Extended Day programs funded through 31a?", "a": "No. Programs may use 31a, 32n, 21st CCLC, other sources, or blended funding. Identify the funding source before final approval.", "flag": ""}, {"cat": "32n & Grants", "q": "How does Section 32n affect Extended Day?", "a": "GRPS has partnered with outside organizations on 32n applications. An outside organization may be the applicant or fiscal agent while GRPS serves as a program or site partner. GRPS expectations and final grant or partnership requirements both apply.", "flag": ""}, {"cat": "32n & Grants", "q": "What happens if a 32n or other grant award is different from the application?", "a": "Reconcile the final award before implementation: amount, sites, budget, dosage, participation, activities, outcomes, reporting, and responsibilities. The final award or approved operating plan controls.", "flag": ""}, {"cat": "Operate", "q": "What attendance information is required?", "a": "Maintain accurate attendance and compare projected participation, enrollment, actual scholars served, and attendance patterns. Attendance may also support invoices, evaluation, or grant requirements.", "flag": ""}, {"cat": "Operate", "q": "What happens if participation is much lower than projected?", "a": "Identify the cause, understand barriers, adjust when appropriate, monitor the response, and involve OEL if concerns persist. GRPS has not established one automatic districtwide cancellation percentage. On Track / Watch / Action Required is the recommended management approach pending leadership decision.", "flag": "Leadership decision pending"}, {"cat": "Partners & Vendors", "q": "Can a vendor invoice GRPS for programming that did not occur?", "a": "No. Existing procedures require invoices to reflect services actually delivered and be supported by applicable documentation.", "flag": ""}, {"cat": "Changes", "q": "What if something changes after the program is approved?", "a": "Material changes involving budget, funding source, vendor or partner, design, schedule, location, staffing model, projected participation, or other major elements should be routed through OEL. The proposed routing levels are Document Only, OEL Review, Funding/MOU Review, and Additional Approval.", "flag": "Leadership decision pending"}, {"cat": "Safety & Logistics", "q": "What are the supervision expectations?", "a": "A districtwide GRPS baseline is still a leadership decision. Any stricter licensing, age, activity, facility, grant, provider, or program requirement governs when applicable.", "flag": "Leadership decision pending"}, {"cat": "Safety & Logistics", "q": "What are the dismissal, transportation, and late-pickup expectations?", "a": "A minimum districtwide framework is still being finalized. Before launch, programs should have a defined dismissal process, authorized release and pickup expectations, transportation responsibility, late-pickup procedure, family contact process, and escalation route.", "flag": "Leadership decision pending"}, {"cat": "Safety & Logistics", "q": "What happens if a program cannot operate on a scheduled day?", "a": "Use the existing closure or emergency procedure. Follow applicable notification, supervision, documentation, make-up, and billing requirements. GRPS should not be billed for programming that did not occur.", "flag": ""}, {"cat": "Operate", "q": "What documentation is expected for payment and operations?", "a": "Use existing vendor invoice procedures and applicable attendance, lesson or topic, staffing, receipt and inventory, MOU, and funding-source documentation.", "flag": ""}, {"cat": "Operate", "q": "How are supplies, equipment, and district property handled?", "a": "Use existing ordering and inventory processes: Approve → Purchase → Receive → Inventory → Use → Store/Return.", "flag": ""}, {"cat": "Monitor & Close", "q": "How will programs be monitored?", "a": "Use existing observation and evaluation tools to review participation, implementation, engagement, quality, staffing, alignment, documentation, funding or program requirements, and follow-up actions. Management follow-up should identify an action owner, due date, follow-up, and resolution.", "flag": ""}, {"cat": "Monitor & Close", "q": "How will GRPS decide whether a program should continue?", "a": "Use multiple evidence domains: participation, implementation, quality, outcomes, investment, operations, and partner performance. The next-year recommendation should be Continue, Improve, Expand, or Redesign/End. No single measure determines the decision.", "flag": ""}, {"cat": "Monitor & Close", "q": "What happens at program closeout?", "a": "Finalize attendance, documentation, invoices, expenditures, evaluation, corrective actions, inventory or property, unresolved concerns, and the next-year recommendation.", "flag": ""}, {"cat": "Help & Resources", "q": "Where will schools find forms, procedures, and program status?", "a": "The Extended Day Operations Hub should be the primary entry point and link to current authoritative tools rather than creating duplicate forms or parallel processes.", "flag": ""}, {"cat": "Help & Resources", "q": "Who should I contact when I am unsure?", "a": "Start with the Office of Extended Learning. OEL can route questions requiring State & Federal Programs, Finance, Human Resources, Legal, another district department, or an external grant partner.", "flag": ""}];
-const FAQ_TOPICS=[
-  ['I am planning or revising a program',['Start Here','Plan & Review'],'What changed, what to consider, and how to start'],
-  ['I need an approval or want to launch',['Approval & Launch'],'BOE threshold, decisions, clearance, and Day 1'],
-  ['I have a budget or funding question',['Budget & Funding','32n & Grants'],'31a, 32n, 21st CCLC, cost, and grant changes'],
-  ['I am working with a partner or vendor',['Partners & Vendors'],'Review, MOU, invoices, and responsibilities'],
-  ['My program is already running',['Operate','Safety & Logistics'],'Attendance, supplies, closures, and operations'],
-  ['Something changed or I need to close out',['Changes','Monitor & Close'],'Route a change, monitor, evaluate, and close']
-];
-let faqMode='start';
-function esc2(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
-function faqCard(x){
- return `<details class="faq-card"><summary><span>${esc2(x.q)}</span><i>+</i></summary><div class="faq-card-answer">${x.flag?`<b class="decision-flag">${esc2(x.flag)}</b>`:''}<p>${esc2(x.a)}</p></div></details>`;
-}
-function showFaqList(label,items){
- faqMode='browse';
- document.getElementById('faqStart').hidden=true;
- document.getElementById('faqBrowse').hidden=false;
- document.getElementById('faqBrowseLabel').textContent=label;
- document.getElementById('faqCount').textContent=`${items.length} answer${items.length===1?'':'s'}`;
- document.getElementById('faqEmpty').hidden=items.length>0;
- document.getElementById('faqResults').innerHTML=items.map(faqCard).join('');
- window.scrollTo({top:0,behavior:'smooth'});
-}
-function showFaqTopics(){
- faqMode='start';
- document.getElementById('faqStart').hidden=false;
- document.getElementById('faqBrowse').hidden=true;
- document.getElementById('faqSearch').value='';
-}
-const topicWrap=document.getElementById('faqTopicCards');
-if(topicWrap){
- topicWrap.innerHTML=FAQ_TOPICS.map((t,i)=>`<button data-topic="${i}"><span class="topic-dot"></span><b>${esc2(t[0])}</b><span>${esc2(t[2])}</span><strong>Show me →</strong></button>`).join('');
- topicWrap.querySelectorAll('button').forEach(b=>b.onclick=()=>{const t=FAQ_TOPICS[+b.dataset.topic];showFaqList(t[0],FAQ_DATA.filter(x=>t[1].includes(x.cat))) });
-}
-const quickQs=['What is the Board of Education approval threshold?','Is an approved program automatically ready to begin?','Are all Extended Day programs funded through 31a?','What if something changes after the program is approved?'];
-const quick=document.getElementById('faqQuick');
-if(quick)quick.innerHTML='<button class="faq-help-cta" onclick="document.getElementById(\'faqSearch\').focus()"><b>Not sure where to start?</b><span>Search one word—budget, vendor, 32n, attendance, transportation, approval…</span></button>';
-function searchFAQ(){
- const q=(document.getElementById('faqSearch').value||'').trim().toLowerCase();
- if(!q){showFaqTopics();return}
- const items=FAQ_DATA.filter(x=>`${x.q} ${x.a} ${x.cat}`.toLowerCase().includes(q));
- showFaqList(`Search: “${document.getElementById('faqSearch').value.trim()}”`,items);
-}
-document.getElementById('faqSearchBtn')?.addEventListener('click',searchFAQ);
-document.getElementById('faqSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')searchFAQ()});
-document.getElementById('faqBackTopics')?.addEventListener('click',showFaqTopics);
+function routeTo(id){const page=document.getElementById(id);if(page&&page.classList.contains('page')){go(id);return true}if(content[id]){showContent(id);return true}go('home');return false}
 
 // V19 next-action resolver: resolves common real-world situations without forcing users to search.
 const V19_RESOLUTIONS={
@@ -102,7 +31,7 @@ document.querySelectorAll('[data-resolve]').forEach(btn=>btn.addEventListener('c
  if(!x||!box)return;
  box.hidden=false;
  box.innerHTML=`<span>${x.label}</span><h2>${x.title}</h2><p>${x.text}</p><button data-resolution-go="${x.go}">${x.cta}</button>`;
- box.querySelector('button').addEventListener('click',()=>showContent(x.go));
+ box.querySelector('button').addEventListener('click',()=>routeTo(x.go));
  box.scrollIntoView({behavior:'smooth',block:'nearest'});
 }));
 
@@ -124,7 +53,7 @@ document.querySelectorAll('[data-role]').forEach(b=>b.addEventListener('click',(
 const V20_TREE={
  start:{q:'What best describes your situation?',choices:[
   ['My program was approved','approved'],['We were asked to revise something','revision'],
-  ['Something changed after submission/approval','changed'],['My program is already running','running']
+  ['An approved/submitted program needs an update','changed'],['My program is already running','running']
  ]},
  changed:{q:'What changed?',choices:[
   ['Budget or funding','budgetChange'],['Partner or vendor','partnerChange'],
@@ -158,7 +87,7 @@ function renderV20(node='start'){
    const [label,title,text,go,cta,type]=data.result;
    q.innerHTML='';c.innerHTML='';r.hidden=false;
    r.innerHTML=`<span class="v20-type ${type}">${type.toUpperCase()}</span><small>${label}</small><h2>${title}</h2><p>${text}</p><button data-v20-go="${go}">${cta}</button>`;
-   r.querySelector('button').onclick=()=>showContent(go);
+   r.querySelector('button').onclick=()=>routeTo(go);
  }else{
    r.hidden=true;q.innerHTML=`<h2>${data.q}</h2>`;
    c.innerHTML=data.choices.map(([label,next])=>`<button data-next="${next}">${label}<strong>→</strong></button>`).join('');
@@ -183,7 +112,7 @@ document.getElementById('v21Interpret')?.addEventListener('click',()=>{
  if(!x){box.hidden=false;box.innerHTML='<p>Please choose the status you are working from.</p>';return}
  box.hidden=false;
  box.innerHTML=`<span>${x.badge}</span><h2>${x.title}</h2><p>${x.text}</p><div><small>NEXT OWNER</small><b>${x.owner}</b></div><button data-status-go="${x.go}">${x.cta}</button>`;
- box.querySelector('button').onclick=()=>showContent(x.go);
+ box.querySelector('button').onclick=()=>routeTo(x.go);
  box.scrollIntoView({behavior:'smooth',block:'nearest'});
 });
 
@@ -279,7 +208,7 @@ function v23Result(key){
  const x=V23_RESULTS[key], result=document.getElementById('v23ChangeResult');
  if(!x)return; result.hidden=false;
  result.innerHTML=`<span>${x[0]}</span><h2>${x[1]}</h2><p>${x[2]}</p><div><small>ROUTING SIGNAL</small><b>${x[3]}</b></div><button data-v23-go="${x[4]}">Open relevant guidance →</button>`;
- result.querySelector('button').onclick=()=>showContent(x[4]);
+ result.querySelector('button').onclick=()=>routeTo(x[4]);
  result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 document.getElementById('v23ChangeRestart')?.addEventListener('click',v23Start);
@@ -294,12 +223,12 @@ const V24_ANSWERS = [
  {id:'boe',topic:'boe',type:'district',q:'When does the BOE threshold matter?',keys:['boe','board','30321','$30,321','threshold','purchase','agreement'],a:'The current BOE threshold being used for this work is $30,321.',means:'When an applicable agreement or purchase reaches the threshold, the BOE pathway must be considered as part of readiness. The threshold does not replace other purchasing, agreement, or funding requirements.',next:'Check the amount, agreement/purchase structure, and applicable approval pathway.',go:'fund'},
  {id:'vendor-change',topic:'vendor',type:'district',q:'What if the vendor or partner changes?',keys:['vendor','partner','provider','replacement','new vendor'],a:'Do not substitute a provider informally.',means:'A new or replacement provider can affect scope, budget, agreement/MOU, purchasing, documentation, and launch readiness.',next:'Route the change and recheck partner/vendor requirements.',go:'change'},
  {id:'vendor-approval',topic:'vendor',type:'district',q:'Does program approval complete the vendor or agreement process?',keys:['vendor approval','mou','agreement','contract','purchasing','insurance','background'],a:'No. Program approval does not replace applicable vendor, agreement, purchasing, or onboarding requirements.',means:'A program may be approved while partner/vendor readiness items remain outstanding.',next:'Check the partner/vendor and launch requirements.',go:'vendor'},
- {id:'budget-change',topic:'changes',type:'funding',q:'What if our budget or funding changes after approval?',keys:['budget change','funding change','increase','amount changed','after approval'],a:'Route the change before treating the revised budget as approved.',means:'A change in total cost or funding source can affect allowability, the approved investment, and approval steps, including BOE implications when applicable.',next:'Use Something Changed → Budget/Funding.',go:'change'},
- {id:'schedule-change',topic:'changes',type:'district',q:'What if the schedule, location, staffing, or program design changes?',keys:['schedule','location','staffing','design','hours','days','move'],a:'Document the material change and route it rather than silently absorbing it.',means:'These changes can affect feasibility, dosage, cost, supervision, transportation, outcomes, or the basis of the original review.',next:'Use Something Changed to identify the affected pathway.',go:'change'},
+ {id:'budget-change',topic:'changes',type:'funding',q:'What if our budget or funding changes after approval?',keys:['budget change','funding change','increase','amount changed','after approval'],a:'Route the change before treating the revised budget as approved.',means:'A change in total cost or funding source can affect allowability, the approved investment, and approval steps, including BOE implications when applicable.',next:'Use Update an Approved Program → Budget/Funding.',go:'change'},
+ {id:'schedule-change',topic:'changes',type:'district',q:'What if the schedule, location, staffing, or program design changes?',keys:['schedule','location','staffing','design','hours','days','move'],a:'Document the material change and route it rather than silently absorbing it.',means:'These changes can affect feasibility, dosage, cost, supervision, transportation, outcomes, or the basis of the original review.',next:'Use Update an Approved Program to identify the affected pathway.',go:'change'},
  {id:'low-participation',topic:'participation',type:'pending',q:'What happens if participation is low?',keys:['low participation','enrollment low','attendance low','participation','cancel','closure'],a:'There is not yet a finalized districtwide automatic cancellation rule in the materials used for this Center.',means:'The recommended direction is On Track / Watch / Action Required using projected vs. actual participation, attendance frequency, program type, dosage, cause, cost implications, and improvement trend.',next:'Monitor the data and use the operating guidance; do not present a proposed threshold as adopted policy.',go:'operate'},
  {id:'supervision',topic:'operations',type:'pending',q:'What is the district supervision baseline?',keys:['supervision','ratio','staff ratio','adult','baseline'],a:'The districtwide GRPS supervision baseline is still pending leadership decision.',means:'Stricter licensing, age, activity, facility, grant, provider, or program requirements still govern when applicable.',next:'Follow the applicable existing requirement and do not use the proposed baseline as final district policy.',go:'decisions'},
  {id:'transport',topic:'operations',type:'pending',q:'What are the districtwide dismissal and transportation expectations?',keys:['dismissal','transportation','pickup','late pickup','release','bus'],a:'A districtwide minimum standard is still pending leadership decision.',means:'The recommended framework addresses release/pickup, transportation responsibility, late pickup, family contact, and escalation.',next:'Use applicable current procedures and review the pending leadership decision.',go:'decisions'},
- {id:'cannot-operate',topic:'operations',type:'practice',q:'What should we do if the program cannot operate as planned today?',keys:['cannot operate','cancel today','staffing issue','site issue','transportation issue','closed'],a:'Address the immediate operating condition first, document what happened, and identify whether the disruption creates a material program change.',means:'The follow-up route depends on whether staffing, schedule, location, vendor/partner, funding, program design, or participation is affected.',next:'Use Something Changed → Cannot Operate Today.',go:'change'},
+ {id:'cannot-operate',topic:'operations',type:'practice',q:'What should we do if the program cannot operate as planned today?',keys:['cannot operate','cancel today','staffing issue','site issue','transportation issue','closed'],a:'Address the immediate operating condition first, document what happened, and identify whether the disruption creates a material program change.',means:'The follow-up route depends on whether staffing, schedule, location, vendor/partner, funding, program design, or participation is affected.',next:'Use Update an Approved Program → Cannot Operate Today.',go:'change'},
  {id:'monitor',topic:'closeout',type:'practice',q:'What should we track while the program is running?',keys:['monitor','track','attendance','documentation','operating','running','expenditures'],a:'Keep actual delivery visible throughout implementation.',means:'Track participation/attendance, implementation, required documentation, expenditures, and significant changes so monitoring and closeout reflect what actually occurred.',next:'Open program operations guidance.',go:'operate'},
  {id:'closeout',topic:'closeout',type:'practice',q:'What should closeout include?',keys:['closeout','end of program','results','outcomes','evaluation'],a:'Closeout should connect implementation, participation, outcomes, expenditures, documentation, and the next program decision.',means:'The purpose is not simply to confirm that funds were spent; it is to understand what was delivered, what happened, and what should change next.',next:'Open monitoring and closeout guidance.',go:'evaluate'}
 ];
@@ -313,7 +242,7 @@ function v24Render(x){
  <div class="v24-answer-main"><span>ANSWER</span><h2>${x.a}</h2></div>
  <div class="v24-answer-detail"><div><span>WHAT THIS MEANS</span><p>${x.means}</p></div><div><span>YOUR NEXT MOVE</span><p><b>${x.next}</b></p></div></div>
  <button data-v24-go="${x.go}">Go to the relevant guidance →</button>`;
- box.querySelector('button').onclick=()=>showContent(x.go);
+ box.querySelector('button').onclick=()=>routeTo(x.go);
  box.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function v24Search(){
@@ -346,7 +275,7 @@ const V25_RESOURCES = {
   title:'Apply / revise a program',
   items:[
    ['Extended Day application','Use the current application/source used for 2026–27 submissions.','SOURCE LINK NEEDED','plan'],
-   ['Submission Tracker','Source of truth for submission/review status; do not duplicate it in the Decision Center.','TRACKER CONNECTION','status'],
+   ['Submission Tracker','Source of truth for submission/review status; do not duplicate it in the Decision Center.','OPEN SOURCE','status','https://docs.google.com/spreadsheets/d/1U61UoEc9YNI6Naoc1hVX-27_IuR2dgrhGJiP068aR-I/edit?usp=drivesdk'],
    ['Review / revision guidance','Use when review feedback requires a change to the program or budget.','IN CENTER','plan']
   ]},
  budget:{
@@ -359,7 +288,7 @@ const V25_RESOURCES = {
  partner:{
   title:'Work with a partner / vendor',
   items:[
-   ['Vendor submission materials','Use the current vendor submission source.','SOURCE LINK NEEDED','vendor'],
+   ['Approved Vendors','Open the current GRPS approved-vendor source.','OPEN SOURCE','vendor','https://docs.google.com/document/d/16Zvp56k95Ebs3BI09wfx4Eb3sj-_3n-7tMklTfy-sGU/edit?usp=drivesdk'],
    ['MOU / agreement materials','Use the current agreement source and keep agreement status tied to the program record.','SOURCE LINK NEEDED','vendor'],
    ['Partner/vendor guidance','Review scope, documentation, purchasing, readiness, and change implications.','IN CENTER','vendor']
   ]},
@@ -373,15 +302,15 @@ const V25_RESOURCES = {
  operate:{
   title:'Operate / document the program',
   items:[
-   ['Attendance / participation process','Use the current district process for recording participation and attendance.','SOURCE LINK NEEDED','operate'],
-   ['Something Changed','Route material budget, funding, vendor, staffing, schedule, location, design, or participation changes.','IN CENTER','change'],
+   ['Supply ordering and inventory','Open the current Extended Day supply-order source.','OPEN SOURCE','operate','https://docs.google.com/spreadsheets/d/1TFMaZNV5zOrOMCmE4Jm2TUdxH50xtKk4hP0cnhUm0u8/edit?usp=drivesdk'],
+   ['Update an Approved Program','Route material budget, funding, vendor, staffing, schedule, location, design, or participation changes.','IN CENTER','change'],
    ['Operations guidance','Use for implementation, documentation, expenditures, and emerging issues.','IN CENTER','operate']
   ]},
  close:{
   title:'Monitor / close out',
   items:[
-   ['Monitoring / observation tools','Use current district tools at their source.','SOURCE LINK NEEDED','evaluate'],
-   ['Evaluation / outcome materials','Connect participation, implementation, outcomes, expenditures, and recommendations.','SOURCE LINK NEEDED','evaluate'],
+   ['Observation Form','Open the current GRPS observation source.','OPEN SOURCE','evaluate','https://docs.google.com/document/d/19z2X0Im9-YQLyrNhHJF26zloqJsb1gUZCp73GK6rCaA/edit?usp=drivesdk'],
+   ['Extended Day Evaluation Plan','Open the current evaluation plan source.','OPEN SOURCE','evaluate','https://drive.google.com/file/d/1_QRnkIm8f1F0xmTvO08ce3styoupQCK3/view?usp=drivesdk'],
    ['Closeout guidance','Use the Center to structure the final review and next program decision.','IN CENTER','evaluate']
   ]}
 };
@@ -389,8 +318,8 @@ function v25RenderResources(key){
  const x=V25_RESOURCES[key], box=document.getElementById('v25ResourceResult'); if(!x||!box)return;
  box.hidden=false;
  box.innerHTML=`<div class="v25-resource-head"><span>RESOURCE PATH</span><h2>${x.title}</h2></div>
- <div class="v25-resource-list">${x.items.map((i,n)=>`<button data-v25-go="${i[3]}"><i>0${n+1}</i><div><b>${i[0]}</b><p>${i[1]}</p></div><span class="${i[2]==='IN CENTER'?'ready':'source'}">${i[2]}</span><strong>→</strong></button>`).join('')}</div>`;
- box.querySelectorAll('button').forEach(b=>b.onclick=()=>showContent(b.dataset.v25Go));
+ <div class="v25-resource-list">${x.items.map((i,n)=>i[4]?`<a href="${i[4]}" target="_blank" rel="noopener noreferrer"><i>0${n+1}</i><div><b>${i[0]}</b><p>${i[1]}</p></div><span class="source">${i[2]}</span><strong>↗</strong></a>`:`<button data-v25-go="${i[3]}"><i>0${n+1}</i><div><b>${i[0]}</b><p>${i[1]}</p></div><span class="${i[2]==='IN CENTER'?'ready':'source'}">${i[2]}</span><strong>→</strong></button>`).join('')}</div>`;
+ box.querySelectorAll('button').forEach(b=>b.onclick=()=>routeTo(b.dataset.v25Go));
  box.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 document.querySelectorAll('[data-v25-resource]').forEach(b=>b.addEventListener('click',()=>v25RenderResources(b.dataset.v25Resource)));
@@ -406,7 +335,7 @@ document.getElementById('v27Start')?.addEventListener('click',()=>{v27Utility?.c
 document.getElementById('v27UtilityClose')?.addEventListener('click',()=>{v27Utility?.classList.remove('open');v27Utility?.setAttribute('aria-hidden','true')});
 v27Utility?.addEventListener('click',e=>{if(e.target===v27Utility){v27Utility.classList.remove('open');v27Utility.setAttribute('aria-hidden','true')}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){v27Utility?.classList.remove('open');v27Utility?.setAttribute('aria-hidden','true')}});
-v27Utility?.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{showContent(b.dataset.go);v27Utility.classList.remove('open');v27Utility.setAttribute('aria-hidden','true')}));
+v27Utility?.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{routeTo(b.dataset.go);v27Utility.classList.remove('open');v27Utility.setAttribute('aria-hidden','true')}));
 
 // V30: when Review is selected from the lifecycle, open the Operations Guide and focus the Review stage.
 document.querySelectorAll('[data-guide-stage="review"]').forEach(btn=>{
@@ -419,48 +348,146 @@ document.querySelectorAll('[data-guide-stage="review"]').forEach(btn=>{
   });
 });
 
-// V32 role personalization: role selection must visibly change the experience.
+
+// V33 role personalization — uses the site's actual role values and changes visible content.
 (function(){
-  const labels={school:'School / Principal',vendor:'Partner / Vendor',reviewer:'CSA Reviewer',all:'Everything'};
-  const roleButtons=[...document.querySelectorAll('.v18-role button,[data-role]')];
-  const status=document.getElementById('v32RoleStatus');
-  const taskOrder={
-    school:['plan','status','launch','operate','change','faq','resources','guide'],
-    vendor:['vendor','launch','operate','change','resources','faq','guide','status'],
-    reviewer:['status','guide','fund','change','evaluate','resources','faq','plan'],
-    all:[]
+  const ROLE={
+    school:{
+      title:'School / Principal',
+      intro:'Your priorities: know the decision, complete launch readiness, operate the program, and route changes quickly.',
+      actions:[
+        ['status','Check my program status','Decision + next step'],
+        ['launch','Get ready to launch','Readiness + requirements'],
+        ['operate','Run my program','Attendance + implementation'],
+        ['change','Update an approved program','Route the update']
+      ]
+    },
+    partner:{
+      title:'Partner / Vendor',
+      intro:'Your priorities: confirm requirements, complete agreements, prepare for launch, and maintain required documentation.',
+      actions:[
+        ['vendor','Partner / vendor requirements','Responsibilities + agreements'],
+        ['launch','Prepare for launch','Readiness + approvals'],
+        ['resources','Find forms and resources','Tools + source documents'],
+        ['change','Report a change','Budget, staffing, schedule, or scope']
+      ]
+    },
+    csa:{
+      title:'CSA Reviewer',
+      intro:'Your priorities: review program status, make or document decisions, verify funding, and monitor implementation and results.',
+      actions:[
+        ['status','Review program status','Decision + open items'],
+        ['guide','Review the operating process','Review + decision points'],
+        ['fund','Check funding and budget','Source + investment'],
+        ['evaluate','Review results / closeout','Participation + outcomes']
+      ]
+    },
+    general:{
+      title:'Everything',
+      intro:'Showing all Extended Day actions and guidance without role-based prioritization.',
+      actions:[
+        ['status','Check program status','Decision + next step'],
+        ['action','Take an action','Plan, revise, launch, operate, or close'],
+        ['faq','Find an answer','Guidance + common questions'],
+        ['resources','Find a resource','Forms + source documents']
+      ]
+    }
   };
-  function inferRole(btn){
-    const t=(btn.textContent||'').toLowerCase();
-    if(t.includes('school')||t.includes('principal')) return 'school';
-    if(t.includes('partner')||t.includes('vendor')) return 'vendor';
-    if(t.includes('reviewer')) return 'reviewer';
-    return 'all';
-  }
-  function applyRole(role){
-    document.documentElement.dataset.activeRole=role;
-    localStorage.setItem('extendedDayRole',role);
-    roleButtons.forEach(b=>{
-      const active=inferRole(b)===role;
-      b.classList.toggle('v32-active-role',active);
+
+  const buttons=[...document.querySelectorAll('.v20-role-buttons [data-role]')];
+  const panel=document.getElementById('v33RolePanel');
+
+  function render(role){
+    const cfg=ROLE[role]||ROLE.general;
+    document.body.dataset.role=role;
+    localStorage.setItem('extendedDayRoleV33',role);
+
+    buttons.forEach(b=>{
+      const active=b.dataset.role===role;
+      b.classList.toggle('active',active);
+      b.classList.toggle('v33-active-role',active);
       b.setAttribute('aria-pressed',active?'true':'false');
     });
-    if(status){
-      status.querySelector('b').textContent=role==='all'?'All actions and guidance':labels[role]+' priorities';
+
+    const hint=document.getElementById('v20RoleHint');
+    if(hint) hint.textContent='The priorities below have been updated for '+cfg.title+'. You can switch roles at any time.';
+
+    if(panel){
+      panel.innerHTML=
+        '<div class="v33-role-head"><span>SHOWING PRIORITIES FOR</span><b>'+cfg.title+'</b><p>'+cfg.intro+'</p></div>'+
+        '<div class="v33-role-actions">'+cfg.actions.map(a=>
+          '<button data-v33-go="'+a[0]+'"><b>'+a[1]+'</b><small>'+a[2]+'</small><i>→</i></button>'
+        ).join('')+'</div>';
+      panel.querySelectorAll('[data-v33-go]').forEach(btn=>btn.addEventListener('click',()=>{
+        const id=btn.dataset.v33Go;
+        const page=document.getElementById(id);
+        routeTo(id);
+      }));
     }
-    document.querySelectorAll('.v32-role-sensitive').forEach(el=>{
-      const roles=(el.dataset.rolePriority||'all').split(/\s+/);
-      el.classList.toggle('v32-priority',role!=='all' && roles.includes(role));
-    });
-    // Reorder homepage task controls when identifiable by data-go.
-    const controls=[...document.querySelectorAll('#home [data-go]')];
-    const order=taskOrder[role]||[];
-    controls.forEach(c=>{
-      const go=c.dataset.go;
-      c.classList.toggle('v32-role-task',role!=='all' && order.includes(go));
-      c.style.setProperty('--v32-order',order.includes(go)?String(order.indexOf(go)+1):'99');
-    });
   }
-  roleButtons.forEach(b=>b.addEventListener('click',()=>applyRole(inferRole(b))));
-  applyRole(localStorage.getItem('extendedDayRole')||'school');
+
+  // Use capture so the new behavior runs reliably alongside the older V20 listener.
+  buttons.forEach(b=>b.addEventListener('click',()=>render(b.dataset.role),true));
+  render(localStorage.getItem('extendedDayRoleV33')||'school');
 })();
+
+// V34 persistent Home + Back navigation.
+(function(){
+  const homeBtn=document.getElementById('v34Home');
+  const backBtn=document.getElementById('v34Back');
+  const historyStack=['home'];
+  let current='home';
+
+  function activePageId(){
+    const visible=[...document.querySelectorAll('.page')].find(p=>{
+      const s=getComputedStyle(p);
+      return s.display!=='none' && !p.hidden;
+    });
+    return visible?.id || current;
+  }
+
+  // Capture internal navigation before the site's existing handlers run.
+  document.addEventListener('click',e=>{
+    const trigger=e.target.closest('[data-go],[data-v33-go]');
+    if(!trigger) return;
+    const target=trigger.dataset.go || trigger.dataset.v33Go;
+    const from=activePageId();
+    if(target && target!==from){
+      if(historyStack[historyStack.length-1]!==from) historyStack.push(from);
+      current=target;
+    }
+  },true);
+
+  homeBtn?.addEventListener('click',()=>{
+    const from=activePageId();
+    if(from!=='home') historyStack.push(from);
+    current='home';
+    routeTo('home');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  backBtn?.addEventListener('click',()=>{
+    const from=activePageId();
+    let target=historyStack.pop();
+    while(target===from && historyStack.length) target=historyStack.pop();
+    if(!target) target='home';
+    current=target;
+    routeTo(target);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  // Hide Back on the homepage; Home remains available but subdued.
+  const sync=()=>{
+    const id=activePageId();
+    backBtn.hidden=id==='home';
+    homeBtn.classList.toggle('v34-on-home',id==='home');
+  };
+  document.addEventListener('click',()=>setTimeout(sync,20));
+  sync();
+})();
+
+// V37 top-of-page Back controls use the same visible-page logic as the persistent navigation.
+document.querySelectorAll('[data-v37-back]').forEach(btn=>btn.addEventListener('click',()=>{
+  const persistent=document.getElementById('v34Back');
+  if(persistent) persistent.click(); else go('home');
+}));

@@ -1,0 +1,41 @@
+GRPS Extended Day Decision Center V38 — Functional Audit
+Date: 2026-09-26
+
+Audit scope:
+- JavaScript syntax
+- Static navigation targets
+- Dynamic route targets used by decision/status/FAQ/resource tools
+- Role personalization wiring
+- Home/Back routing logic
+- Resource Center source links
+- Duplicate IDs
+- Placeholder/empty links
+- Stale user-facing labels from prior architecture
+
+Note: Browser automation is not available in this build environment, so this report does not claim pixel-level or real-browser click automation. The audit validates the site's routing and event wiring from the shipped HTML/JavaScript and removes known runtime blockers.
+PASS — JavaScript syntax
+PASS — Duplicate IDs
+PASS — Static navigation targets resolve
+PASS — Dynamic route targets resolve
+PASS — All four role controls present — ['csa', 'general', 'partner', 'school']
+PASS — Role config: csa
+PASS — Role config: school
+PASS — Role config: general
+PASS — Role config: partner
+PASS — Program status search — v22SearchBtn
+PASS — Status interpreter — v21Interpret
+PASS — Change router — v23ChangeChoices
+PASS — FAQ search — v24AskBtn
+PASS — Resource Center — data-v25-resource
+PASS — Operations Guide navigation — data-v26-section
+PASS — Start Here utility — v27Start
+PASS — Persistent Back — v34Back
+PASS — Persistent Home — v34Home
+PASS — Role panel — v33RolePanel
+PASS — Removed obsolete DOM dependencies
+PASS — Verified Drive source links embedded — 5 links
+PASS — No empty/placeholder anchors — []
+PASS — Removed obsolete top-level labels
+PASS — Destination pages hide homepage-only sections
+
+Result: 24/24 checks passed.

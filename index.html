@@ -7,8 +7,8 @@
   <div class="v18-hero">
     <div class="v18-title">
       <span>GRPS EXTENDED DAY • 2026–27</span>
-      <h1>What do you need to <em>move forward?</em></h1>
-      <p>Find your program, take the next action, get an answer, or open the resource you need.</p>
+      <h1>Extended Day, from <em>decision to results.</em></h1>
+      <p>Plan, fund, launch, manage, and evaluate programs—with the next step clear at every stage.</p>
     </div>
     <div class="v18-status-note">
       <span>START HERE</span>
@@ -18,15 +18,15 @@
   </div>
 
   <section class="v20-role">
-    <div><span>PERSONALIZE THE CENTER</span><b>I'm using this as a…</b></div>
+    <div><span>TAILOR THIS PAGE TO MY ROLE</span><b>Show me what matters most for…</b></div>
     <div class="v20-role-buttons">
       <button data-role="school">School / Principal</button>
       <button data-role="partner">Partner / Vendor</button>
       <button data-role="csa">CSA Reviewer</button>
       <button data-role="general">Just show everything</button>
     </div>
-    <p id="v20RoleHint">Choose a role to prioritize the actions and guidance most relevant to you. Nothing is hidden.</p>
-  </section>
+    <p id="v20RoleHint">Choose a role and the page will immediately reprioritize the actions, guidance, and resources below. You can switch roles at any time.</p>
+  <div id="v32RoleStatus" class="v32-role-status" aria-live="polite"><span>SHOWING:</span><b>School / Principal priorities</b></div></section>
 
   <div class="v18-actions">
     <button data-go="status" class="v18-action primary">
@@ -55,15 +55,21 @@
     </button>
   </div>
 
-  <section class="v26-lifecycle">
+  <section class="v26-lifecycle v32-role-sensitive" data-role-priority="all school reviewer vendor">
   <div><span>THE EXTENDED DAY CYCLE</span><b>One process from idea to evidence.</b></div>
   <ol>
-    <li><i>1</i><span>Plan</span></li><li><i>2</i><span>Review</span></li><li><i>3</i><span>Fund</span></li><li><i>4</i><span>Launch</span></li><li><i>5</i><span>Operate</span></li><li><i>6</i><span>Adjust</span></li><li><i>7</i><span>Close</span></li>
+    <li><button data-go="plan"><i>1</i><span>Plan</span><small>Design + submit</small></button></li>
+    <li><button data-go="guide" data-guide-stage="review"><i>2</i><span>Review</span><small>Review + decide</small></button></li>
+    <li><button data-go="fund"><i>3</i><span>Fund</span><small>Budget + source</small></button></li>
+    <li><button data-go="launch"><i>4</i><span>Launch</span><small>Clear readiness</small></button></li>
+    <li><button data-go="operate"><i>5</i><span>Operate</span><small>Deliver + track</small></button></li>
+    <li><button data-go="change"><i>6</i><span>Adjust</span><small>Route changes</small></button></li>
+    <li><button data-go="evaluate"><i>7</i><span>Close</span><small>Results + closeout</small></button></li>
   </ol>
   <button data-go="guide">See the full operating process →</button>
 </section>
 
-<section class="v28-editorial"><div class="v28-editorial-big">DECIDE.<br>ACT.<br>DOCUMENT.</div><div class="v28-editorial-copy"><span>THE POINT OF THIS CENTER</span><h2>Move the work forward without making staff learn the system first.</h2><p>Start with the decision or task in front of you. The Center should surface the right answer, next action, source, or review path.</p></div></section><section class="v25-now">
+<section class="v28-editorial v32-role-sensitive" data-role-priority="all school reviewer"><div class="v28-editorial-big">DECIDE.<br>ACT.<br>DOCUMENT.</div><div class="v28-editorial-copy"><span>THE POINT OF THIS CENTER</span><h2>Move the work forward without making staff learn the system first.</h2><p>Start with the decision or task in front of you. The Center should surface the right answer, next action, source, or review path.</p></div></section><section class="v25-now v32-role-sensitive" data-role-priority="all school reviewer">
     <span>COMMON TASKS</span>
     <div>
       <button data-go="status">Check a program</button>
@@ -110,7 +116,7 @@
 </section>
 <div class="change-banner" data-go="change" role="button" tabindex="0"><div><span class="eyebrow">DON'T START OVER</span><h2>Something changed after approval?</h2><p>Tell the Hub what changed. It will route you to the right review path.</p></div><strong>Route the change →</strong></div>
 </section>
-<section id="status" class="page"><div class="v28-chapter">01 / PROGRAM</div>
+<section id="status" class="page v32-role-sensitive" data-role-priority="all school reviewer"><button class="v28-chapter v30-chapter-link" data-go="status">01 / PROGRAM</button>
   <div class="v18-pagehead">
     <span>FIND MY PROGRAM</span>
     <h1>One program record. One next move.</h1>
@@ -174,7 +180,7 @@
   <div id="v21StatusResult" class="v21-status-result" hidden></div>
 </section>
 
-<section id="change" class="page"><div class="v28-chapter">02 / CHANGE</div>
+<section id="change" class="page"><button class="v28-chapter v30-chapter-link" data-go="change">02 / CHANGE</button>
   <div class="v18-pagehead">
     <span>SOMETHING CHANGED</span>
     <h1>Don't guess what needs another review.</h1>
@@ -252,7 +258,7 @@
   </div>
 </section>
 
-<section id="resources" class="page"><div class="v28-chapter">04 / RESOURCES</div>
+<section id="resources" class="page v32-role-sensitive" data-role-priority="all school vendor reviewer"><button class="v28-chapter v30-chapter-link" data-go="resources">04 / RESOURCES</button>
   <div class="v18-pagehead">
     <span>RESOURCE CENTER</span>
     <h1>Open the resource you need for the work you're doing.</h1>
@@ -279,7 +285,7 @@
   </div>
 </section>
 
-<section id="guide" class="page"><div class="v28-chapter">05 / OPERATIONS</div>
+<section id="guide" class="page v32-role-sensitive" data-role-priority="all reviewer school vendor"><button class="v28-chapter v30-chapter-link" data-go="guide">05 / OPERATIONS</button>
   <div class="v18-pagehead">
     <span>EXTENDED DAY OPERATIONS GUIDE</span>
     <h1>How Extended Day moves from idea to closeout.</h1>
@@ -377,7 +383,7 @@
   </div>
 </section>
 
-<section id="faq" class="page"><div class="v28-chapter">03 / ANSWERS</div>
+<section id="faq" class="page"><button class="v28-chapter v30-chapter-link" data-go="faq">03 / ANSWERS</button>
   <div class="v18-pagehead">
     <span>ANSWER CENTER</span>
     <h1>Ask the question. Get the answer and next move.</h1>

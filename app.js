@@ -407,3 +407,60 @@ document.getElementById('v27UtilityClose')?.addEventListener('click',()=>{v27Uti
 v27Utility?.addEventListener('click',e=>{if(e.target===v27Utility){v27Utility.classList.remove('open');v27Utility.setAttribute('aria-hidden','true')}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){v27Utility?.classList.remove('open');v27Utility?.setAttribute('aria-hidden','true')}});
 v27Utility?.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{showContent(b.dataset.go);v27Utility.classList.remove('open');v27Utility.setAttribute('aria-hidden','true')}));
+
+// V30: when Review is selected from the lifecycle, open the Operations Guide and focus the Review stage.
+document.querySelectorAll('[data-guide-stage="review"]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    setTimeout(()=>{
+      const sections=[...document.querySelectorAll('#guide .v26-guide-section')];
+      const review=sections.find(s=>/review/i.test(s.textContent||''));
+      review?.scrollIntoView({behavior:'smooth',block:'start'});
+    },50);
+  });
+});
+
+// V32 role personalization: role selection must visibly change the experience.
+(function(){
+  const labels={school:'School / Principal',vendor:'Partner / Vendor',reviewer:'CSA Reviewer',all:'Everything'};
+  const roleButtons=[...document.querySelectorAll('.v18-role button,[data-role]')];
+  const status=document.getElementById('v32RoleStatus');
+  const taskOrder={
+    school:['plan','status','launch','operate','change','faq','resources','guide'],
+    vendor:['vendor','launch','operate','change','resources','faq','guide','status'],
+    reviewer:['status','guide','fund','change','evaluate','resources','faq','plan'],
+    all:[]
+  };
+  function inferRole(btn){
+    const t=(btn.textContent||'').toLowerCase();
+    if(t.includes('school')||t.includes('principal')) return 'school';
+    if(t.includes('partner')||t.includes('vendor')) return 'vendor';
+    if(t.includes('reviewer')) return 'reviewer';
+    return 'all';
+  }
+  function applyRole(role){
+    document.documentElement.dataset.activeRole=role;
+    localStorage.setItem('extendedDayRole',role);
+    roleButtons.forEach(b=>{
+      const active=inferRole(b)===role;
+      b.classList.toggle('v32-active-role',active);
+      b.setAttribute('aria-pressed',active?'true':'false');
+    });
+    if(status){
+      status.querySelector('b').textContent=role==='all'?'All actions and guidance':labels[role]+' priorities';
+    }
+    document.querySelectorAll('.v32-role-sensitive').forEach(el=>{
+      const roles=(el.dataset.rolePriority||'all').split(/\s+/);
+      el.classList.toggle('v32-priority',role!=='all' && roles.includes(role));
+    });
+    // Reorder homepage task controls when identifiable by data-go.
+    const controls=[...document.querySelectorAll('#home [data-go]')];
+    const order=taskOrder[role]||[];
+    controls.forEach(c=>{
+      const go=c.dataset.go;
+      c.classList.toggle('v32-role-task',role!=='all' && order.includes(go));
+      c.style.setProperty('--v32-order',order.includes(go)?String(order.indexOf(go)+1):'99');
+    });
+  }
+  roleButtons.forEach(b=>b.addEventListener('click',()=>applyRole(inferRole(b))));
+  applyRole(localStorage.getItem('extendedDayRole')||'school');
+})();

@@ -39,33 +39,51 @@ $('#findBtn').onclick=()=>{const q=$('#homeSearch').value;go('status');$('#progr
 $('#homeSearch').addEventListener('keydown',e=>{if(e.key==='Enter')$('#findBtn').click()});
 renderPrograms();
 
-// V9 searchable, task-based FAQ
+// V10 focused FAQ: topic landing, quick answers, reveal-on-demand
 const FAQ_DATA=[{"cat": "Start Here", "q": "Why is GRPS changing the Extended Day process?", "a": "GRPS is strengthening how programs are planned, reviewed, approved, monitored, and evaluated. The goal is clearer decisions, stronger alignment to scholar need, intentional use of resources, and better information about participation and results—not more paperwork.", "flag": ""}, {"cat": "Start Here", "q": "What is changing for 2026–27?", "a": "Greater emphasis is being placed on scholar need, projected participation, program design, available funding, total and per-scholar cost, funding-source requirements, partner responsibilities, approval status, actual attendance, observations, spending, and results.", "flag": ""}, {"cat": "Plan & Review", "q": "Does every school receive the same Extended Day allocation?", "a": "No. Schools should use current district allocation information when planning. Available funds do not automatically mean every proposed expense or program will be approved.", "flag": ""}, {"cat": "Plan & Review", "q": "Should schools design a program around the amount of money available?", "a": "No. Start with Scholar Need → Program Design → Expected Participation → Cost → Funding.", "flag": ""}, {"cat": "Plan & Review", "q": "What will be considered when a program is reviewed?", "a": "Need, design, expected participation, schedule and duration, outcomes, total cost, per-scholar cost, staffing, vendor or administrative costs, funding requirements, feasibility, prior performance when available, and evaluation approach.", "flag": ""}, {"cat": "Budget & Funding", "q": "Why is per-scholar cost being reviewed?", "a": "It provides another lens on the proposed investment. Calculate Total Proposed Cost ÷ Expected Participating Scholars. It is one factor, not an automatic approval rule.", "flag": ""}, {"cat": "Budget & Funding", "q": "Is there a maximum allowable cost per scholar?", "a": "The reviewed GRPS materials do not establish one universal maximum. Cost should be considered with design, participation, outcomes, funding requirements, and overall investment.", "flag": ""}, {"cat": "Approval & Launch", "q": "What is the Board of Education approval threshold?", "a": "The confirmed GRPS threshold for this process is $30,321. Programs above the applicable threshold require the additional approval pathway. Other approvals may still apply below the threshold.", "flag": ""}, {"cat": "Approval & Launch", "q": "Does submitting an application mean the program is approved?", "a": "No. Submission begins review. Program decisions should use Approved, Approved with Conditions, Revision Required, or Not Recommended.", "flag": ""}, {"cat": "Approval & Launch", "q": "Is an approved program automatically ready to begin?", "a": "No. Program approval and clearance to launch are separate. Final budget, funding, BOE approval when required, MOU, onboarding, site readiness, staffing, and other requirements may still be outstanding.", "flag": ""}, {"cat": "Approval & Launch", "q": "What should be confirmed before Day 1?", "a": "Confirm program and budget approval, funding, MOU or agreements, required clearance and onboarding, staffing, sites, schedule, family communication, attendance and data expectations, invoicing expectations, supplies and technology, and applicable safety or operational readiness.", "flag": ""}, {"cat": "Partners & Vendors", "q": "Can a school use an outside vendor or community partner?", "a": "Yes. Existing GRPS procedures require intake and review and may include program information, schedule, reporting capacity, staff and background requirements, insurance, outcomes, MOU, and other documentation.", "flag": ""}, {"cat": "Budget & Funding", "q": "Are all Extended Day programs funded through 31a?", "a": "No. Programs may use 31a, 32n, 21st CCLC, other sources, or blended funding. Identify the funding source before final approval.", "flag": ""}, {"cat": "32n & Grants", "q": "How does Section 32n affect Extended Day?", "a": "GRPS has partnered with outside organizations on 32n applications. An outside organization may be the applicant or fiscal agent while GRPS serves as a program or site partner. GRPS expectations and final grant or partnership requirements both apply.", "flag": ""}, {"cat": "32n & Grants", "q": "What happens if a 32n or other grant award is different from the application?", "a": "Reconcile the final award before implementation: amount, sites, budget, dosage, participation, activities, outcomes, reporting, and responsibilities. The final award or approved operating plan controls.", "flag": ""}, {"cat": "Operate", "q": "What attendance information is required?", "a": "Maintain accurate attendance and compare projected participation, enrollment, actual scholars served, and attendance patterns. Attendance may also support invoices, evaluation, or grant requirements.", "flag": ""}, {"cat": "Operate", "q": "What happens if participation is much lower than projected?", "a": "Identify the cause, understand barriers, adjust when appropriate, monitor the response, and involve OEL if concerns persist. GRPS has not established one automatic districtwide cancellation percentage. On Track / Watch / Action Required is the recommended management approach pending leadership decision.", "flag": "Leadership decision pending"}, {"cat": "Partners & Vendors", "q": "Can a vendor invoice GRPS for programming that did not occur?", "a": "No. Existing procedures require invoices to reflect services actually delivered and be supported by applicable documentation.", "flag": ""}, {"cat": "Changes", "q": "What if something changes after the program is approved?", "a": "Material changes involving budget, funding source, vendor or partner, design, schedule, location, staffing model, projected participation, or other major elements should be routed through OEL. The proposed routing levels are Document Only, OEL Review, Funding/MOU Review, and Additional Approval.", "flag": "Leadership decision pending"}, {"cat": "Safety & Logistics", "q": "What are the supervision expectations?", "a": "A districtwide GRPS baseline is still a leadership decision. Any stricter licensing, age, activity, facility, grant, provider, or program requirement governs when applicable.", "flag": "Leadership decision pending"}, {"cat": "Safety & Logistics", "q": "What are the dismissal, transportation, and late-pickup expectations?", "a": "A minimum districtwide framework is still being finalized. Before launch, programs should have a defined dismissal process, authorized release and pickup expectations, transportation responsibility, late-pickup procedure, family contact process, and escalation route.", "flag": "Leadership decision pending"}, {"cat": "Safety & Logistics", "q": "What happens if a program cannot operate on a scheduled day?", "a": "Use the existing closure or emergency procedure. Follow applicable notification, supervision, documentation, make-up, and billing requirements. GRPS should not be billed for programming that did not occur.", "flag": ""}, {"cat": "Operate", "q": "What documentation is expected for payment and operations?", "a": "Use existing vendor invoice procedures and applicable attendance, lesson or topic, staffing, receipt and inventory, MOU, and funding-source documentation.", "flag": ""}, {"cat": "Operate", "q": "How are supplies, equipment, and district property handled?", "a": "Use existing ordering and inventory processes: Approve → Purchase → Receive → Inventory → Use → Store/Return.", "flag": ""}, {"cat": "Monitor & Close", "q": "How will programs be monitored?", "a": "Use existing observation and evaluation tools to review participation, implementation, engagement, quality, staffing, alignment, documentation, funding or program requirements, and follow-up actions. Management follow-up should identify an action owner, due date, follow-up, and resolution.", "flag": ""}, {"cat": "Monitor & Close", "q": "How will GRPS decide whether a program should continue?", "a": "Use multiple evidence domains: participation, implementation, quality, outcomes, investment, operations, and partner performance. The next-year recommendation should be Continue, Improve, Expand, or Redesign/End. No single measure determines the decision.", "flag": ""}, {"cat": "Monitor & Close", "q": "What happens at program closeout?", "a": "Finalize attendance, documentation, invoices, expenditures, evaluation, corrective actions, inventory or property, unresolved concerns, and the next-year recommendation.", "flag": ""}, {"cat": "Help & Resources", "q": "Where will schools find forms, procedures, and program status?", "a": "The Extended Day Operations Hub should be the primary entry point and link to current authoritative tools rather than creating duplicate forms or parallel processes.", "flag": ""}, {"cat": "Help & Resources", "q": "Who should I contact when I am unsure?", "a": "Start with the Office of Extended Learning. OEL can route questions requiring State & Federal Programs, Finance, Human Resources, Legal, another district department, or an external grant partner.", "flag": ""}];
-const faqCats=['All',...new Set(FAQ_DATA.map(x=>x.cat))];
-let faqCat='All';
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
-function renderFAQ(){
- const q=(document.getElementById('faqSearch')?.value||'').trim().toLowerCase();
- const list=FAQ_DATA.filter(x=>(faqCat==='All'||x.cat===faqCat)&&(!q||(`${x.q} ${x.a} ${x.cat}`).toLowerCase().includes(q)));
- const results=document.getElementById('faqResults'), count=document.getElementById('faqCount'), empty=document.getElementById('faqEmpty');
- if(!results)return;
- count.textContent=`${list.length} answer${list.length===1?'':'s'}`;
- empty.hidden=list.length>0;
- const grouped={};list.forEach(x=>(grouped[x.cat]??=[]).push(x));
- results.innerHTML=Object.entries(grouped).map(([cat,items])=>`<section class="faq-group" id="faq-${cat.replace(/[^a-z0-9]+/gi,'-').toLowerCase()}"><div class="faq-group-head"><span>${esc(cat)}</span><small>${items.length}</small></div>${items.map(x=>`<details class="faq-item"><summary><span>${esc(x.q)}</span><i>+</i></summary><div class="faq-answer">${x.flag?`<b class="decision-flag">${esc(x.flag)}</b>`:''}<p>${esc(x.a)}</p></div></details>`).join('')}</section>`).join('');
+const FAQ_TOPICS=[
+  ['Getting Started',['Start Here','Plan & Review'],'Start, revise, and understand the 2026–27 process'],
+  ['Approval & Launch',['Approval & Launch'],'Decisions, BOE threshold, clearance, Day 1'],
+  ['Budget & Funding',['Budget & Funding','32n & Grants'],'31a, 32n, 21st CCLC, cost and grant changes'],
+  ['Partners & Vendors',['Partners & Vendors'],'Vendor review, MOU, invoices and responsibilities'],
+  ['Running the Program',['Operate','Safety & Logistics'],'Attendance, supplies, closures and daily operations'],
+  ['Changes & Results',['Changes','Monitor & Close'],'Route changes, monitor quality, evaluate and close out']
+];
+let faqMode='start';
+function esc2(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function faqCard(x){
+ return `<details class="faq-card"><summary><span>${esc2(x.q)}</span><i>+</i></summary><div class="faq-card-answer">${x.flag?`<b class="decision-flag">${esc2(x.flag)}</b>`:''}<p>${esc2(x.a)}</p></div></details>`;
 }
-function setFaqCat(cat){
- faqCat=cat;
- document.querySelectorAll('#faqFilters button').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
- renderFAQ();
+function showFaqList(label,items){
+ faqMode='browse';
+ document.getElementById('faqStart').hidden=true;
+ document.getElementById('faqBrowse').hidden=false;
+ document.getElementById('faqBrowseLabel').textContent=label;
+ document.getElementById('faqCount').textContent=`${items.length} answer${items.length===1?'':'s'}`;
+ document.getElementById('faqEmpty').hidden=items.length>0;
+ document.getElementById('faqResults').innerHTML=items.map(faqCard).join('');
+ window.scrollTo({top:0,behavior:'smooth'});
 }
-const ff=document.getElementById('faqFilters');
-if(ff){
- ff.innerHTML=faqCats.map(c=>`<button data-cat="${esc(c)}">${esc(c)}</button>`).join('');
- ff.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setFaqCat(b.dataset.cat)));
- setFaqCat('All');
+function showFaqTopics(){
+ faqMode='start';
+ document.getElementById('faqStart').hidden=false;
+ document.getElementById('faqBrowse').hidden=true;
+ document.getElementById('faqSearch').value='';
 }
-const fj=document.getElementById('faqJump');
-if(fj)fj.innerHTML=faqCats.slice(1).map(c=>`<button data-cat="${esc(c)}">${esc(c)}</button>`).join('');
-if(fj)fj.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{setFaqCat(b.dataset.cat);document.getElementById('faqResults').scrollIntoView({behavior:'smooth'})}));
-document.getElementById('faqSearch')?.addEventListener('input',renderFAQ);
+const topicWrap=document.getElementById('faqTopicCards');
+if(topicWrap){
+ topicWrap.innerHTML=FAQ_TOPICS.map((t,i)=>`<button data-topic="${i}"><i>0${i+1}</i><b>${esc2(t[0])}</b><span>${esc2(t[2])}</span><strong>Open topic →</strong></button>`).join('');
+ topicWrap.querySelectorAll('button').forEach(b=>b.onclick=()=>{const t=FAQ_TOPICS[+b.dataset.topic];showFaqList(t[0],FAQ_DATA.filter(x=>t[1].includes(x.cat))) });
+}
+const quickQs=['What is the Board of Education approval threshold?','Is an approved program automatically ready to begin?','Are all Extended Day programs funded through 31a?','What if something changes after the program is approved?'];
+const quick=document.getElementById('faqQuick');
+if(quick)quick.innerHTML=FAQ_DATA.filter(x=>quickQs.includes(x.q)).map(faqCard).join('');
+function searchFAQ(){
+ const q=(document.getElementById('faqSearch').value||'').trim().toLowerCase();
+ if(!q){showFaqTopics();return}
+ const items=FAQ_DATA.filter(x=>`${x.q} ${x.a} ${x.cat}`.toLowerCase().includes(q));
+ showFaqList(`Search: “${document.getElementById('faqSearch').value.trim()}”`,items);
+}
+document.getElementById('faqSearchBtn')?.addEventListener('click',searchFAQ);
+document.getElementById('faqSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')searchFAQ()});
+document.getElementById('faqBackTopics')?.addEventListener('click',showFaqTopics);

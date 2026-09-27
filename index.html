@@ -12,6 +12,11 @@
     <div class="find hero-find"><input id="homeSearch" placeholder="Search school, program, provider, funding…"><button id="findBtn">Find it</button></div>
     <div class="hero-shortcuts"><button data-go="status">Check program status →</button><button data-go="change">Something changed? →</button></div>
   </div>
+  <div class="hero-visual">
+  <div class="photo-frame">
+    <img src="https://snn-images.schoolnewsnetwork.org/wp-content/uploads/2017/06/21104607/ALL_after-school_budget_cuts_5.jpg" alt="GRPS LOOP scholar with program supervisor">
+    <span class="photo-tag">LEARNING BEYOND THE SCHOOL DAY</span>
+  </div>
   <aside class="today-panel">
     <span class="panel-kicker">START HERE</span>
     <h2>What are you trying to do?</h2>
@@ -21,6 +26,8 @@
     <button data-go="operate"><b>Run my program</b><span>Attendance • supplies • documentation</span></button>
     <button data-go="evaluate"><b>Review results</b><span>Observe • improve • evaluate • closeout</span></button>
   </aside>
+  <small class="photo-credit">GRPS LOOP archive photo • School News Network</small>
+</div>
 </div>
 <div class="pulse-strip">
   <div><span>PROGRAM DECISION</span><b>Know the decision</b><small>Approved ≠ cleared to launch</small></div>
@@ -48,17 +55,25 @@
 <section id="change" class="page"><button class="back" data-go="home">← Home</button><p class="eyebrow">SOMETHING CHANGED?</p><h1>What changed?</h1><p>Select the change. The Hub will show the current routing guidance.</p><div id="changeButtons" class="changegrid"></div><div id="changeResult" class="result muted">Select an item above.</div></section>
 
 <section id="faq" class="page">
-<div class="faq-hero">
+<div class="faq-landing">
   <button class="back" data-go="home">← Home</button>
-  <p class="eyebrow">EXTENDED DAY • 2026–27</p>
-  <h1>Find the answer. Then move.</h1>
-  <p>Search by question or browse by what you are trying to do. Items marked <b>Leadership decision pending</b> are not yet districtwide standards.</p>
-  <div class="faq-search"><input id="faqSearch" placeholder="Search approval, 32n, vendor, attendance, transportation…"><span id="faqCount"></span></div>
-  <div id="faqFilters" class="faq-filters"></div>
+  <div class="faq-title-row"><div><p class="eyebrow">EXTENDED DAY • 2026–27</p><h1>What do you need to know?</h1><p>Start with a topic or search for a specific question. You will only see the answers you ask for.</p></div><div class="faq-mark">?</div></div>
+  <div class="faq-search-v10"><input id="faqSearch" placeholder="Try “BOE threshold,” “32n,” “vendor,” or “attendance”"><button id="faqSearchBtn">Search FAQ</button></div>
 </div>
-<div class="faq-layout">
-  <aside class="faq-jump"><span>JUMP TO</span><div id="faqJump"></div></aside>
-  <div><div id="faqResults" class="faq-results"></div><div id="faqEmpty" class="faq-empty" hidden>No FAQ matches that search. Try a broader term or contact the Office of Extended Learning.</div></div>
+
+<div id="faqStart" class="faq-start">
+  <div class="faq-start-head"><span>CHOOSE A TOPIC</span><small>29 answers across the Extended Day process</small></div>
+  <div id="faqTopicCards" class="faq-topic-cards"></div>
+  <div class="faq-common">
+    <div class="faq-common-head"><span>MOST USED</span><h2>Quick answers</h2></div>
+    <div id="faqQuick"></div>
+  </div>
+</div>
+
+<div id="faqBrowse" class="faq-browse" hidden>
+  <div class="faq-browse-bar"><button id="faqBackTopics">← All topics</button><div><span id="faqBrowseLabel"></span><small id="faqCount"></small></div></div>
+  <div id="faqResults" class="faq-results-v10"></div>
+  <div id="faqEmpty" class="faq-empty" hidden>No FAQ matches that search. Try a broader term or contact the Office of Extended Learning.</div>
 </div>
 </section>
 <section id="content" class="page"><button class="back" data-go="home">← Home</button><p id="contentEyebrow" class="eyebrow"></p><h1 id="contentTitle"></h1><p id="contentIntro"></p><div id="contentBody"></div></section>

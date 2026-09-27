@@ -18,8 +18,8 @@ PASS — No empty/hash/javascript placeholder links
 PASS — No user-facing prototype language
 PASS — No obsolete “Something Changed?” primary label
 PASS — Tracker snapshot bundled with build
-PASS — Source-of-truth link retained
+PASS — Internal source-tracker link removed from the public interface
 
 LIMITATION
 This is a static GitHub Pages build. The bundled tracker is a snapshot, not a live private-Google-Sheet API connection.
-The source Submission Tracker remains authoritative for the newest record.
+The internal Submission Tracker remains authoritative for the newest record and is not linked from the public interface.

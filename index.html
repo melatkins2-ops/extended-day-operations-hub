@@ -4,31 +4,36 @@
 <nav><button data-go="status">Program Status</button><button data-go="change">Something Changed?</button><button data-go="resources">Resources</button><button data-go="faq">FAQ</button></nav></header>
 <main>
 <section id="home" class="page active">
-<div class="hero-v9">
-  <div class="hero-copy">
+<div class="v13-hero">
+  <div class="v13-intro">
     <p class="eyebrow">GRPS EXTENDED DAY • 2026–27</p>
-    <h1>Move Extended Day forward.</h1>
-    <p class="hero-sub">Start with what you need to do—not a manual. Find a program, check status, route a change, or go directly to the next action.</p>
-    <div class="find hero-find"><input id="homeSearch" placeholder="Search school, program, provider, funding…"><button id="findBtn">Find it</button></div>
-    <div class="hero-shortcuts"><button data-go="status">Check program status →</button><button data-go="change">Something changed? →</button></div>
+    <h1>Move Extended Day <em>forward.</em></h1>
+    <p class="v13-lead">One place to move from program idea to approval, launch, implementation, and results.</p>
+    <div class="v13-search"><input id="homeSearch" placeholder="Find a school, program, provider, or funding source"><button id="findBtn">Find my program →</button></div>
+    <div class="v13-quick"><button data-go="status">Check program status</button><button data-go="change">Route a change</button><button data-go="faq">Find an answer</button></div>
   </div>
-  <div class="hero-visual">
-  <div class="photo-frame">
-    <img src="https://snn-images.schoolnewsnetwork.org/wp-content/uploads/2025/08/07134132/GRPS_Ignite_Summer_Learning_8.jpg" onerror="this.onerror=null;this.src='https://snn-images.schoolnewsnetwork.org/wp-content/uploads/2017/06/21104607/ALL_after-school_budget_cuts_5.jpg';this.alt='GRPS scholar participating in extended learning';" alt="GRPS scholars engaged in hands-on Ignite Summer Learning">
-    <span class="photo-tag">EXTENDED LEARNING IN ACTION</span>
+
+  <div class="v13-story">
+    <div class="v13-photo">
+      <img src="https://snn-images.schoolnewsnetwork.org/wp-content/uploads/2017/06/21104607/ALL_after-school_budget_cuts_5.jpg" alt="GRPS scholar participating in extended learning">
+      <div class="v13-photo-copy"><span>WHY THIS WORK MATTERS</span><b>Learning continues beyond the bell.</b></div>
+    </div>
+    <div class="v13-purpose">
+      <span>EXTENDED LEARNING</span>
+      <p>GRPS Extended Learning supports enrichment, belonging, academic growth, and the whole child.</p>
+    </div>
   </div>
-  <aside class="today-panel">
-    <span class="panel-kicker">START HERE</span>
-    <h2>What are you trying to do?</h2>
-    <button data-go="plan"><b>Plan or Revise</b><span>→</span></button>
-    <button data-go="fund"><b>Budget & Funding</b><span>→</span></button>
-    <button data-go="launch"><b>Ready to Launch</b><span>→</span></button>
-    <button data-go="operate"><b>Run My Program</b><span>→</span></button>
-    <button data-go="evaluate"><b>Review Results</b><span>→</span></button>
-  </aside>
-  <small class="photo-credit">GRPS Ignite Summer Learning • School News Network</small>
 </div>
+
+<div class="v13-path">
+  <div class="v13-path-title"><span>YOUR PROGRAM PATH</span><b>Start where you are.</b></div>
+  <button data-go="plan"><i>01</i><b>Plan</b><span>Need + design</span></button>
+  <button data-go="fund"><i>02</i><b>Fund</b><span>Budget + source</span></button>
+  <button data-go="launch"><i>03</i><b>Launch</b><span>Approval + readiness</span></button>
+  <button data-go="operate"><i>04</i><b>Operate</b><span>Attendance + delivery</span></button>
+  <button data-go="evaluate"><i>05</i><b>Learn</b><span>Results + next move</span></button>
 </div>
+
 <div class="pulse-strip">
   <div><span>PROGRAM DECISION</span><b>Know the decision</b><small>Approved ≠ cleared to launch</small></div>
   <div><span>FUNDING</span><b>Know the source</b><small>31a • 32n • 21st CCLC • blended</small></div>
@@ -61,13 +66,11 @@
   <div class="faq-search-v10"><input id="faqSearch" placeholder="Try “BOE threshold,” “32n,” “vendor,” or “attendance”"><button id="faqSearchBtn">Search FAQ</button></div>
 </div>
 
-<div id="faqStart" class="faq-start">
-  <div class="faq-start-head"><span>CHOOSE A TOPIC</span><small>29 answers across the Extended Day process</small></div>
-  <div id="faqTopicCards" class="faq-topic-cards"></div>
-  <div class="faq-common">
-    <div class="faq-common-head"><span>MOST USED</span><h2>Quick answers</h2></div>
-    <div id="faqQuick"></div>
-  </div>
+<div id="faqStart" class="faq-start v13-faq-start">
+  <div class="v13-faq-prompt"><span>START WITH THE QUESTION BEHIND YOUR QUESTION</span><h2>What are you trying to figure out?</h2></div>
+  <div id="faqTopicCards" class="v13-topic-cards"></div>
+  <div class="v13-faq-note"><b>Still not sure?</b><span>Use the search above. Type one word such as <em>budget</em>, <em>32n</em>, <em>vendor</em>, <em>attendance</em>, or <em>approval</em>.</span></div>
+  <div id="faqQuick" hidden></div>
 </div>
 
 <div id="faqBrowse" class="faq-browse" hidden>

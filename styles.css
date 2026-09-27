@@ -41,3 +41,50 @@
 .faq-browse{max-width:900px;margin-top:32px}.faq-browse-bar{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--navy);padding-bottom:10px}.faq-browse-bar button{border:0;background:none;color:var(--navy);font-weight:800;cursor:pointer;padding:0}.faq-browse-bar div{text-align:right}.faq-browse-bar span,.faq-browse-bar small{display:block}.faq-browse-bar span{font-size:14px;color:var(--navy);font-weight:900}.faq-browse-bar small{font-size:10px;color:var(--muted)}.faq-results-v10{margin-top:5px}
 @media(max-width:900px){.hero-v9{grid-template-columns:1fr}.hero-visual{padding-left:18px}.faq-topic-cards{grid-template-columns:1fr 1fr}.faq-common{grid-template-columns:1fr}.faq-mark{display:none}}
 @media(max-width:560px){.faq-topic-cards{grid-template-columns:1fr}.faq-title-row h1{font-size:40px}.faq-search-v10{display:block;border:0}.faq-search-v10 input{width:100%;border:1px solid #c8d0d7}.faq-search-v10 button{width:100%;padding:13px;margin-top:7px}.photo-frame{height:220px}}
+
+/* V11: tighter, wider hero with integrated photo/action composition */
+.hero-v9{
+  grid-template-columns:minmax(0,1.18fr) minmax(420px,.82fr);
+  gap:34px;
+  align-items:stretch;
+  padding:24px 0 14px;
+}
+.hero-copy{padding-top:25px;display:flex;flex-direction:column;justify-content:center}
+.hero-copy:before{width:76px;height:7px}
+.hero-copy h1{
+  font-size:clamp(46px,4.9vw,66px);
+  line-height:.98;
+  max-width:650px;
+  margin:8px 0 15px;
+}
+.hero-sub{font-size:18px;line-height:1.48;max-width:630px}
+.hero-find{margin-top:22px;max-width:690px}
+.hero-shortcuts{margin-top:13px}
+.hero-visual{
+  padding:0 0 9px 16px;
+  background:#f5f7f8;
+  display:grid;
+  grid-template-rows:205px auto auto;
+}
+.hero-visual:before{width:16px;top:24px;bottom:45px}
+.photo-frame{height:205px}
+.photo-frame img{object-position:center 45%}
+.photo-tag{bottom:12px;left:15px}
+.today-panel{padding:17px 22px 10px}
+.today-panel h2{font-size:20px;margin:4px 0 9px}
+.today-panel button{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:9px 0;
+}
+.today-panel b{font-size:14px}
+.today-panel span{font-size:16px;color:#ffb077;margin:0}
+.photo-credit{margin:5px 0 0 1px}
+.pulse-strip{margin-top:8px;margin-bottom:42px}
+.workbench{margin-top:0}
+@media(max-width:900px){
+ .hero-v9{grid-template-columns:1fr;gap:24px}
+ .hero-visual{grid-template-rows:240px auto auto}
+ .photo-frame{height:240px}
+}

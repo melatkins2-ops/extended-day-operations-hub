@@ -355,3 +355,39 @@ body{background:#fbfaf7;color:#263b4a}.page{position:relative;padding-top:24px}
 .v24-answer,.v23-change-result,.v22-record{box-shadow:none}.v24-answer{border-left:0;border-right:0}.v24-answer-main{border-left:0;border-top:6px solid var(--v28-orange)}
 .v25-resource-start>div{gap:0;border-top:1px solid var(--line)}.v25-resource-start button{border:0;border-bottom:1px solid var(--line);min-height:105px}.v25-resource-start button:nth-child(3n+2){border-left:1px solid var(--line);border-right:1px solid var(--line)}
 @media(max-width:800px){.v28-hero-mark{width:90px;height:90px}.v28-editorial{grid-template-columns:1fr;gap:22px}.v28-editorial-copy{border-left:0;border-top:1px solid #cbd6dc;padding:20px 0 0}.v28-chapter{position:static;display:inline-block;margin-bottom:12px}.v25-now>div{border-left:0;padding-left:0}.v25-resource-start button:nth-child(3n+2){border-left:0;border-right:0}}
+
+/* V29 — readability correction */
+html{font-size:17px}
+body{font-size:17px;line-height:1.5}
+header nav a,header nav button{font-size:14px!important}
+.v18-pagehead>span,.v28-kicker span,.v28-editorial-copy span,.v25-now>span,
+.v24-answer-main span,.v24-answer-detail span,.v25-resource-start>span,
+.v25-resource-principle span,.v26-guide-section>div:nth-child(2)>span,
+.v26-guide-footer span,.v27-trust>div:first-child span,.v20-type,
+.v23-change-result span,.v22-record-head span{font-size:11px!important}
+.v18-pagehead p{font-size:17px!important}
+.v26-lifecycle>div span{font-size:11px!important}
+.v26-lifecycle>div b{font-size:15px!important}
+.v26-lifecycle li{font-size:14px!important}
+.v26-lifecycle i{font-size:14px!important}
+.v26-lifecycle>button{font-size:14px!important;padding:10px 0!important}
+.v25-now button{font-size:13px!important}
+.v24-topics button{font-size:13px!important}
+.v24-answer-head small{font-size:14px!important}
+.v24-answer-detail p,.v25-resource-principle p,.v27-trust>div:first-child b{font-size:14px!important}
+.v25-resource-start b{font-size:16px!important}
+.v25-resource-start small{font-size:13px!important}
+.v25-resource-list b{font-size:15px!important}
+.v25-resource-list p{font-size:13px!important}
+.v26-guide-section>div:nth-child(2)>p{font-size:16px!important}
+.v26-check>b,.v26-four b,.v26-callout b{font-size:14px!important}
+.v26-check li,.v26-callout p,.v26-pending{font-size:13px!important}
+.v26-four small,.v26-readiness b,.v26-readiness span{font-size:12px!important}
+.v26-guide-section>div:nth-child(2)>button,.v26-guide-footer button{font-size:13px!important}
+.v27-start{font-size:14px!important}
+.v27-utility-card>span{font-size:11px!important}
+.v27-utility-actions b{font-size:16px!important}
+.v27-utility-actions small{font-size:13px!important}
+.v28-chapter{font-size:12px!important}
+.v28-editorial-copy p{font-size:15px!important}
+@media(max-width:700px){html{font-size:16px}.v26-lifecycle li{font-size:13px!important}}

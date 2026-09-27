@@ -1,0 +1,25 @@
+EXTENDED DAY DECISION CENTER — FINAL RELEASE AUDIT
+Build date: 2026-09-27
+
+PASS — JavaScript syntax
+PASS — Unique HTML IDs
+PASS — All navigation routes resolve
+PASS — Find My Program contains 43 GRPS schools
+PASS — School selection renders a school-level dashboard
+PASS — School dashboard shows program count, approved count, revision count, and open-item count
+PASS — Program summaries show decision, readiness, outstanding items, and next move
+PASS — General tracker search remains active
+PASS — District tracker filters remain active
+PASS — Home and Back navigation remain present
+PASS — Resources opens the interactive Resource Center
+PASS — FAQ remains searchable
+PASS — Approved-program update workflow remains contextual
+PASS — No empty/hash/javascript placeholder links
+PASS — No user-facing prototype language
+PASS — No obsolete “Something Changed?” primary label
+PASS — Tracker snapshot bundled with build
+PASS — Source-of-truth link retained
+
+LIMITATION
+This is a static GitHub Pages build. The bundled tracker is a snapshot, not a live private-Google-Sheet API connection.
+The source Submission Tracker remains authoritative for the newest record.

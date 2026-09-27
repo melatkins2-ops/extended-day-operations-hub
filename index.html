@@ -119,8 +119,8 @@
 <section id="status" class="page v32-role-sensitive" data-role-priority="all school reviewer"><div class="v37-topnav"><button type="button" data-v37-back="1">← Back</button><button type="button" data-go="home">Home</button></div><button class="v28-chapter v30-chapter-link" data-go="status">01 / PROGRAM</button>
   <div class="v18-pagehead">
     <span>FIND MY PROGRAM</span>
-    <h1>One program record. One next move.</h1>
-    <p>This page is designed around the existing 2026–27 Submission Tracker—not a second tracker.</p>
+    <h1>See the decision. Know what happens next.</h1>
+    <p>Select a school for a school-level view, or search for a specific program, provider, funding source, or status.</p>
   </div>
 
   <div class="v22-sourcebar">
@@ -129,56 +129,41 @@
   </div>
 
   <div class="v22-search">
-    <label>Find a school or program</label>
-    <div><input id="v22ProgramSearch" type="search" placeholder="Search school, program, provider, funding, or status"><button id="v22SearchBtn">Find program →</button></div>
-    <p><b>Prototype connection:</b> The tracker structure is mapped, but live tracker rows are not embedded in this package. Search demonstrates the intended experience without creating a parallel master record.</p>
+    <label for="v42SchoolSelect">Find a school or program</label>
+    <div class="v42-school-row">
+      <select id="v42SchoolSelect" aria-label="Choose a GRPS school">
+        <option value="">Choose a GRPS school…</option>
+        <optgroup label="Elementary / K-8">
+          <option>Aberdeen Academy</option><option>Brookside Elementary</option><option>Buchanan Elementary</option><option>Burton Elementary</option><option>CA Frost Environmental Science Academy Elementary</option><option>Campus Elementary</option><option>César E. Chávez Elementary</option><option>Coit Creative Arts Academy</option><option>Congress Elementary</option><option>Dickinson Academy</option><option>Gerald R. Ford Academic Center</option><option>Grand Rapids Montessori Academy</option><option>Harrison Park Academy</option><option>Ken-O-Sha Park Elementary</option><option>Kent Hills Elementary</option><option>Martin Luther King Jr. Leadership Academy</option><option>Mulick Park Elementary</option><option>North Park Montessori</option><option>Palmer Elementary</option><option>Ridgemoor Park Montessori</option><option>Shawmut Hills</option><option>Sherwood Park Global Studies Academy</option><option>Sibley Elementary</option><option>Southwest Elementary School - Academia Bilingüe</option>
+        </optgroup>
+        <optgroup label="Middle / Middle-High">
+          <option>Blandford School</option><option>Burton Middle School</option><option>CA Frost Environmental Science Middle High School</option><option>Center for Economicology</option><option>City High Middle School</option><option>Grand Rapids Montessori Middle High School</option><option>Grand Rapids Public Museum Middle School</option><option>Innovation Central Middle School</option><option>Ottawa Hills Middle School</option><option>Southwest Middle High School - Academia Bilingüe</option><option>Westwood Middle School</option><option>Zoo School</option>
+        </optgroup>
+        <optgroup label="High School">
+          <option>Grand Rapids Learning Center</option><option>Grand Rapids Public Museum High School</option><option>Grand Rapids University Preparatory Academy</option><option>Innovation Central High School</option><option>Ottawa Hills High School</option><option>Southeast Career Pathways</option><option>Union High School</option>
+        </optgroup>
+      </select>
+      <button id="v42SchoolBtn" type="button">Show school programs →</button>
+    </div>
+    <div class="v42-or"><span>or search across all tracker fields</span></div>
+    <div><input id="v22ProgramSearch" type="search" placeholder="Program, provider, funding, or status"><button id="v22SearchBtn">Search →</button></div>
+    <p><b>All current GRPS schools are included above.</b> Program results come from the 2026–27 Submission Tracker snapshot included with this Decision Center. A school can appear in the list even when no Extended Day program is currently recorded for it.</p>
   </div>
+  <div id="v45SchoolDashboard" class="v45-school-dashboard" hidden aria-live="polite"></div>
   <div id="v22SearchResult" class="v22-search-result" hidden></div>
 
-  <div class="v22-record-demo">
-    <div class="v22-record-head">
-      <span>PROGRAM RECORD DESIGN</span><h2>What the connected result will show</h2>
-      <p>The user should not have to interpret multiple tabs or reconstruct readiness.</p>
+  <section class="v43-overview" aria-labelledby="v43OverviewTitle">
+    <div class="v43-overview-head"><div><span>DISTRICT VIEW</span><h2 id="v43OverviewTitle">Browse the full tracker.</h2></div><p>Use these shortcuts when you need a districtwide view rather than a single school or program.</p></div>
+    <div id="v43Stats" class="v43-stats" aria-live="polite"></div>
+    <div class="v43-browse">
+      <button type="button" data-v43-filter="approved">Approved</button>
+      <button type="button" data-v43-filter="revision">Needs revision</button>
+      <button type="button" data-v43-filter="vendor">Vendor-led</button>
+      <button type="button" data-v43-filter="district">District-led</button>
+      <button type="button" data-v43-filter="all">Show all programs</button>
     </div>
-    <div class="v22-record">
-      <div class="v22-record-top">
-        <div><small>SCHOOL / SITE</small><b>From Submission Tracker</b></div>
-        <div><small>PROGRAM / PROVIDER</small><b>From Submission + Vendor tabs</b></div>
-        <div><small>FUNDING</small><b>31a / 32n / 21st CCLC / Other / Blended</b></div>
-      </div>
-      <div class="v22-decision">
-        <span>PROGRAM DECISION</span><b>Approved / Approved with Conditions / Revision Required / Not Recommended</b>
-      </div>
-      <div class="v22-launch">
-        <div><span>LAUNCH STATUS</span><b>Separate from program approval</b></div>
-        <div><span>OUTSTANDING ACTIONS</span><b>Show only what remains</b></div>
-      </div>
-      <div class="v22-checks">
-        <div><i>01</i><b>Budget / funding</b><span>Approved amount + funding alignment</span></div>
-        <div><i>02</i><b>BOE pathway</b><span>$30,321 threshold when applicable</span></div>
-        <div><i>03</i><b>MOU / agreement</b><span>Complete or outstanding</span></div>
-        <div><i>04</i><b>Vendor / partner</b><span>Required onboarding / documentation</span></div>
-        <div><i>05</i><b>Launch readiness</b><span>Staffing, schedule, site, remaining conditions</span></div>
-        <div><i>06</i><b>Next owner</b><span>Who needs to act now</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="v22-status-fallback">
-    <div><span>ALREADY KNOW YOUR STATUS?</span><b>Translate it into the next move.</b></div>
-    <select id="v21KnownStatus">
-      <option value="">Choose a status…</option>
-      <option value="submitted">Submitted / Awaiting Review</option>
-      <option value="revision">Revision Needed</option>
-      <option value="approved">Approved</option>
-      <option value="launch">Approved / Preparing to Launch</option>
-      <option value="operating">Operating</option>
-      <option value="closeout">Closeout / Review Results</option>
-    </select>
-    <button id="v21Interpret">Show my next move →</button>
-  </div>
-  <div id="v21StatusResult" class="v21-status-result" hidden></div>
-<div class="v36-update-entry"><span>AFTER APPROVAL</span><div><b>Need to update an approved program?</b><p>Use this when staffing, budget, schedule, location, provider, scope, or another approved detail changes.</p></div><button data-go="change">Update the program →</button></div></section>
+  <div class="v45-freshness"><b>Data note</b><span>Program information is a snapshot of the 2026–27 Submission Tracker included with this site build. Use the source tracker for the most current record.</span></div></section>
+</section>
 
 <section id="change" class="page"><div class="v37-topnav"><button type="button" data-v37-back="1">← Back</button><button type="button" data-go="home">Home</button></div><button class="v28-chapter v30-chapter-link" data-go="change">02 / CHANGE</button>
   <div class="v18-pagehead">
@@ -419,7 +404,8 @@
 </section>
 <section id="content" class="page"><button class="back" data-go="home">← Home</button><p id="contentEyebrow" class="eyebrow"></p><h1 id="contentTitle"></h1><p id="contentIntro"></p><div id="contentBody"></div></section>
 </main><footer><b>GRPS Extended Day</b><button data-go="home">Home</button></footer>
-<script>window.PROGRAMS=[{"school": "Aberdeen", "program": "Nutrition and Agricultural Education", "provider": "Kids Food Basket", "type": "Vendor Led \u2022 Vendor New", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/14/26", "duration": "Full Year", "schedule": "1x week in each school", "tier": "Comprehensive Review", "outcomes": "Attendance Support"}, {"school": "Aberdeen", "program": "Tutoring", "provider": "Kathleen Pool", "type": "\u2014", "threshold": "\u2014", "decision": "Approve", "oel": "\u2014", "mou": "\u2014", "start": "\u2014", "duration": "\u2014", "schedule": "\u2014", "tier": "\u2014", "outcomes": "\u2014"}, {"school": "Brookside", "program": "Green Team", "provider": "Caitlyn Dykehouse", "type": "District Led \u2022 Non-Ac New", "threshold": "\u2014", "decision": "Approve", "oel": "Approved", "mou": "2", "start": "9/29/26", "duration": "Full Year", "schedule": "Tuesday 3:45\u20135:00pm", "tier": "\u2014", "outcomes": "\u2014"}, {"school": "Brookside", "program": "Poetry Empowered", "provider": "The Diatribe", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "10,000-31,319", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/7/26", "duration": "Semester", "schedule": "10 weeks, 1 hour, 1x/week", "tier": "Tier 3", "outcomes": "3rd Grade Reading Support, Attendance Support"}, {"school": "Brookside", "program": "Project Emma", "provider": "Project Emma", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/1/26", "duration": "Full Year", "schedule": "2 hours, 3 days/week", "tier": "Comprehensive Review", "outcomes": "Reading, Math, Attendance, College & Career Readiness"}, {"school": "Buchanan", "program": "Girls Choral Academy", "provider": "Girls Choral Academy", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/4/26", "duration": "Full Year", "schedule": "1x/week", "tier": "Comprehensive Review", "outcomes": "Attendance Support"}, {"school": "Burton Elementary", "program": "Builders and Inventors", "provider": "Amarena Nelson", "type": "District Led \u2022 Academic Continue", "threshold": "$2,500-$9,999", "decision": "Approve", "oel": "Approved", "mou": "2", "start": "9/2/26", "duration": "Full Year", "schedule": "Wednesday 3:30\u20134:30", "tier": "Tier 2", "outcomes": "Attendance Support"}];window.SCHOOLS=[{"school": "Aberdeen Elementary", "principal": "Kathleen Pool", "requested": "$42,000.00", "budget": "$25,514.36", "remaining": "-$16,485.64", "due": "September 30, 2026", "items": [["Tutoring", "$9,000.00", "Clear"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}, {"school": "Brookside Elementary", "principal": "Wayne Hill", "requested": "$85,362.50", "budget": "$28,237.80", "remaining": "-$57,124.70", "due": "September 30, 2026", "items": [["Green Team", "$800.00", "Clear"], ["Poetry Empowered", "$6,302.50", "Revise"], ["Project Emma", "$2,400.00", "Revise"]]}, {"school": "Buchanan Elementary", "principal": "Michael Thomasma", "requested": "$49,962.50", "budget": "$49,738.67", "remaining": "-$223.83", "due": "September 30, 2026", "items": [["Girls Choral Academy", "$10,660.00", "Revise"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}, {"school": "Burton Elementary", "principal": "Amarena Nelson", "requested": "$50,469.29", "budget": "$43,431.75", "remaining": "-$7,037.54", "due": "September 30, 2026", "items": [["Little Red Hawks Jump Club", "$3,407.15", "Clear"], ["Builders & Inventors", "$4,542.37", "Clear"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}];</script><script src="app.js"></script><section class="v27-trust"><div><span>HOW TO READ THIS CENTER</span><b>Guidance is labeled so users can tell what is established, funding-specific, recommended practice, or still pending.</b></div><div class="v27-trust-labels"><span class="v20-type district">DISTRICT</span><span class="v20-type funding">FUNDING</span><span class="v20-type practice">PRACTICE</span><span class="v20-type pending">PENDING</span></div></section>
+<script>window.PROGRAMS=[{"school": "Aberdeen", "program": "Nutrition and Agricultural Education", "provider": "Kids Food Basket", "type": "Vendor Led \u2022 Vendor New", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/14/26", "duration": "Full Year", "schedule": "1x week in each school", "tier": "Comprehensive Review", "outcomes": "Attendance Support"}, {"school": "Aberdeen", "program": "Tutoring", "provider": "Kathleen Pool", "type": "\u2014", "threshold": "\u2014", "decision": "Approve", "oel": "\u2014", "mou": "\u2014", "start": "\u2014", "duration": "\u2014", "schedule": "\u2014", "tier": "\u2014", "outcomes": "\u2014"}, {"school": "Brookside", "program": "Green Team", "provider": "Caitlyn Dykehouse", "type": "District Led \u2022 Non-Ac New", "threshold": "\u2014", "decision": "Approve", "oel": "Approved", "mou": "2", "start": "9/29/26", "duration": "Full Year", "schedule": "Tuesday 3:45\u20135:00pm", "tier": "\u2014", "outcomes": "\u2014"}, {"school": "Brookside", "program": "Poetry Empowered", "provider": "The Diatribe", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "10,000-31,319", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/7/26", "duration": "Semester", "schedule": "10 weeks, 1 hour, 1x/week", "tier": "Tier 3", "outcomes": "3rd Grade Reading Support, Attendance Support"}, {"school": "Brookside", "program": "Project Emma", "provider": "Project Emma", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/1/26", "duration": "Full Year", "schedule": "2 hours, 3 days/week", "tier": "Comprehensive Review", "outcomes": "Reading, Math, Attendance, College & Career Readiness"}, {"school": "Buchanan", "program": "Girls Choral Academy", "provider": "Girls Choral Academy", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/4/26", "duration": "Full Year", "schedule": "1x/week", "tier": "Comprehensive Review", "outcomes": "Attendance Support"}, {"school": "Burton Elementary", "program": "Builders and Inventors", "provider": "Amarena Nelson", "type": "District Led \u2022 Academic Continue", "threshold": "$2,500-$9,999", "decision": "Approve", "oel": "Approved", "mou": "2", "start": "9/2/26", "duration": "Full Year", "schedule": "Wednesday 3:30\u20134:30", "tier": "Tier 2", "outcomes": "Attendance Support"}];window.SCHOOLS=[{"school": "Aberdeen Elementary", "principal": "Kathleen Pool", "requested": "$42,000.00", "budget": "$25,514.36", "remaining": "-$16,485.64", "due": "September 30, 2026", "items": [["Tutoring", "$9,000.00", "Clear"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}, {"school": "Brookside Elementary", "principal": "Wayne Hill", "requested": "$85,362.50", "budget": "$28,237.80", "remaining": "-$57,124.70", "due": "September 30, 2026", "items": [["Green Team", "$800.00", "Clear"], ["Poetry Empowered", "$6,302.50", "Revise"], ["Project Emma", "$2,400.00", "Revise"]]}, {"school": "Buchanan Elementary", "principal": "Michael Thomasma", "requested": "$49,962.50", "budget": "$49,738.67", "remaining": "-$223.83", "due": "September 30, 2026", "items": [["Girls Choral Academy", "$10,660.00", "Revise"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}, {"school": "Burton Elementary", "principal": "Amarena Nelson", "requested": "$50,469.29", "budget": "$43,431.75", "remaining": "-$7,037.54", "due": "September 30, 2026", "items": [["Little Red Hawks Jump Club", "$3,407.15", "Clear"], ["Builders & Inventors", "$4,542.37", "Clear"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}];</script><script src="tracker-data.js"></script>
+<script src="app.js"></script><section class="v27-trust"><div><span>HOW TO READ THIS CENTER</span><b>Guidance is labeled so users can tell what is established, funding-specific, recommended practice, or still pending.</b></div><div class="v27-trust-labels"><span class="v20-type district">DISTRICT</span><span class="v20-type funding">FUNDING</span><span class="v20-type practice">PRACTICE</span><span class="v20-type pending">PENDING</span></div></section>
 <div id="v27Utility" class="v27-utility" aria-hidden="true"><div class="v27-utility-card"><button id="v27UtilityClose" class="v27-close" aria-label="Close">×</button><span>START HERE</span><h2>What do you need to do?</h2><div class="v27-utility-actions"><button data-go="status"><b>Check a program</b><small>Status + next move</small></button><button data-go="change"><b>Update an approved program</b><small>Route the update</small></button><button data-go="faq"><b>Ask a question</b><small>Answer + next action</small></button><button data-go="resources"><b>Find a resource</b><small>Form, tool, or source</small></button><button data-go="guide"><b>See the full process</b><small>Operations Guide</small></button></div></div></div><button id="v27Start" class="v27-start">Start Here</button>
 
 <nav class="v34-page-nav" aria-label="Page navigation">

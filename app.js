@@ -122,17 +122,125 @@ document.querySelectorAll('[data-role]').forEach(btn=>btn.addEventListener('clic
  document.querySelectorAll('.v18-action').forEach((a,i)=>a.classList.toggle('role-priority',i===V21_ROLE_PRIORITY[btn.dataset.role]));
 }));
 
-// V22 Find My Program search shell. It is intentionally read-only until the existing tracker is connected.
-function v22Search(){
- const q=document.getElementById('v22ProgramSearch')?.value.trim(), box=document.getElementById('v22SearchResult');
- if(!box)return;
+// V41 Find My Program — searchable snapshot of the existing 2026–27 Submission Tracker.
+function esc(v){return String(v??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
+function trackerDecision(r){
+ const vals=[r['APPROVAL LETTER SENT'],r['ED Approval'],r['OEL Approval'],r['Principal Decision']].filter(Boolean);
+ return vals[0]||'Status not entered';
+}
+function trackerOutstanding(r){
+ const out=[];
+ const check=(label,key)=>{const v=String(r[key]||'').trim(); if(v && !/^(approved|approve|complete|completed|na|n\/a|aware)$/i.test(v)) out.push(label+': '+v)};
+ check('ED approval','ED Approval'); check('OEL approval','OEL Approval'); check('Approval letter','APPROVAL LETTER SENT'); check('Principal','Principal Decision'); check('MOU','MOU Status'); check('RFP','RFP Status');
+ return out;
+}
+function programReadiness(r){
+ const d=trackerDecision(r).toLowerCase();
+ const out=trackerOutstanding(r);
+ if(/revise|revision|not recommended/.test(d)) return {tone:'revise',label:'ACTION NEEDED',headline:'Revise before moving forward',next:'Open the source tracker and resolve the review items shown below.'};
+ if(/^approve/.test(d) && out.length) return {tone:'pending',label:'APPROVED • NOT YET CLEAR',headline:'Approval is in place; readiness work remains',next:'Complete the outstanding items before launch.'};
+ if(/^approve/.test(d)) return {tone:'clear',label:'APPROVED',headline:'No outstanding item appears in the tracked readiness fields',next:'Confirm current launch details in the source tracker before beginning.'};
+ return {tone:'neutral',label:'CHECK STATUS',headline:'A final decision is not shown here',next:'Open the source tracker and confirm the current review status.'};
+}
+function renderTrackerMatches(matches,q){
+ const box=document.getElementById('v22SearchResult'); if(!box)return;
+ if(!matches.length){box.hidden=false;box.innerHTML=`<span>NO MATCH FOUND</span><h2>${esc(q)}</h2><p>No matching school, program, provider, funding source, or status was found in the current tracker snapshot.</p>`;return}
  box.hidden=false;
- if(!q){box.innerHTML='<b>Enter a school, program, provider, funding source, or status.</b>';return}
- box.innerHTML=`<span>SEARCH READY</span><h2>${q}</h2><p>The Decision Center is mapped to the existing Submission Tracker structure, but this package does not contain live tracker rows. Connect the source tracker to return the current program decision, launch status, outstanding actions, and next owner here.</p><button data-go-fallback="1">I already know the status →</button>`;
- box.querySelector('button').onclick=()=>document.getElementById('v21KnownStatus')?.focus();
+ box.innerHTML=`<div class="v44-result-top"><div><span>${matches.length} MATCH${matches.length===1?'':'ES'}</span><h2>${matches.length===1?'Program decision':'Programs matching'} “${esc(q)}”</h2></div><a class="v44-source-link" href="https://docs.google.com/spreadsheets/d/1U61UoEc9YNI6Naoc1hVX-27_IuR2dgrhGJiP068aR-I" target="_blank" rel="noopener">Open source tracker →</a></div><div class="v41-results">${matches.slice(0,30).map((r,i)=>{const out=trackerOutstanding(r),ready=programReadiness(r);return `<article class="v41-result v44-${ready.tone}"><div class="v44-decision-strip"><span>${ready.label}</span><b>${esc(ready.headline)}</b></div><div class="v41-result-head"><div><small>${esc(r['Location/schools']||'School/site')}</small><b>${esc(r['Program Name'])}</b></div><strong>${esc(trackerDecision(r))}</strong></div><p class="v44-provider">${r['Vendor/ Principal in Charge']?'Lead / provider: '+esc(r['Vendor/ Principal in Charge']):'Lead / provider not shown'}</p><dl><div><dt>Program type</dt><dd>${esc(r['Program Type']||r['Progam Type']||'—')}</dd></div><div><dt>Funding</dt><dd>${esc(r['Funding Source']||'—')}</dd></div><div><dt>Start</dt><dd>${esc(r['Start Date']||'—')}</dd></div><div><dt>MOU</dt><dd>${esc(r['MOU Status']||'—')}</dd></div></dl><div class="v44-next"><span>NEXT MOVE</span><b>${esc(ready.next)}</b></div><div class="v41-actions"><b>${out.length?'What remains':'Tracked readiness check'}</b><p>${out.length?out.map(esc).join(' · '):'No unresolved item appears in the readiness fields displayed by the Decision Center.'}</p></div></article>`}).join('')}</div>${matches.length>30?'<p>Showing the first 30 matches. Refine your search to narrow the results.</p>':''}`;
+ box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function v22Search(){
+ const q=document.getElementById('v22ProgramSearch')?.value.trim();
+ const box=document.getElementById('v22SearchResult'); if(!box)return;
+ if(!q){box.hidden=false;box.innerHTML='<b>Enter a school, program, provider, funding source, or status.</b>';return}
+ const terms=q.toLowerCase().split(/\s+/).filter(Boolean), rows=window.EXTENDED_DAY_TRACKER||[];
+ const matches=rows.filter(r=>{const hay=Object.values(r).join(' ').toLowerCase(); return terms.every(t=>hay.includes(t))});
+ renderTrackerMatches(matches,q);
 }
 document.getElementById('v22SearchBtn')?.addEventListener('click',v22Search);
 document.getElementById('v22ProgramSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')v22Search()});
+
+// V42 — all current GRPS schools, with tracker-name aliases where the source uses shortened/legacy labels.
+const V42_SCHOOL_ALIASES={
+ 'Aberdeen Academy':['aberdeen academy','aberdeen elementary','aberdeen'],
+ 'Brookside Elementary':['brookside elementary','brookside'],
+ 'Buchanan Elementary':['buchanan elementary','buchanan'],
+ 'Burton Elementary':['burton elementary'],
+ 'CA Frost Environmental Science Academy Elementary':['ca frost environmental science academy elementary','ca frost elementary','frost elementary'],
+ 'Campus Elementary':['campus elementary','campus'],
+ 'César E. Chávez Elementary':['césar e. chávez elementary','cesar e chavez elementary','cesar chavez elementary','chavez elementary'],
+ 'Coit Creative Arts Academy':['coit creative arts academy','coit'],
+ 'Congress Elementary':['congress elementary','congress'],
+ 'Dickinson Academy':['dickinson academy','dickinson'],
+ 'Gerald R. Ford Academic Center':['gerald r. ford academic center','gerald ford academic center','ford academic center'],
+ 'Grand Rapids Montessori Academy':['grand rapids montessori academy','gr montessori academy','montessori academy'],
+ 'Harrison Park Academy':['harrison park academy','harrison park'],
+ 'Ken-O-Sha Park Elementary':['ken-o-sha park elementary','ken-o-sha','ken o sha'],
+ 'Kent Hills Elementary':['kent hills elementary','kent hills'],
+ 'Martin Luther King Jr. Leadership Academy':['martin luther king jr. leadership academy','mlk leadership academy','mlk'],
+ 'Mulick Park Elementary':['mulick park elementary','mulick park'],
+ 'North Park Montessori':['north park montessori','north park'],
+ 'Palmer Elementary':['palmer elementary','palmer'],
+ 'Ridgemoor Park Montessori':['ridgemoor park montessori','ridgemoor'],
+ 'Shawmut Hills':['shawmut hills','shawmut hills academy'],
+ 'Sherwood Park Global Studies Academy':['sherwood park global studies academy','sherwood park'],
+ 'Sibley Elementary':['sibley elementary','sibley'],
+ 'Southwest Elementary School - Academia Bilingüe':['southwest elementary school - academia bilingüe','southwest elementary','southwest elem'],
+ 'Blandford School':['blandford school','blandford'],
+ 'Burton Middle School':['burton middle school','burton middle'],
+ 'CA Frost Environmental Science Middle High School':['ca frost environmental science middle high school','ca frost middle high','frost middle high'],
+ 'Center for Economicology':['center for economicology','economicology'],
+ 'City High Middle School':['city high middle school','city high middle','city middle high'],
+ 'Grand Rapids Montessori Middle High School':['grand rapids montessori middle high school','gr montessori middle high','montessori middle high'],
+ 'Grand Rapids Public Museum Middle School':['grand rapids public museum middle school','gr public museum middle','museum middle'],
+ 'Innovation Central Middle School':['innovation central middle school','innovation central middle','riverside middle school','riverside middle'],
+ 'Ottawa Hills Middle School':['ottawa hills middle school','ottawa hills middle','alger middle school','alger middle'],
+ 'Southwest Middle High School - Academia Bilingüe':['southwest middle high school - academia bilingüe','southwest middle high','southwest middle/high'],
+ 'Westwood Middle School':['westwood middle school','westwood middle'],
+ 'Zoo School':['zoo school'],
+ 'Grand Rapids Learning Center':['grand rapids learning center','gr learning center'],
+ 'Grand Rapids Public Museum High School':['grand rapids public museum high school','gr public museum high','museum high'],
+ 'Grand Rapids University Preparatory Academy':['grand rapids university preparatory academy','gr university preparatory academy','university prep'],
+ 'Innovation Central High School':['innovation central high school','innovation central high','innovation central hs'],
+ 'Ottawa Hills High School':['ottawa hills high school','ottawa hills high','ottawa hills hs'],
+ 'Southeast Career Pathways':['southeast career pathways','southeast career'],
+ 'Union High School':['union high school','union high','union hs']
+};
+function v42SchoolMatches(school){
+ const aliases=V42_SCHOOL_ALIASES[school]||[school.toLowerCase()];
+ const rows=window.EXTENDED_DAY_TRACKER||[];
+ return rows.filter(r=>{const loc=String(r['Location/schools']||'').toLowerCase(); return aliases.some(a=>loc.includes(a));});
+}
+function v45SchoolSummary(school,matches){
+ const box=document.getElementById('v45SchoolDashboard');
+ const result=document.getElementById('v22SearchResult');
+ if(result){result.hidden=true;result.innerHTML='';}
+ if(!box)return;
+ const rows=matches||[];
+ const approved=rows.filter(r=>/^approve/i.test(trackerDecision(r))).length;
+ const revision=rows.filter(r=>/revise|revision|not recommended/i.test(trackerDecision(r))).length;
+ const withOutstanding=rows.filter(r=>trackerOutstanding(r).length>0).length;
+ box.hidden=false;
+ if(!rows.length){
+   box.innerHTML=`<div class="v45-school-head"><div><span>SCHOOL VIEW</span><h2>${esc(school)}</h2><p>No Extended Day program is recorded for this school in the tracker snapshot included with this build.</p></div><a href="https://docs.google.com/spreadsheets/d/1U61UoEc9YNI6Naoc1hVX-27_IuR2dgrhGJiP068aR-I" target="_blank" rel="noopener">Open source tracker →</a></div><div class="v45-empty"><b>No current program record found.</b><p>The school is included in the Decision Center. This means there is no matching Extended Day record in the embedded tracker snapshot—not that the school is missing.</p></div>`;
+   box.scrollIntoView({behavior:'smooth',block:'start'}); return;
+ }
+ const attention=rows.filter(r=>programReadiness(r).tone!=='clear');
+ box.innerHTML=`<div class="v45-school-head"><div><span>SCHOOL DASHBOARD</span><h2>${esc(school)}</h2><p>${rows.length} program${rows.length===1?'':'s'} in the current tracker snapshot.</p></div><a href="https://docs.google.com/spreadsheets/d/1U61UoEc9YNI6Naoc1hVX-27_IuR2dgrhGJiP068aR-I" target="_blank" rel="noopener">Open source tracker →</a></div>
+ <div class="v45-school-stats"><div><b>${rows.length}</b><span>Programs</span></div><div><b>${approved}</b><span>Approved</span></div><div><b>${revision}</b><span>Need revision</span></div><div><b>${withOutstanding}</b><span>With open items</span></div></div>
+ <div class="v45-attention ${attention.length?'needs':'clear'}"><span>${attention.length?'ATTENTION NEEDED':'CURRENT VIEW'}</span><b>${attention.length?attention.length+' program'+(attention.length===1?' needs':'s need')+' attention':'No program is flagged for action by the displayed readiness fields'}</b><p>${attention.length?'Use the program summaries below to see the decision, outstanding items, and next move.':'Confirm current details in the source tracker before launch or major changes.'}</p></div>
+ <div class="v45-program-list">${rows.map(r=>{const ready=programReadiness(r),out=trackerOutstanding(r);return `<article class="v45-program v44-${ready.tone}"><div class="v45-program-main"><small>${ready.label}</small><h3>${esc(r['Program Name']||'Unnamed program')}</h3><p>${esc(r['Vendor/ Principal in Charge']||'Lead/provider not shown')}</p></div><div class="v45-program-decision"><span>DECISION</span><b>${esc(trackerDecision(r))}</b></div><div class="v45-program-next"><span>NEXT MOVE</span><b>${esc(ready.next)}</b>${out.length?`<p>${out.map(esc).join(' · ')}</p>`:''}</div></article>`}).join('')}</div>`;
+ box.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function v42ShowSchool(){
+ const school=document.getElementById('v42SchoolSelect')?.value;
+ const box=document.getElementById('v45SchoolDashboard');
+ if(!school){if(box){box.hidden=false;box.innerHTML='<div class="v45-empty"><b>Choose a GRPS school first.</b></div>';}return;}
+ v45SchoolSummary(school,v42SchoolMatches(school));
+}
+document.getElementById('v42SchoolBtn')?.addEventListener('click',v42ShowSchool);
+document.getElementById('v42SchoolSelect')?.addEventListener('change',v42ShowSchool);
+
 
 // V23 Something Changed — operational triage grounded in the implementation package.
 const V23_CHANGES = {
@@ -491,3 +599,33 @@ document.querySelectorAll('[data-v37-back]').forEach(btn=>btn.addEventListener('
   const persistent=document.getElementById('v34Back');
   if(persistent) persistent.click(); else go('home');
 }));
+
+
+// V43 — tracker overview and one-click browse filters.
+(function(){
+  const rows=window.EXTENDED_DAY_TRACKER||[];
+  const stats=document.getElementById('v43Stats');
+  const norm=v=>String(v||'').trim().toLowerCase();
+  const decision=r=>norm(trackerDecision(r));
+  const approved=rows.filter(r=>/^approve/.test(decision(r))).length;
+  const revision=rows.filter(r=>/revise|revision/.test(decision(r))).length;
+  const vendor=rows.filter(r=>/vendor/.test(norm(r['Program Type']))).length;
+  const schools=new Set(rows.flatMap(r=>String(r['Location/schools']||'').split(/[,;/]/)).map(s=>s.trim()).filter(Boolean));
+  if(stats) stats.innerHTML=`
+    <div><b>${rows.length}</b><span>program records</span></div>
+    <div><b>${schools.size}</b><span>sites represented</span></div>
+    <div><b>${approved}</b><span>approved</span></div>
+    <div><b>${revision}</b><span>need revision</span></div>`;
+  const filters={
+    approved:r=>/^approve/.test(decision(r)),
+    revision:r=>/revise|revision/.test(decision(r)),
+    vendor:r=>/vendor/.test(norm(r['Program Type'])),
+    district:r=>/district/.test(norm(r['Program Type'])),
+    all:r=>true
+  };
+  document.querySelectorAll('[data-v43-filter]').forEach(btn=>btn.addEventListener('click',()=>{
+    const key=btn.dataset.v43Filter;
+    const matches=rows.filter(filters[key]||filters.all);
+    renderTrackerMatches(matches,btn.textContent.trim());
+  }));
+})();

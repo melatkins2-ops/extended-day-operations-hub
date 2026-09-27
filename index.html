@@ -4,19 +4,18 @@
 <nav><button data-go="status">Program Status</button><button data-go="change">Something Changed?</button><button data-go="resources">Resources</button></nav></header>
 <main>
 <section id="home" class="page active">
-<div class="intro"><p class="eyebrow">GRPS EXTENDED DAY</p><h1>What do you need to do today?</h1><p>Find your program, see what needs attention, and move directly to the next step.</p>
-<div class="find"><input id="homeSearch" placeholder="Search school, program, or provider"><button id="findBtn">Find my program</button></div></div>
-<div class="status-callout"><div><p class="eyebrow">START HERE</p><h2>Program Status</h2><p>See approvals, revisions, budget information, and next actions.</p></div><button data-go="status">Open Program Status →</button></div>
-<div class="tasks">
-<button data-go="plan"><span>PLAN</span><b>Start or revise a program</b><small>Need, design, application</small></button>
-<button data-go="fund"><span>FUND</span><b>Build or check a budget</b><small>31a, 32n, 21st CCLC, other</small></button>
-<button data-go="launch"><span>LAUNCH</span><b>Get ready to begin</b><small>Approval, MOU, BOE, readiness</small></button>
-<button data-go="operate"><span>OPERATE</span><b>Run my program</b><small>Attendance, supplies, documentation</small></button>
-<button data-go="evaluate"><span>REVIEW</span><b>Monitor and evaluate</b><small>Observation, improvement, results</small></button>
+<div class="home-intro"><p class="eyebrow">GRPS EXTENDED DAY</p><h1>What do you need?</h1><p>Find a school, program, or provider—or go directly to the work.</p><div class="find"><input id="homeSearch" placeholder="Find a school, program, or provider"><button id="findBtn">Search</button></div></div>
+<div class="primary-actions">
+<button data-go="status"><span>STATUS</span><b>Program Status</b><small>Approval, revisions, budget, next actions</small></button>
+<button data-go="plan"><span>PLAN</span><b>Plan or Revise</b><small>Need, design, application</small></button>
+<button data-go="fund"><span>FUND</span><b>Budget & Funding</b><small>31a, 32n, 21st CCLC, other</small></button>
+<button data-go="launch"><span>LAUNCH</span><b>Ready to Launch</b><small>MOU, BOE, clearance</small></button>
+<button data-go="operate"><span>RUN</span><b>Run a Program</b><small>Attendance, supplies, documentation</small></button>
+<button data-go="evaluate"><span>REVIEW</span><b>Review Results</b><small>Observe, improve, evaluate</small></button>
 </div>
-<div class="utilities"><button data-go="change"><b>Something changed?</b><span>Budget, schedule, staffing, vendor, location or design</span></button><button data-go="vendor"><b>Working with a vendor</b><span>Intake through closeout</span></button><button data-go="resources"><b>Forms & resources</b><span>Authoritative Extended Day tools</span></button><button data-go="faq"><b>FAQ</b><span>2026–27 changes and common questions</span></button></div>
+<div class="home-lower"><button class="change-feature" data-go="change"><span class="eyebrow">SOMETHING CHANGED?</span><b>Route a change before it becomes a problem.</b><small>Budget • Funding • Schedule • Location • Staffing • Vendor/Partner • Program Design • Participation • Closure/Emergency</small></button>
+<div class="utility-links"><button data-go="vendor"><b>Working with a vendor</b><span>Intake through closeout →</span></button><button data-go="resources"><b>Forms & resources</b><span>Current Extended Day tools →</span></button><button data-go="faq"><b>2026–27 FAQ</b><span>Changes, approvals, operations & funding →</span></button></div></div>
 </section>
-
 <section id="status" class="page"><button class="back" data-go="home">← Home</button><p class="eyebrow">PROGRAM STATUS</p><h1>Find my school or program</h1>
 <div class="schoolbox"><h2>School snapshot</h2><select id="schoolSelect"><option value="">Choose a school</option></select><div id="schoolResult" class="result muted">Choose a school to see its budget and program decisions.</div></div>
 <div class="programbox"><div class="rowhead"><h2>Program search</h2><a href="https://docs.google.com/spreadsheets/d/1U61UoEc9YNI6Naoc1hVX-27_IuR2dgrhGJiP068aR-I/edit" target="_blank" rel="noopener">Open source tracker ↗</a></div><input id="programSearch" placeholder="Search school, program, provider, status"><div id="programList"></div><div id="programDetail"></div></div></section>

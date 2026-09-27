@@ -1,7 +1,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pages=$$('.page');
 function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo(0,0);if(id==='status'){renderPrograms();}}
-$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq'].includes(id))go(id);else showContent(id)}));
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq','action'].includes(id))go(id);else showContent(id)}));
 
 const content={
 plan:['PLAN A PROGRAM','Start with scholar need, then design the program.',['Identify the scholar need or opportunity.','Define target scholars and realistic projected participation.','Define program model, provider, schedule, site, staffing and intended outcomes.','Use the current Extended Day application.']],

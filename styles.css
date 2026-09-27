@@ -167,3 +167,105 @@ header{box-shadow:0 3px 18px rgba(7,43,75,.05)}
 .work-grid button:nth-child(1){border-top:4px solid var(--orange)}.work-grid button:nth-child(2){border-top:4px solid #eeb13b}.work-grid button:nth-child(3){border-top:4px solid #3f8ba7}.work-grid button:nth-child(4){border-top:4px solid #647da1}.work-grid button:nth-child(5){border-top:4px solid #9a6c9d}.work-grid button:nth-child(6){border-top:4px solid #6a8d76}
 @media(max-width:900px){.v15-desk{grid-template-columns:1fr}.v15-desk-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.v15-desk-grid{grid-template-columns:1fr}.v13-intro,.v14-signal{min-height:auto}}
+
+/* V16 — replace the heavy "From idea to impact" quadrant with a lighter quick-start panel */
+.v16-next{background:#fff;border:1px solid #dbe2e7;border-top:8px solid var(--navy);display:flex;flex-direction:column;min-height:440px;box-shadow:0 12px 34px rgba(7,43,75,.055)}
+.v16-next-head{padding:24px 27px 15px;border-bottom:1px solid var(--line);position:relative}.v16-next-head:after{content:"";position:absolute;right:27px;top:27px;width:42px;height:5px;background:var(--orange)}.v16-next-head>span{font-size:9px;letter-spacing:.14em;color:var(--orange);font-weight:900}.v16-next-head h2{font-size:27px;line-height:1.05;color:var(--navy);margin:7px 0 6px}.v16-next-head p{font-size:12px;color:var(--muted);margin:0}
+.v16-next-list{flex:1}.v16-next-list button{width:100%;display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;border:0;border-bottom:1px solid var(--line);background:#fff;text-align:left;padding:11px 18px;cursor:pointer;transition:.15s ease}.v16-next-list button:hover{background:#f7f9fa;padding-left:23px}.v16-next-list button:nth-child(1):hover{box-shadow:inset 5px 0 0 var(--orange)}.v16-next-list button:nth-child(2):hover{box-shadow:inset 5px 0 0 #eeb13b}.v16-next-list button:nth-child(3):hover{box-shadow:inset 5px 0 0 #3f8ba7}.v16-next-list button:nth-child(4):hover{box-shadow:inset 5px 0 0 #647da1}.v16-next-list button:nth-child(5):hover{box-shadow:inset 5px 0 0 #9a6c9d}.v16-next-list i{font-style:normal;font-size:11px;color:#9aa8b3;font-weight:900}.v16-next-list b,.v16-next-list span{display:block}.v16-next-list b{font-size:14px;color:var(--navy)}.v16-next-list span{font-size:10px;color:var(--muted);margin-top:2px}.v16-next-list strong{font-size:10px;color:var(--orange);white-space:nowrap}
+.v16-next-foot{display:grid;grid-template-columns:1fr 1fr;background:#f3f6f8}.v16-next-foot button{border:0;border-right:1px solid #dbe2e7;background:transparent;text-align:left;padding:12px 18px;cursor:pointer}.v16-next-foot button:last-child{border-right:0}.v16-next-foot button:hover{background:#eaf0f4}.v16-next-foot span,.v16-next-foot b{display:block}.v16-next-foot span{font-size:9px;color:var(--muted)}.v16-next-foot b{font-size:11px;color:var(--navy);margin-top:2px}
+/* The quick-start panel now carries the process journey, so simplify the duplicate path below */
+.v16-path{grid-template-columns:1fr 1fr 1fr;margin-top:12px}.v16-path .v13-path-title{grid-column:auto}.v16-path button:nth-of-type(1),.v16-path button:nth-of-type(2){display:none}.v16-path button:nth-of-type(3){border-left:1px solid var(--line)}
+@media(max-width:900px){.v16-next{min-height:auto}.v16-path{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.v16-next-list button{grid-template-columns:30px 1fr}.v16-next-list strong{grid-column:2;margin-top:3px}.v16-next-foot{grid-template-columns:1fr}.v16-next-foot button{border-right:0;border-bottom:1px solid #dbe2e7}.v16-path{grid-template-columns:1fr}}
+
+/* V17 — readability pass: larger type across small labels, actions, and supporting copy */
+body{font-size:16px}
+
+/* Header */
+.brand-text small{font-size:11px}
+nav button,nav a{font-size:14px}
+
+/* Hero */
+.v13-intro .eyebrow{font-size:11px}
+.v13-lead{font-size:20px;line-height:1.5}
+.v13-search input{font-size:16px}
+.v13-search button{font-size:14px}
+.v13-quick button{font-size:13px;padding:10px 13px}
+
+/* Quick-start panel */
+.v16-next-head>span{font-size:11px}
+.v16-next-head h2{font-size:30px}
+.v16-next-head p{font-size:14px}
+.v16-next-list button{grid-template-columns:40px 1fr auto;padding:13px 18px}
+.v16-next-list i{font-size:13px}
+.v16-next-list b{font-size:16px}
+.v16-next-list span{font-size:13px;line-height:1.4;margin-top:3px}
+.v16-next-list strong{font-size:12px}
+.v16-next-foot span{font-size:11px}
+.v16-next-foot b{font-size:13px}
+
+/* Program path */
+.v13-path-title span{font-size:11px}
+.v13-path-title b{font-size:17px}
+.v13-path button i{font-size:11px}
+.v13-path button b{font-size:16px}
+.v13-path button span{font-size:12px;line-height:1.35}
+
+/* Change ribbon */
+.v14-change-ribbon span{font-size:11px}
+.v14-change-ribbon b{font-size:14px}
+.v14-change-ribbon strong{font-size:13px}
+
+/* Decision desk */
+.v15-desk-intro>span{font-size:11px}
+.v15-desk-intro h2{font-size:31px}
+.v15-desk-intro p{font-size:14px}
+.v15-status{font-size:10px}
+.v15-desk-grid b{font-size:17px}
+.v15-desk-grid small{font-size:13px;line-height:1.45}
+.v15-desk-grid strong{font-size:12px}
+
+/* Tools & workflows */
+.section-label span{font-size:11px}
+.section-label h2{font-size:31px}
+.work-grid button i{font-size:11px}
+.work-grid button b{font-size:18px}
+.work-grid button span,.work-grid button small{font-size:13px;line-height:1.4}
+
+/* FAQ */
+.faq-title-row p,.faq-subtitle{font-size:15px}
+.faq-search input{font-size:15px}
+.v13-faq-prompt span{font-size:11px}
+.v13-faq-prompt h2{font-size:23px}
+.v13-topic-cards b{font-size:17px}
+.v13-topic-cards span{font-size:13px;line-height:1.45}
+.v13-topic-cards strong{font-size:12px}
+.v13-faq-note{font-size:13px}
+.faq-card summary{font-size:16px;line-height:1.4}
+.faq-card-answer{font-size:14px;line-height:1.55}
+
+/* Generic page/detail content */
+.content-page p,.content-page li,.detail-body p,.detail-body li{font-size:14px;line-height:1.55}
+.content-page small,.detail-body small{font-size:12px}
+
+@media(max-width:560px){
+  .v13-intro h1{font-size:45px}
+  .v13-lead{font-size:18px}
+  .v16-next-head h2{font-size:27px}
+  .v16-next-list b{font-size:16px}
+  .v16-next-list span{font-size:13px}
+}
+
+/* V18 — Extended Day Decision Center: radically simplified around user value */
+.v18-home{padding-top:0}
+.v18-hero{display:grid;grid-template-columns:1.35fr .65fr;gap:0;margin:32px 0 22px;border-top:8px solid var(--orange);background:#f4f7f9}
+.v18-title{padding:42px 45px 38px}.v18-title>span,.v18-status-note>span,.v18-rule>span,.v18-pagehead>span{font-size:11px;letter-spacing:.13em;color:var(--orange);font-weight:900}.v18-title h1{font-size:clamp(48px,5vw,68px);line-height:.96;letter-spacing:-.05em;color:var(--navy);max-width:760px;margin:10px 0 17px}.v18-title h1 em{font-style:normal;color:var(--orange)}.v18-title p{font-size:18px;line-height:1.5;color:#536575;max-width:720px;margin:0}
+.v18-status-note{background:var(--navy);color:#fff;padding:38px 32px;display:flex;flex-direction:column;justify-content:center}.v18-status-note>span{color:#ffb275}.v18-status-note b{font-size:25px;line-height:1.1;margin:9px 0 8px}.v18-status-note p{font-size:14px;line-height:1.45;color:#d3e0e9;margin:0}
+.v18-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.v18-action{position:relative;min-height:235px;border:1px solid var(--line);background:#fff;text-align:left;padding:25px 26px;cursor:pointer;transition:.18s ease;overflow:hidden}.v18-action:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(7,43,75,.09);border-color:#bdcad3}.v18-action.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.v18-action:before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--orange)}.v18-action:nth-child(2):before{background:#eeb13b}.v18-action:nth-child(3):before{background:#3f8ba7}.v18-action:nth-child(4):before{background:#7b82a5}.v18-action i{position:absolute;right:22px;top:19px;font-style:normal;font-size:34px;font-weight:900;color:#edf1f4}.v18-action.primary i{color:rgba(255,255,255,.08)}.v18-action>span{display:block;font-size:11px;letter-spacing:.12em;color:var(--orange);font-weight:900}.v18-action.primary>span{color:#ffb275}.v18-action b{display:block;font-size:25px;line-height:1.1;color:var(--navy);margin:16px 0 8px;max-width:430px}.v18-action.primary b{color:#fff}.v18-action p{font-size:14px;line-height:1.5;color:var(--muted);max-width:470px;margin:0 0 27px}.v18-action.primary p{color:#d1dee7}.v18-action strong{position:absolute;left:26px;bottom:22px;font-size:13px;color:var(--navy)}.v18-action.primary strong{color:#fff}
+.v18-rule{display:grid;grid-template-columns:230px 1fr;gap:28px;align-items:center;margin:28px 0 55px;padding:19px 22px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.v18-rule p{font-size:14px;color:#536575;margin:0}.v18-rule p b{color:var(--navy)}
+.v18-pagehead{max-width:830px;padding:38px 0 25px;border-bottom:1px solid var(--line)}.v18-pagehead h1{font-size:44px;letter-spacing:-.035em;color:var(--navy);margin:8px 0 8px}.v18-pagehead p{font-size:16px;line-height:1.5;color:var(--muted);margin:0}
+.v18-action-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0 55px}.v18-action-list button{display:grid;grid-template-columns:155px 1fr auto;gap:18px;align-items:center;border:1px solid var(--line);background:#fff;text-align:left;padding:21px;cursor:pointer;min-height:86px}.v18-action-list button:hover{background:#f7f9fa;border-left:6px solid var(--orange)}.v18-action-list span{font-size:11px;letter-spacing:.11em;color:var(--orange);font-weight:900}.v18-action-list b{font-size:16px;color:var(--navy)}.v18-action-list strong{font-size:12px;color:var(--navy)}
+/* Hide old homepage-specific visual systems: retained in source only for compatibility with existing detail workflows */
+#home .v13-hero,#home .v13-path,#home .v14-change-ribbon,#home .v15-desk,#home .workbench,#home .pulse-strip{display:none!important}
+@media(max-width:800px){.v18-hero{grid-template-columns:1fr}.v18-actions{grid-template-columns:1fr}.v18-rule{grid-template-columns:1fr}.v18-action-list{grid-template-columns:1fr}}
+@media(max-width:560px){.v18-title{padding:32px 24px}.v18-title h1{font-size:45px}.v18-status-note{padding:27px 24px}.v18-action{min-height:225px;padding:23px}.v18-action-list button{grid-template-columns:1fr auto}.v18-action-list span{grid-column:1/-1}}

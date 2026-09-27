@@ -1,7 +1,7 @@
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pages=$$('.page');
 function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));window.scrollTo(0,0);if(id==='status'){renderPrograms();}}
-$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq','action','whatsnew','nextstep','guide'].includes(id))go(id);else showContent(id)}));
+$$('[data-go]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.go;if(['home','status','change','faq','action','whatsnew','nextstep','guide','decisions'].includes(id))go(id);else showContent(id)}));
 
 const content={
 plan:['PLAN A PROGRAM','Start with scholar need, then design the program.',['Identify the scholar need or opportunity.','Define target scholars and realistic projected participation.','Define program model, provider, schedule, site, staffing and intended outcomes.','Use the current Extended Day application.']],
@@ -167,3 +167,243 @@ function renderV20(node='start'){
 }
 document.getElementById('v20Restart')?.addEventListener('click',()=>{v20Trail=[];renderV20('start')});
 renderV20('start');
+
+// V21 honest status interpreter: useful now without fabricating program-specific data.
+const V21_STATUS={
+ submitted:{badge:'SUBMITTED',title:'Awaiting review.',text:'The submission is in the review stage. Keep the submitted program and budget available and respond to review questions or requested revisions when they are issued.',owner:'CSA review → school/partner response as needed',go:'plan',cta:'Open planning & review →'},
+ revision:{badge:'REVISION NEEDED',title:'Address the review feedback.',text:'Revise the identified program or budget item and return it through the established review route. Focus on the requested change rather than rebuilding unrelated parts.',owner:'School / partner',go:'plan',cta:'Open revision workflow →'},
+ approved:{badge:'APPROVED',title:'Move from decision to launch readiness.',text:'Approval does not by itself confirm that every launch requirement is complete. Check funding/budget, applicable agreements or vendor steps, staffing, schedule/location, and readiness before Day 1.',owner:'School / partner + applicable district functions',go:'launch',cta:'Check launch readiness →'},
+ launch:{badge:'PREPARING TO LAUNCH',title:'Clear the remaining readiness items.',text:'Confirm that the approved plan can actually begin: funding and budget are aligned, applicable partner/vendor steps are complete, staffing and logistics are ready, and unresolved conditions are closed.',owner:'School / partner',go:'launch',cta:'Open launch checklist →'},
+ operating:{badge:'OPERATING',title:'Keep actual delivery visible.',text:'Track participation/attendance, implementation, required documentation, expenditures, and material changes so monitoring and closeout reflect the program that actually occurred.',owner:'Program lead',go:'operate',cta:'Open operating guidance →'},
+ closeout:{badge:'CLOSEOUT',title:'Connect results, spending, and the next decision.',text:'Bring together participation, implementation, outcomes, expenditures, documentation, and recommendations for continuation, revision, or closure.',owner:'Program lead + CSA review',go:'evaluate',cta:'Open monitoring & closeout →'}
+};
+document.getElementById('v21Interpret')?.addEventListener('click',()=>{
+ const key=document.getElementById('v21KnownStatus')?.value, x=V21_STATUS[key], box=document.getElementById('v21StatusResult');
+ if(!box)return;
+ if(!x){box.hidden=false;box.innerHTML='<p>Please choose the status you are working from.</p>';return}
+ box.hidden=false;
+ box.innerHTML=`<span>${x.badge}</span><h2>${x.title}</h2><p>${x.text}</p><div><small>NEXT OWNER</small><b>${x.owner}</b></div><button data-status-go="${x.go}">${x.cta}</button>`;
+ box.querySelector('button').onclick=()=>showContent(x.go);
+ box.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+
+// V21 role cue: label the most relevant homepage action without hiding other choices.
+const V21_ROLE_PRIORITY={school:0,partner:3,csa:0,general:-1};
+document.querySelectorAll('[data-role]').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('.v18-action').forEach((a,i)=>a.classList.toggle('role-priority',i===V21_ROLE_PRIORITY[btn.dataset.role]));
+}));
+
+// V22 Find My Program search shell. It is intentionally read-only until the existing tracker is connected.
+function v22Search(){
+ const q=document.getElementById('v22ProgramSearch')?.value.trim(), box=document.getElementById('v22SearchResult');
+ if(!box)return;
+ box.hidden=false;
+ if(!q){box.innerHTML='<b>Enter a school, program, provider, funding source, or status.</b>';return}
+ box.innerHTML=`<span>SEARCH READY</span><h2>${q}</h2><p>The Decision Center is mapped to the existing Submission Tracker structure, but this package does not contain live tracker rows. Connect the source tracker to return the current program decision, launch status, outstanding actions, and next owner here.</p><button data-go-fallback="1">I already know the status →</button>`;
+ box.querySelector('button').onclick=()=>document.getElementById('v21KnownStatus')?.focus();
+}
+document.getElementById('v22SearchBtn')?.addEventListener('click',v22Search);
+document.getElementById('v22ProgramSearch')?.addEventListener('keydown',e=>{if(e.key==='Enter')v22Search()});
+
+// V23 Something Changed — operational triage grounded in the implementation package.
+const V23_CHANGES = {
+ budget:{label:'Budget', q:'What changed in the budget?', options:[
+   ['Total program cost increased','budget_total'],['Funding source changed','fund_source'],['Cost moved within the approved budget','budget_internal']
+ ]},
+ funding:{label:'Funding', q:'What changed with funding?', options:[
+   ['Funding source changed','fund_source'],['Award/allocation changed','fund_amount'],['32n award/operating commitment changed','fund_32n']
+ ]},
+ vendor:{label:'Vendor / Partner', q:'What changed with the vendor or partner?', options:[
+   ['New or replacement provider','vendor_new'],['Scope/responsibilities changed','vendor_scope'],['Agreement/MOU information changed','vendor_mou']
+ ]},
+ schedule:{label:'Schedule', q:'What changed?', options:[
+   ['Days or hours changed','schedule_time'],['Program duration changed','schedule_duration']
+ ]},
+ location:{label:'Location', q:'What changed?', options:[
+   ['Program moved to another site/space','location_move'],['Facility conditions affect delivery','location_issue']
+ ]},
+ staffing:{label:'Staffing', q:'What changed?', options:[
+   ['Staffing model or positions changed','staff_model'],['Staffing issue affects ability to operate','staff_issue']
+ ]},
+ design:{label:'Program Design', q:'What changed?', options:[
+   ['Activities/services changed materially','design_service'],['Target scholars or program purpose changed','design_target']
+ ]},
+ participation:{label:'Participation', q:'What is happening?', options:[
+   ['Participation is below projection','part_low'],['Participation mix/target group changed','part_group']
+ ]},
+ cannot:{label:'Cannot Operate Today', q:'What is preventing operation?', options:[
+   ['Staffing/supervision','cannot_staff'],['Transportation/dismissal','cannot_transport'],['Facility/site issue','cannot_site'],['Other immediate operational issue','cannot_other']
+ ]}
+};
+
+const V23_RESULTS = {
+ budget_total:['BUDGET CHANGE','Recheck the approved budget, funding rules, and approval implications.','A higher total cost can affect the approved investment and may implicate the BOE pathway when the applicable agreement/purchase reaches $30,321. Route the change before treating the revised amount as approved.','Funding / MOU Review or Additional Approval may apply','fund'],
+ fund_source:['FUNDING SOURCE CHANGE','Recheck allowability and funding-specific requirements.','The implementation model requires identifying the funding source before applying funding-specific rules. A change in source can change what is allowable, documented, monitored, or approved.','Funding / MOU Review may apply','fund'],
+ budget_internal:['INTERNAL BUDGET ADJUSTMENT','Document the proposed adjustment and verify whether re-review is required.','The reviewed materials do not establish one universal adopted rule for every internal budget movement. Do not assume that an internal shift is automatically exempt from review.','Final routing level pending leadership decision','fund'],
+ fund_amount:['FUNDING AMOUNT CHANGE','Reconcile the program plan to the amount actually available.','Available funding and approved program design should remain aligned. Recheck scope, participation assumptions, budget, and any approval conditions affected by the change.','Funding review may apply','fund'],
+ fund_32n:['32N CHANGE','Reconcile the award to the approved operating plan.','The implementation package specifically calls for reconciling 32n budget, site, or program-day discrepancies against the final award/approved operating plan before implementation.','Funding review required before relying on the changed commitment','fund'],
+ vendor_new:['NEW / REPLACEMENT PROVIDER','Recheck intake, agreement, purchasing, budget, and readiness.','A provider substitution can affect program information, reporting capacity, staff/background requirements, insurance, outcomes, MOU/agreement, purchasing, and launch readiness.','Funding / MOU Review or Additional Approval may apply','vendor'],
+ vendor_scope:['VENDOR / PARTNER SCOPE CHANGE','Document the changed responsibilities and review the affected agreement and program design.','A material scope change can alter the reviewed program, cost, responsibilities, outcomes, documentation, or monitoring expectations.','OEL Review and/or Funding / MOU Review may apply','vendor'],
+ vendor_mou:['AGREEMENT / MOU CHANGE','Keep the program record and agreement status aligned.','The source-of-truth model connects MOU/agreement status to the program record. A material agreement change should not be handled outside the program workflow.','Funding / MOU Review may apply','vendor'],
+ schedule_time:['SCHEDULE CHANGE','Compare the revised schedule with the approved program design.','Days/hours affect dosage, participation, staffing, transportation, cost, and delivery. Document the change and review any downstream effects.','OEL Review may apply','change'],
+ schedule_duration:['DURATION CHANGE','Recheck dosage, cost, participation, and outcomes.','Program duration is part of the design reviewed for feasibility and investment. A material change should be visible in the program record.','OEL Review may apply','change'],
+ location_move:['LOCATION CHANGE','Confirm site readiness and downstream operational impacts.','A location change can affect facilities, dismissal/pickup, transportation, supervision, partner responsibilities, and implementation.','OEL Review may apply','change'],
+ location_issue:['SITE / FACILITY ISSUE','Resolve safe operation before normal delivery continues.','Document the issue, determine whether the program can operate as planned, and route any resulting schedule/location/design change.','Operational review; additional routing depends on the resulting change','operate'],
+ staff_model:['STAFFING MODEL CHANGE','Recheck feasibility, budget, and delivery-as-approved.','Staffing is one of the factors considered in program review. A material staffing-model change can affect cost, supervision, design, and implementation.','OEL Review and/or funding review may apply','change'],
+ staff_issue:['STAFFING ISSUE','Determine whether the program can operate as planned today.','If staffing affects supervision or safe delivery, resolve the immediate operating issue first and document any resulting program change.','Operational review; supervision baseline remains a pending leadership standard','operate'],
+ design_service:['PROGRAM DESIGN CHANGE','Compare the new design with what was reviewed and approved.','Material changes to activities/services can affect need alignment, outcomes, participation, cost, staffing, funding requirements, and evaluation.','OEL Review; additional review may apply','plan'],
+ design_target:['TARGET / PURPOSE CHANGE','Recheck scholar need, design, expected participation, and outcomes.','The operating model begins with scholar need and connects program design, expected participation, cost, and funding. A material change to the target group or purpose should be re-examined.','OEL Review may apply','plan'],
+ part_low:['LOW PARTICIPATION','Use the data as an early management signal—not an automatic cancellation rule.','The recommended model is On Track / Watch / Action Required using projected vs. actual participation, attendance frequency, program type, dosage, cause, cost implications, and improvement trend. The final district standard is still pending leadership decision.','PENDING leadership standard','operate'],
+ part_group:['PARTICIPATION MIX CHANGE','Compare actual reach with the approved target and purpose.','Participation should be reviewed alongside program design, need, outcomes, and investment. Document material differences and determine whether program design or funding commitments are affected.','OEL Review may apply','operate'],
+ cannot_staff:['CANNOT OPERATE — STAFFING / SUPERVISION','Address the immediate operating condition before proceeding.','Document what prevented operation, communicate through the appropriate program channel, and determine whether a schedule, staffing, or program change must be routed. The districtwide supervision baseline is still pending leadership decision.','Immediate operational action + follow-up routing as needed','operate'],
+ cannot_transport:['CANNOT OPERATE — TRANSPORTATION / DISMISSAL','Resolve the immediate dismissal/transportation issue and document the disruption.','The recommended district framework covers release/pickup, transportation responsibility, late pickup, family contact, and escalation, but the final minimum standard remains pending leadership decision.','Immediate operational action; districtwide standard pending','operate'],
+ cannot_site:['CANNOT OPERATE — SITE','Do not treat a site disruption as a silent schedule change.','Document the issue and determine whether relocation, cancellation, schedule adjustment, or another operational response is needed. Route any material resulting change.','Immediate operational action + follow-up routing as needed','operate'],
+ cannot_other:['CANNOT OPERATE — OTHER','Document the issue and identify the affected part of the approved plan.','Determine whether the issue changes staffing, schedule, location, vendor/partner, funding, program design, or participation, then use the corresponding change pathway.','Routing depends on the underlying change','change']
+};
+
+function v23Start(){
+ const choices=document.getElementById('v23ChangeChoices'), follow=document.getElementById('v23ChangeFollowup'), result=document.getElementById('v23ChangeResult'), restart=document.getElementById('v23ChangeRestart');
+ if(!choices)return;
+ follow.hidden=true; result.hidden=true; restart.hidden=true;
+ choices.innerHTML=Object.entries(V23_CHANGES).map(([k,v])=>`<button data-v23-change="${k}"><b>${v.label}</b><span>Choose →</span></button>`).join('');
+ choices.querySelectorAll('button').forEach(b=>b.onclick=()=>v23Follow(b.dataset.v23Change));
+}
+function v23Follow(key){
+ const x=V23_CHANGES[key], follow=document.getElementById('v23ChangeFollowup'), result=document.getElementById('v23ChangeResult'), restart=document.getElementById('v23ChangeRestart');
+ result.hidden=true; restart.hidden=false; follow.hidden=false;
+ follow.innerHTML=`<span>STEP 2 • ${x.label.toUpperCase()}</span><h2>${x.q}</h2><div>${x.options.map(([l,k])=>`<button data-v23-result="${k}">${l}<strong>→</strong></button>`).join('')}</div>`;
+ follow.querySelectorAll('button').forEach(b=>b.onclick=()=>v23Result(b.dataset.v23Result));
+ follow.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function v23Result(key){
+ const x=V23_RESULTS[key], result=document.getElementById('v23ChangeResult');
+ if(!x)return; result.hidden=false;
+ result.innerHTML=`<span>${x[0]}</span><h2>${x[1]}</h2><p>${x[2]}</p><div><small>ROUTING SIGNAL</small><b>${x[3]}</b></div><button data-v23-go="${x[4]}">Open relevant guidance →</button>`;
+ result.querySelector('button').onclick=()=>showContent(x[4]);
+ result.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+document.getElementById('v23ChangeRestart')?.addEventListener('click',v23Start);
+v23Start();
+
+// V24 Answer Center — answer first, then implication and action.
+const V24_ANSWERS = [
+ {id:'approval-start',topic:'approval',type:'district',q:'Can the program start as soon as it is approved?',keys:['approved','approval','start','launch','begin','day 1'],a:'Not necessarily. Program approval and launch readiness are separate decision points.',means:'Before Day 1, confirm the approved budget/funding, applicable agreements or vendor steps, staffing, schedule/location, and any remaining conditions.',next:'Check launch readiness.',go:'launch'},
+ {id:'revision',topic:'approval',type:'district',q:'What if we are asked to revise the application or budget?',keys:['revision','revise','resubmit','feedback','application'],a:'Revise the item identified in the review and return it through the established review route.',means:'Do not rebuild unrelated parts of the submission unless the review feedback requires it.',next:'Open the plan/revise workflow.',go:'plan'},
+ {id:'fund-source',topic:'funding',type:'funding',q:'Why does the funding source matter?',keys:['funding','31a','32n','21st','source','allowable','allowability'],a:'Funding rules are not interchangeable. The source determines which requirements apply to the program and budget.',means:'A change in funding source can change allowability, documentation, monitoring, or approval requirements.',next:'Identify the source before applying funding-specific rules.',go:'fund'},
+ {id:'32n',topic:'funding',type:'funding',q:'What if the 32n award does not match the original budget, site, or program days?',keys:['32n','award','program days','site','budget discrepancy'],a:'Reconcile the operating plan to the final 32n award before relying on the original assumptions.',means:'Budget, site, or program-day differences should be resolved against the final award/approved operating plan.',next:'Open funding guidance and route the discrepancy before implementation.',go:'fund'},
+ {id:'boe',topic:'boe',type:'district',q:'When does the BOE threshold matter?',keys:['boe','board','30321','$30,321','threshold','purchase','agreement'],a:'The current BOE threshold being used for this work is $30,321.',means:'When an applicable agreement or purchase reaches the threshold, the BOE pathway must be considered as part of readiness. The threshold does not replace other purchasing, agreement, or funding requirements.',next:'Check the amount, agreement/purchase structure, and applicable approval pathway.',go:'fund'},
+ {id:'vendor-change',topic:'vendor',type:'district',q:'What if the vendor or partner changes?',keys:['vendor','partner','provider','replacement','new vendor'],a:'Do not substitute a provider informally.',means:'A new or replacement provider can affect scope, budget, agreement/MOU, purchasing, documentation, and launch readiness.',next:'Route the change and recheck partner/vendor requirements.',go:'change'},
+ {id:'vendor-approval',topic:'vendor',type:'district',q:'Does program approval complete the vendor or agreement process?',keys:['vendor approval','mou','agreement','contract','purchasing','insurance','background'],a:'No. Program approval does not replace applicable vendor, agreement, purchasing, or onboarding requirements.',means:'A program may be approved while partner/vendor readiness items remain outstanding.',next:'Check the partner/vendor and launch requirements.',go:'vendor'},
+ {id:'budget-change',topic:'changes',type:'funding',q:'What if our budget or funding changes after approval?',keys:['budget change','funding change','increase','amount changed','after approval'],a:'Route the change before treating the revised budget as approved.',means:'A change in total cost or funding source can affect allowability, the approved investment, and approval steps, including BOE implications when applicable.',next:'Use Something Changed → Budget/Funding.',go:'change'},
+ {id:'schedule-change',topic:'changes',type:'district',q:'What if the schedule, location, staffing, or program design changes?',keys:['schedule','location','staffing','design','hours','days','move'],a:'Document the material change and route it rather than silently absorbing it.',means:'These changes can affect feasibility, dosage, cost, supervision, transportation, outcomes, or the basis of the original review.',next:'Use Something Changed to identify the affected pathway.',go:'change'},
+ {id:'low-participation',topic:'participation',type:'pending',q:'What happens if participation is low?',keys:['low participation','enrollment low','attendance low','participation','cancel','closure'],a:'There is not yet a finalized districtwide automatic cancellation rule in the materials used for this Center.',means:'The recommended direction is On Track / Watch / Action Required using projected vs. actual participation, attendance frequency, program type, dosage, cause, cost implications, and improvement trend.',next:'Monitor the data and use the operating guidance; do not present a proposed threshold as adopted policy.',go:'operate'},
+ {id:'supervision',topic:'operations',type:'pending',q:'What is the district supervision baseline?',keys:['supervision','ratio','staff ratio','adult','baseline'],a:'The districtwide GRPS supervision baseline is still pending leadership decision.',means:'Stricter licensing, age, activity, facility, grant, provider, or program requirements still govern when applicable.',next:'Follow the applicable existing requirement and do not use the proposed baseline as final district policy.',go:'decisions'},
+ {id:'transport',topic:'operations',type:'pending',q:'What are the districtwide dismissal and transportation expectations?',keys:['dismissal','transportation','pickup','late pickup','release','bus'],a:'A districtwide minimum standard is still pending leadership decision.',means:'The recommended framework addresses release/pickup, transportation responsibility, late pickup, family contact, and escalation.',next:'Use applicable current procedures and review the pending leadership decision.',go:'decisions'},
+ {id:'cannot-operate',topic:'operations',type:'practice',q:'What should we do if the program cannot operate as planned today?',keys:['cannot operate','cancel today','staffing issue','site issue','transportation issue','closed'],a:'Address the immediate operating condition first, document what happened, and identify whether the disruption creates a material program change.',means:'The follow-up route depends on whether staffing, schedule, location, vendor/partner, funding, program design, or participation is affected.',next:'Use Something Changed → Cannot Operate Today.',go:'change'},
+ {id:'monitor',topic:'closeout',type:'practice',q:'What should we track while the program is running?',keys:['monitor','track','attendance','documentation','operating','running','expenditures'],a:'Keep actual delivery visible throughout implementation.',means:'Track participation/attendance, implementation, required documentation, expenditures, and significant changes so monitoring and closeout reflect what actually occurred.',next:'Open program operations guidance.',go:'operate'},
+ {id:'closeout',topic:'closeout',type:'practice',q:'What should closeout include?',keys:['closeout','end of program','results','outcomes','evaluation'],a:'Closeout should connect implementation, participation, outcomes, expenditures, documentation, and the next program decision.',means:'The purpose is not simply to confirm that funds were spent; it is to understand what was delivered, what happened, and what should change next.',next:'Open monitoring and closeout guidance.',go:'evaluate'}
+];
+
+const V24_TYPE_LABEL={district:'DISTRICT',funding:'FUNDING',practice:'PRACTICE',pending:'PENDING'};
+
+function v24Render(x){
+ const box=document.getElementById('v24Answer'); if(!box||!x)return;
+ box.hidden=false;
+ box.innerHTML=`<div class="v24-answer-head"><span class="v20-type ${x.type}">${V24_TYPE_LABEL[x.type]}</span><small>${x.q}</small></div>
+ <div class="v24-answer-main"><span>ANSWER</span><h2>${x.a}</h2></div>
+ <div class="v24-answer-detail"><div><span>WHAT THIS MEANS</span><p>${x.means}</p></div><div><span>YOUR NEXT MOVE</span><p><b>${x.next}</b></p></div></div>
+ <button data-v24-go="${x.go}">Go to the relevant guidance →</button>`;
+ box.querySelector('button').onclick=()=>showContent(x.go);
+ box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function v24Search(){
+ const input=document.getElementById('v24Ask'), box=document.getElementById('v24Suggestions');
+ const q=(input?.value||'').toLowerCase().trim();
+ if(!box)return;
+ if(!q){box.innerHTML='<span>Try a question about approval, funding, BOE, vendors, changes, participation, operations, or closeout.</span>';return}
+ const words=q.split(/\s+/).filter(w=>w.length>2);
+ const scored=V24_ANSWERS.map(x=>{
+   const hay=(x.q+' '+x.keys.join(' ')+' '+x.a).toLowerCase();
+   const score=words.reduce((n,w)=>n+(hay.includes(w)?1:0),0)+(x.keys.some(k=>q.includes(k))?3:0);
+   return [score,x];
+ }).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).slice(0,5);
+ if(!scored.length){box.innerHTML='<span>No exact answer found. Browse a topic below or use the Operations Guide. The Center will not invent an answer.</span>';return}
+ box.innerHTML=scored.map(([s,x])=>`<button data-v24-id="${x.id}"><span class="v20-type ${x.type}">${V24_TYPE_LABEL[x.type]}</span><b>${x.q}</b><strong>→</strong></button>`).join('');
+ box.querySelectorAll('button').forEach(b=>b.onclick=()=>v24Render(V24_ANSWERS.find(x=>x.id===b.dataset.v24Id)));
+}
+document.getElementById('v24AskBtn')?.addEventListener('click',v24Search);
+document.getElementById('v24Ask')?.addEventListener('keydown',e=>{if(e.key==='Enter')v24Search()});
+document.querySelectorAll('[data-v24-topic]').forEach(b=>b.addEventListener('click',()=>{
+ const items=V24_ANSWERS.filter(x=>x.topic===b.dataset.v24Topic), box=document.getElementById('v24Suggestions');
+ box.innerHTML=items.map(x=>`<button data-v24-id="${x.id}"><span class="v20-type ${x.type}">${V24_TYPE_LABEL[x.type]}</span><b>${x.q}</b><strong>→</strong></button>`).join('');
+ box.querySelectorAll('button').forEach(x=>x.onclick=()=>v24Render(V24_ANSWERS.find(a=>a.id===x.dataset.v24Id)));
+ box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}));
+
+// V25 task-first Resource Center. Links should be connected to authoritative source URLs only.
+const V25_RESOURCES = {
+ apply:{
+  title:'Apply / revise a program',
+  items:[
+   ['Extended Day application','Use the current application/source used for 2026–27 submissions.','SOURCE LINK NEEDED','plan'],
+   ['Submission Tracker','Source of truth for submission/review status; do not duplicate it in the Decision Center.','TRACKER CONNECTION','status'],
+   ['Review / revision guidance','Use when review feedback requires a change to the program or budget.','IN CENTER','plan']
+  ]},
+ budget:{
+  title:'Build or revise a budget',
+  items:[
+   ['Budget tool / approved budget','Use the current source budget rather than a downloaded duplicate.','SOURCE LINK NEEDED','fund'],
+   ['Funding guidance','Identify the source first: 31a, 32n, 21st CCLC, blended, or other.','IN CENTER','fund'],
+   ['BOE pathway guidance','Current threshold used for this work: $30,321 when applicable.','IN CENTER','fund']
+  ]},
+ partner:{
+  title:'Work with a partner / vendor',
+  items:[
+   ['Vendor submission materials','Use the current vendor submission source.','SOURCE LINK NEEDED','vendor'],
+   ['MOU / agreement materials','Use the current agreement source and keep agreement status tied to the program record.','SOURCE LINK NEEDED','vendor'],
+   ['Partner/vendor guidance','Review scope, documentation, purchasing, readiness, and change implications.','IN CENTER','vendor']
+  ]},
+ launch:{
+  title:'Prepare to launch',
+  items:[
+   ['Approval information','Confirm the program decision and any conditions.','TRACKER CONNECTION','status'],
+   ['Launch readiness','Check budget/funding, agreements/vendor steps, staffing, schedule/location, and remaining conditions.','IN CENTER','launch'],
+   ['Approval letter information','Connect to the current Approval Letter Info source rather than reproducing letters here.','SOURCE LINK NEEDED','status']
+  ]},
+ operate:{
+  title:'Operate / document the program',
+  items:[
+   ['Attendance / participation process','Use the current district process for recording participation and attendance.','SOURCE LINK NEEDED','operate'],
+   ['Something Changed','Route material budget, funding, vendor, staffing, schedule, location, design, or participation changes.','IN CENTER','change'],
+   ['Operations guidance','Use for implementation, documentation, expenditures, and emerging issues.','IN CENTER','operate']
+  ]},
+ close:{
+  title:'Monitor / close out',
+  items:[
+   ['Monitoring / observation tools','Use current district tools at their source.','SOURCE LINK NEEDED','evaluate'],
+   ['Evaluation / outcome materials','Connect participation, implementation, outcomes, expenditures, and recommendations.','SOURCE LINK NEEDED','evaluate'],
+   ['Closeout guidance','Use the Center to structure the final review and next program decision.','IN CENTER','evaluate']
+  ]}
+};
+function v25RenderResources(key){
+ const x=V25_RESOURCES[key], box=document.getElementById('v25ResourceResult'); if(!x||!box)return;
+ box.hidden=false;
+ box.innerHTML=`<div class="v25-resource-head"><span>RESOURCE PATH</span><h2>${x.title}</h2></div>
+ <div class="v25-resource-list">${x.items.map((i,n)=>`<button data-v25-go="${i[3]}"><i>0${n+1}</i><div><b>${i[0]}</b><p>${i[1]}</p></div><span class="${i[2]==='IN CENTER'?'ready':'source'}">${i[2]}</span><strong>→</strong></button>`).join('')}</div>`;
+ box.querySelectorAll('button').forEach(b=>b.onclick=()=>showContent(b.dataset.v25Go));
+ box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+document.querySelectorAll('[data-v25-resource]').forEach(b=>b.addEventListener('click',()=>v25RenderResources(b.dataset.v25Resource)));
+
+// V26 Operations Guide section navigation.
+document.querySelectorAll('[data-v26-section]').forEach(b=>b.addEventListener('click',()=>{
+ const el=document.getElementById(b.dataset.v26Section);
+ if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}));
+
+const v27Utility=document.getElementById('v27Utility');
+document.getElementById('v27Start')?.addEventListener('click',()=>{v27Utility?.classList.add('open');v27Utility?.setAttribute('aria-hidden','false')});
+document.getElementById('v27UtilityClose')?.addEventListener('click',()=>{v27Utility?.classList.remove('open');v27Utility?.setAttribute('aria-hidden','true')});
+v27Utility?.addEventListener('click',e=>{if(e.target===v27Utility){v27Utility.classList.remove('open');v27Utility.setAttribute('aria-hidden','true')}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){v27Utility?.classList.remove('open');v27Utility?.setAttribute('aria-hidden','true')}});
+v27Utility?.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{showContent(b.dataset.go);v27Utility.classList.remove('open');v27Utility.setAttribute('aria-hidden','true')}));

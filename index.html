@@ -1,20 +1,45 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GRPS Extended Day</title><link rel="stylesheet" href="styles.css"></head><body>
 <header><button class="brand" data-go="home"><img src="https://grps-cdn.fxbrt.com/downloads/communications/grpsmychoicelogo.png" alt="Grand Rapids Public Schools"><span><b>Extended Day</b><small>Operations Hub</small></span></button>
-<nav><button data-go="status">Program Status</button><button data-go="change">Something Changed?</button><button data-go="resources">Resources</button></nav></header>
+<nav><button data-go="status">Program Status</button><button data-go="change">Something Changed?</button><button data-go="resources">Resources</button><button data-go="faq">FAQ</button></nav></header>
 <main>
 <section id="home" class="page active">
-<div class="home-intro"><p class="eyebrow">GRPS EXTENDED DAY</p><h1>What do you need?</h1><p>Find a school, program, or provider—or go directly to the work.</p><div class="find"><input id="homeSearch" placeholder="Find a school, program, or provider"><button id="findBtn">Search</button></div></div>
-<div class="primary-actions">
-<button data-go="status"><span>STATUS</span><b>Program Status</b><small>Approval, revisions, budget, next actions</small></button>
-<button data-go="plan"><span>PLAN</span><b>Plan or Revise</b><small>Need, design, application</small></button>
-<button data-go="fund"><span>FUND</span><b>Budget & Funding</b><small>31a, 32n, 21st CCLC, other</small></button>
-<button data-go="launch"><span>LAUNCH</span><b>Ready to Launch</b><small>MOU, BOE, clearance</small></button>
-<button data-go="operate"><span>RUN</span><b>Run a Program</b><small>Attendance, supplies, documentation</small></button>
-<button data-go="evaluate"><span>REVIEW</span><b>Review Results</b><small>Observe, improve, evaluate</small></button>
+<div class="hero-v9">
+  <div class="hero-copy">
+    <p class="eyebrow">GRPS EXTENDED DAY • 2026–27</p>
+    <h1>Move your program forward.</h1>
+    <p class="hero-sub">Start with what you need to do—not a manual. Find a program, check status, route a change, or go directly to the next action.</p>
+    <div class="find hero-find"><input id="homeSearch" placeholder="Search school, program, provider, funding…"><button id="findBtn">Find it</button></div>
+    <div class="hero-shortcuts"><button data-go="status">Check program status →</button><button data-go="change">Something changed? →</button></div>
+  </div>
+  <aside class="today-panel">
+    <span class="panel-kicker">START HERE</span>
+    <h2>What are you trying to do?</h2>
+    <button data-go="plan"><b>Plan or revise</b><span>Need • design • application</span></button>
+    <button data-go="fund"><b>Build or check a budget</b><span>31a • 32n • 21st CCLC • other</span></button>
+    <button data-go="launch"><b>Get ready to begin</b><span>Approval • MOU • BOE • readiness</span></button>
+    <button data-go="operate"><b>Run my program</b><span>Attendance • supplies • documentation</span></button>
+    <button data-go="evaluate"><b>Review results</b><span>Observe • improve • evaluate • closeout</span></button>
+  </aside>
 </div>
-<div class="home-lower"><button class="change-feature" data-go="change"><span class="eyebrow">SOMETHING CHANGED?</span><b>Route a change before it becomes a problem.</b><small>Budget • Funding • Schedule • Location • Staffing • Vendor/Partner • Program Design • Participation • Closure/Emergency</small></button>
-<div class="utility-links"><button data-go="vendor"><b>Working with a vendor</b><span>Intake through closeout →</span></button><button data-go="resources"><b>Forms & resources</b><span>Current Extended Day tools →</span></button><button data-go="faq"><b>2026–27 FAQ</b><span>Changes, approvals, operations & funding →</span></button></div></div>
+<div class="pulse-strip">
+  <div><span>PROGRAM DECISION</span><b>Know the decision</b><small>Approved ≠ cleared to launch</small></div>
+  <div><span>FUNDING</span><b>Know the source</b><small>31a • 32n • 21st CCLC • blended</small></div>
+  <div><span>PARTICIPATION</span><b>Watch actual reach</b><small>Projected → enrolled → attending</small></div>
+  <div><span>RESULTS</span><b>Know what happened</b><small>Quality • outcomes • investment</small></div>
+</div>
+<section class="workbench">
+  <div class="section-label"><span>EXTENDED DAY WORKBENCH</span><h2>Go directly to the work.</h2></div>
+  <div class="work-grid">
+    <button data-go="status"><i>01</i><b>Program Status</b><span>See decision, launch status and what remains.</span></button>
+    <button data-go="vendor"><i>02</i><b>Partners & Vendors</b><span>Move from intake and MOU through documentation and closeout.</span></button>
+    <button data-go="change"><i>03</i><b>Something Changed</b><span>Route budget, staffing, schedule, location or program changes.</span></button>
+    <button data-go="faq"><i>04</i><b>Find an Answer</b><span>Search the rebuilt 2026–27 Extended Day FAQ.</span></button>
+    <button data-go="resources"><i>05</i><b>Forms & Resources</b><span>Open the current authoritative tools—not duplicate forms.</span></button>
+    <button data-go="evaluate"><i>06</i><b>Monitor & Decide</b><span>Participation, observations, outcomes and next-year decisions.</span></button>
+  </div>
+</section>
+<div class="change-banner" data-go="change" role="button" tabindex="0"><div><span class="eyebrow">DON'T START OVER</span><h2>Something changed after approval?</h2><p>Tell the Hub what changed. It will route you to the right review path.</p></div><strong>Route the change →</strong></div>
 </section>
 <section id="status" class="page"><button class="back" data-go="home">← Home</button><p class="eyebrow">PROGRAM STATUS</p><h1>Find my school or program</h1>
 <div class="schoolbox"><h2>School snapshot</h2><select id="schoolSelect"><option value="">Choose a school</option></select><div id="schoolResult" class="result muted">Choose a school to see its budget and program decisions.</div></div>
@@ -22,6 +47,20 @@
 
 <section id="change" class="page"><button class="back" data-go="home">← Home</button><p class="eyebrow">SOMETHING CHANGED?</p><h1>What changed?</h1><p>Select the change. The Hub will show the current routing guidance.</p><div id="changeButtons" class="changegrid"></div><div id="changeResult" class="result muted">Select an item above.</div></section>
 
+<section id="faq" class="page">
+<div class="faq-hero">
+  <button class="back" data-go="home">← Home</button>
+  <p class="eyebrow">EXTENDED DAY • 2026–27</p>
+  <h1>Find the answer. Then move.</h1>
+  <p>Search by question or browse by what you are trying to do. Items marked <b>Leadership decision pending</b> are not yet districtwide standards.</p>
+  <div class="faq-search"><input id="faqSearch" placeholder="Search approval, 32n, vendor, attendance, transportation…"><span id="faqCount"></span></div>
+  <div id="faqFilters" class="faq-filters"></div>
+</div>
+<div class="faq-layout">
+  <aside class="faq-jump"><span>JUMP TO</span><div id="faqJump"></div></aside>
+  <div><div id="faqResults" class="faq-results"></div><div id="faqEmpty" class="faq-empty" hidden>No FAQ matches that search. Try a broader term or contact the Office of Extended Learning.</div></div>
+</div>
+</section>
 <section id="content" class="page"><button class="back" data-go="home">← Home</button><p id="contentEyebrow" class="eyebrow"></p><h1 id="contentTitle"></h1><p id="contentIntro"></p><div id="contentBody"></div></section>
 </main><footer><b>GRPS Extended Day</b><button data-go="home">Home</button></footer>
 <script>window.PROGRAMS=[{"school": "Aberdeen", "program": "Nutrition and Agricultural Education", "provider": "Kids Food Basket", "type": "Vendor Led \u2022 Vendor New", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/14/26", "duration": "Full Year", "schedule": "1x week in each school", "tier": "Comprehensive Review", "outcomes": "Attendance Support"}, {"school": "Aberdeen", "program": "Tutoring", "provider": "Kathleen Pool", "type": "\u2014", "threshold": "\u2014", "decision": "Approve", "oel": "\u2014", "mou": "\u2014", "start": "\u2014", "duration": "\u2014", "schedule": "\u2014", "tier": "\u2014", "outcomes": "\u2014"}, {"school": "Brookside", "program": "Green Team", "provider": "Caitlyn Dykehouse", "type": "District Led \u2022 Non-Ac New", "threshold": "\u2014", "decision": "Approve", "oel": "Approved", "mou": "2", "start": "9/29/26", "duration": "Full Year", "schedule": "Tuesday 3:45\u20135:00pm", "tier": "\u2014", "outcomes": "\u2014"}, {"school": "Brookside", "program": "Poetry Empowered", "provider": "The Diatribe", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "10,000-31,319", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/7/26", "duration": "Semester", "schedule": "10 weeks, 1 hour, 1x/week", "tier": "Tier 3", "outcomes": "3rd Grade Reading Support, Attendance Support"}, {"school": "Brookside", "program": "Project Emma", "provider": "Project Emma", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/1/26", "duration": "Full Year", "schedule": "2 hours, 3 days/week", "tier": "Comprehensive Review", "outcomes": "Reading, Math, Attendance, College & Career Readiness"}, {"school": "Buchanan", "program": "Girls Choral Academy", "provider": "Girls Choral Academy", "type": "Vendor Led \u2022 Vendor Cont", "threshold": "Source tracker: above $31,320", "decision": "Revise and Resubmit", "oel": "\u2014", "mou": "\u2014", "start": "9/4/26", "duration": "Full Year", "schedule": "1x/week", "tier": "Comprehensive Review", "outcomes": "Attendance Support"}, {"school": "Burton Elementary", "program": "Builders and Inventors", "provider": "Amarena Nelson", "type": "District Led \u2022 Academic Continue", "threshold": "$2,500-$9,999", "decision": "Approve", "oel": "Approved", "mou": "2", "start": "9/2/26", "duration": "Full Year", "schedule": "Wednesday 3:30\u20134:30", "tier": "Tier 2", "outcomes": "Attendance Support"}];window.SCHOOLS=[{"school": "Aberdeen Elementary", "principal": "Kathleen Pool", "requested": "$42,000.00", "budget": "$25,514.36", "remaining": "-$16,485.64", "due": "September 30, 2026", "items": [["Tutoring", "$9,000.00", "Clear"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}, {"school": "Brookside Elementary", "principal": "Wayne Hill", "requested": "$85,362.50", "budget": "$28,237.80", "remaining": "-$57,124.70", "due": "September 30, 2026", "items": [["Green Team", "$800.00", "Clear"], ["Poetry Empowered", "$6,302.50", "Revise"], ["Project Emma", "$2,400.00", "Revise"]]}, {"school": "Buchanan Elementary", "principal": "Michael Thomasma", "requested": "$49,962.50", "budget": "$49,738.67", "remaining": "-$223.83", "due": "September 30, 2026", "items": [["Girls Choral Academy", "$10,660.00", "Revise"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}, {"school": "Burton Elementary", "principal": "Amarena Nelson", "requested": "$50,469.29", "budget": "$43,431.75", "remaining": "-$7,037.54", "due": "September 30, 2026", "items": [["Little Red Hawks Jump Club", "$3,407.15", "Clear"], ["Builders & Inventors", "$4,542.37", "Clear"], ["KFB Nutrition and Agricultural Education", "$33,000.00", "Revise"]]}];</script><script src="app.js"></script></body></html>

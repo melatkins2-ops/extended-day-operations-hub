@@ -1,20 +1,13 @@
-GRPS Extended Day Operations Hub V7 — clean functional rebuild
+GRPS Extended Day Operations Hub (2026–27)
 
-This version replaces the accumulated prototype JavaScript with one interaction model.
+Live: https://melatkins2-ops.github.io/extended-day-operations-hub/
 
-Test targets:
-- Home navigation
-- Program Status
-- Home search -> Program Status
-- School selector
-- Program search
-- Program detail
-- Plan / Fund / Launch / Operate / Evaluate
-- Something Changed routing
-- Vendor
-- Resources
-- FAQ
-- Home/back navigation
-- Mobile responsive layout
+Files
+- index.html, styles.css, app.js  the site
+- tracker-data.js  snapshot of the Extended Day Submission Tracker (151 programs). Schools & Programs uses it to list each school's programs with approval status. The internal tracker is the official, most current record; replace this file to refresh the snapshot.
+- grps-logo.svg
+- FINAL_RELEASE_AUDIT.txt, TEST_REPORT.txt  earlier audit notes
 
-The GRPS logo is referenced from the official GRPS Communications CDN. The source tracker still contains some threshold labels that conflict with the confirmed $30,321 threshold; V7 flags those source values rather than silently changing them.
+Notes
+- Board approval uses the confirmed $30,321 threshold. Dollar ranges in the tracker are shown as recorded.
+- Program lead names from the tracker are not displayed on the public site.

@@ -242,6 +242,17 @@ function viewStage(k) {
   return `<div class="panelwrap stage-detail"><p class="eyebrow">${s.phase} · STEP ${i + 1} OF ${STAGE_ORDER.length}</p><h1 tabindex="-1">${s.title}</h1><div class="why"><b>Why this matters</b><br>${s.why}</div><div class="stage-detail-grid"><div><small>WHAT IS REQUIRED?</small><p>${s.required}</p></div><div><small>WHAT DO I DO NEXT?</small><p>${s.next}</p></div><div class="route"><small>GO TO THE WORK</small><p>${s.route}</p><div>${linkBtns(s.go)}</div></div></div><nav class="stage-nav" aria-label="Journey steps">${prev ? `<a href="#/step/${prev}">← ${cap(prev)}</a>` : '<span></span>'}<a href="#/journey">All steps</a>${next ? `<a href="#/step/${next}">${cap(next)} →</a>` : '<span></span>'}</nav></div>`;
 }
 
+/* ---------- Homepage ---------- */
+function renderHome() {
+  const sel = document.getElementById('homeSchool');
+  if (sel && sel.options.length < 2) GRPS_SCHOOLS.forEach(n => sel.add(new Option(n, slug(n))));
+  const box = document.getElementById('edNumbers'), rows = trackerRows();
+  if (!box || !rows.length) return;
+  const st = rows.map(programStatus), c = (...k) => st.filter(x => k.includes(x[0])).length;
+  const schools = new Set(rows.flatMap(schoolsForRow)).size;
+  box.innerHTML = `<p>This year so far · ${fmtDate(window.EXTENDED_DAY_TRACKER_DATE)}</p><div><b>${rows.length}</b>programs proposed</div><div><b>${schools}</b>schools involved</div><div><b>${c('approved')}</b>moving forward</div><div><b>${c('revise', 'pending', 'review')}</b>still in progress</div><a href="#/manage">See the district view →</a>`;
+}
+
 /* ---------- Routing ---------- */
 const NAV_FOR = { schools: 'schools', guidance: 'guidance', faq: 'faq' };
 function go(hash) { if (location.hash === hash) render(); else location.hash = hash; }
@@ -262,8 +273,9 @@ function render() {
   document.title = (isHome ? '' : title + ' · ') + 'GRPS Extended Day Operations Hub';
   if (isHome) {
     content.innerHTML = '';
-    if (key === 'journey') { const j = document.querySelector('.phasejourney'); j && j.scrollIntoView(); }
-    else if (key === 'start') { const r = document.getElementById('roleStart'); r && r.scrollIntoView(); }
+    renderHome();
+    if (key === 'journey') { const j = document.querySelector('.ed-journey'); j && j.scrollIntoView(); }
+    else if (key === 'start') { const r = document.querySelector('.ed-start'); r && r.scrollIntoView(); }
     else scrollTo(0, 0);
     return;
   }

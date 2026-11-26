@@ -104,3 +104,49 @@ h1[tabindex]:focus{outline:none}
 @media(max-width:1100px){.contact-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.school-dashboard.six{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.contact-grid{grid-template-columns:1fr}}
+
+/* V41: editorial homepage — paper tones, serif headlines, ruled lists, no cards */
+body:has(.home-ed){background:#faf6ef}
+body:has(.home-ed) header{background:#faf6ef;border-bottom:1px solid #e7dfd2}
+body:has(.home-ed) footer{background:#efe6d8;color:#3b3326}
+.home-ed{font-family:Georgia,'Times New Roman',serif;color:#211c16}
+.home-ed a{color:inherit}
+.ed-hero{max-width:1180px;margin:0 auto;padding:56px 5vw 40px;display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.ed-kicker{font:600 13px/1.4 system-ui,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#a2541b;margin:0 0 18px}
+.ed-hero h1{font-family:Georgia,serif;font-weight:400;font-size:62px;line-height:1.02;letter-spacing:-1.5px;margin:0 0 22px;max-width:none}
+.ed-lead{font-size:21px;line-height:1.5;color:#4b4235;margin:0;max-width:520px}
+.ed-photo{margin:0}.ed-photo img{width:100%;aspect-ratio:1/1;object-fit:cover;object-position:45% center;display:block;border-radius:2px}
+.ed-photo figcaption{font:13px system-ui,Arial,sans-serif;color:#7a6f60;margin-top:8px}
+.ed-start,.ed-numbers,.ed-journey{max-width:1180px;margin:0 auto;padding:0 5vw}
+.ed-start h2,.ed-journey h2{font:600 13px system-ui,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#a2541b;border-top:2px solid #211c16;padding-top:14px;margin:30px 0 0}
+.ed-start>a,.ed-find{display:grid;grid-template-columns:56px 1fr auto;align-items:baseline;gap:4px 16px;padding:22px 0;border-bottom:1px solid #ddd3c3;text-decoration:none;font-size:32px;letter-spacing:-.4px}
+.ed-start>a:hover{color:#a2541b}
+.ed-start span,.ed-find label span{font:600 14px system-ui,Arial,sans-serif;color:#a2541b}
+.ed-start em{grid-column:2;font:16px system-ui,Arial,sans-serif;color:#6d6355;font-style:normal}
+.ed-start i{grid-row:1;grid-column:3;font-style:normal}
+.ed-find{grid-template-columns:56px auto 1fr auto;align-items:center}
+.ed-find label{display:contents}
+.ed-find select{font:17px system-ui,Arial,sans-serif;padding:12px;border:1px solid #cfc3b0;background:#fff;border-radius:4px;min-width:0}
+.ed-find button{font:600 16px system-ui,Arial,sans-serif;background:#211c16;color:#fff;border:0;border-radius:4px;padding:13px 18px;cursor:pointer}
+.ed-numbers{display:flex;flex-wrap:wrap;gap:12px 48px;align-items:baseline;margin-top:44px!important}
+.ed-numbers p{width:100%;font:600 13px system-ui,Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#a2541b;border-top:2px solid #211c16;padding-top:14px;margin:0 0 6px}
+.ed-numbers div{font:15px system-ui,Arial,sans-serif;color:#6d6355}
+.ed-numbers b{display:block;font:400 64px/1 Georgia,serif;color:#211c16;letter-spacing:-2px}
+.ed-numbers a{margin-left:auto;font:600 15px system-ui,Arial,sans-serif;text-decoration:underline}
+.ed-journey{padding-bottom:56px}
+.ed-journey ol{list-style:none;margin:18px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid #ddd3c3}
+.ed-journey li{padding:18px 20px 18px 0;display:flex;flex-direction:column;gap:8px;font:16px system-ui,Arial,sans-serif}
+.ed-journey li b{font:400 24px Georgia,serif}
+.ed-journey li a{text-decoration:none;border-bottom:1px solid transparent;align-self:flex-start}
+.ed-journey li a:hover{border-color:#a2541b;color:#a2541b}
+.ed-more{font:15px system-ui,Arial,sans-serif;color:#6d6355;margin-top:22px}.ed-more a{text-decoration:underline}
+@media(max-width:900px){
+ .ed-hero{grid-template-columns:1fr;gap:24px;padding-top:28px}.ed-hero h1{font-size:40px;letter-spacing:-.8px}.ed-lead{font-size:18px}
+ .ed-photo{order:-1}.ed-photo img{aspect-ratio:4/3}
+ .ed-start>a{font-size:24px;grid-template-columns:36px 1fr auto;padding:16px 0}
+ .ed-find{grid-template-columns:36px 1fr;font-size:24px}.ed-find select{grid-column:1/-1}.ed-find button{grid-column:1/-1}
+ .ed-numbers{gap:14px 28px}.ed-numbers b{font-size:44px}.ed-numbers a{margin-left:0}
+ .ed-journey ol{grid-template-columns:1fr 1fr}
+}
+
+.ed-hero>*,.ed-journey li{min-width:0}

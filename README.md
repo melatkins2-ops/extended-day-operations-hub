@@ -16,26 +16,30 @@ Every page has its own address, so you can bookmark it or send it to someone. Th
 | FAQs for one audience or topic | `#/faq?who=principal` · `#/faq?who=partner` · `#/faq?topic=invoice` |
 | Pathways | `#/principal` · `#/partner` · `#/manage` (OEL portfolio view) · `#/change` · `#/resources` |
 
-## Refresh the tracker snapshot
+## Refresh the program snapshot
 
-1. In the Submission Tracker, open the **'26 Submission Tracking** tab and choose **File → Download → Comma-separated values (.csv)**.
+1. In the **2026-27 Master Program Doc**, open the **Program Tracking** tab and choose **File → Download → Comma-separated values (.csv)**.
 2. Run `node tools/update-tracker.mjs path/to/export.csv` from this folder.
 3. Commit the new `tracker-data.js` on a branch and open a pull request. The site check confirms every program still maps to a school.
 
-The tool keeps only the columns the site displays. Program Lead names are never written to the public file.
+The tool keeps only what the site displays. Principal, program lead, and staff names, decline reasons, and exact budgets are never written to the public file. Budgets appear as ranges. The site check fails if a private column ever shows up.
+
+**How a program's status is read:** OEL reviews it, then the principal accepts or declines it for the building. The sheet's Status column (Accepted / Declined / Pending) is the building's final word. Accepted programs that OEL still marks *Revise* show as "Accepted · revision needed."
+
 
 ## What's here
 
 - `index.html`, `styles.css`, `app.js`: the site
-- `tracker-data.js`: snapshot of the Extended Day Submission Tracker, used by Schools & Programs and the OEL portfolio view
-- `tools/update-tracker.mjs`: turns a tracker CSV export into `tracker-data.js`
+- `tracker-data.js`: snapshot of the 2026-27 Master Program Doc, used by Schools & Programs and the OEL portfolio view
+- `tools/update-tracker.mjs`: turns a Program Tracking CSV export into `tracker-data.js`
 - `images/`, `favicon.png`: logo and icon
 - `docs/archive/`: earlier audit notes
 
 ## Good to know
 
-- The internal tracker is the official, most current record.
-- Board approval uses the confirmed $30,321 threshold. Dollar ranges are shown as recorded in the tracker.
+- The Master Program Doc is the official, most current record.
+- Board of Education threshold: **$31,321** (OEL Vendor FAQ, Nov 19, 2026). Programs above it need Finance Committee review and Board approval.
+- Partner guidance and OEL contacts come from the OEL Vendor FAQ and the Vendor Staffing & Documentation Guide (Nov 2026).
 - If the tracker spells a school a new way, add that spelling to `SCHOOL_MATCH` in `app.js`. The site check names any program it can't place.
 
 ## Updating the site
@@ -51,6 +55,7 @@ Every pull request and every push to `main` runs **Site check** (`.github/workfl
 - an in-site link that goes nowhere
 - a school picker, guidance picker, FAQ search, or Back button that doesn't respond
 - a tracker program that doesn't match any school
+- a private column (names, decline reasons, exact budgets) in the public data file
 
 See the Actions tab for results.
 

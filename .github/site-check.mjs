@@ -93,6 +93,9 @@ for (const width of widths) {
         if (width === widths[0]) {
           const lost = await tab.evaluate(() => trackerRows().filter(r => !schoolsForRow(r).length).map(r => `${r['Program Name']} (${r['Location/schools']})`));
           lost.forEach(l => note('tracker-data.js', `program not matched to any school: ${l}. Add its spelling to SCHOOL_MATCH in app.js.`));
+          // Privacy guard: names, decline reasons and exact budgets must never reach the public file.
+          const leaked = await tab.evaluate(() => { const banned = ['VP', 'Program Lead', 'Staff Names', 'Changes/Decline Reason', 'Original Budget', 'Adjusted Budget', 'Final Budget', 'Vendor/ Principal in Charge']; return [...new Set((window.EXTENDED_DAY_TRACKER || []).flatMap(r => Object.keys(r).filter(k => banned.includes(k))))]; });
+          leaked.forEach(k => note('tracker-data.js', `contains a private column that must not be published: ${k}. Regenerate it with tools/update-tracker.mjs.`));
         }
       }
     } catch (e) { note(where(), `could not finish: ${e.message.split('\n')[0]}`); }

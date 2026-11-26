@@ -8,19 +8,20 @@ const P = {
     ey: 'PRINCIPAL / SCHOOL LEADER', title: 'Own the program. Know the guardrails.',
     why: 'Your school is closest to scholar need. Principal voice should shape the program—but choices must fit the school allocation, 31a requirements, district criteria, and approval pathway before commitments are made.',
     actions: [['1. Start with need', 'Use school data and scholar need to define what Extended Day should accomplish.'], ['2. Know my budget', 'See the available allocation before selecting or expanding a program.'], ['3. Choose an approach', 'Select the program/provider that best fits the need within GRPS criteria.'], ['4. Check before committing', 'Use Program Guidance for funding, vendor, schedule, cost, or program questions.'], ['5. Track launch readiness', 'Approval is not the same as clearance to launch.'], ['6. Manage what was approved', 'Monitor participation, quality, spending, changes, and partner performance.'], ['7. Decide from evidence', 'Continue, modify, expand, replace, or discontinue based on results.']],
+    tasks: ['school', 'launch', 'change', 'budget', 'guide', 'faqP'],
     next: [['See my school’s programs', '#/schools'], ['Check a situation in Program Guidance', '#/guidance'], ['Principal FAQs', '#/faq?who=principal']]
   },
   partner: {
     ey: 'COMMUNITY PARTNER / VENDOR', title: 'Clear expectations. Strong partnership. No surprises.',
     why: 'Community partners remain essential to Extended Day. As the model has expanded, GRPS is making expectations clearer so partners know what is required, why it matters, what support to expect, and how successful implementation will be determined.',
-    custom: 'partner',
+    tasks: ['myprograms', 'launch', 'package', 'cancel', 'change', 'contacts'],
     actions: [['Budget comes from the principal', 'The principal at each school decides how much budget is available. Confirm it directly; don’t assume a figure. Revised budgets go to the principal, who submits them to OEL.'], ['Before services begin', 'Signed MOU, OEL approval, Board approval if over $31,321, staff list, and cleared fingerprint background checks for every staff member. Time run before full approval is not reimbursed.'], ['Every month', 'One package to Dr. Kyle Krol on your MOU schedule: Invoice Checklist on page 1, then invoice, attendance, lesson plans, and a Time and Effort Log. Missing pieces delay payment.'], ['Invoices (Section 31a)', 'Show each date of service, what students did, hours, staff who delivered it, students served, rates matching the MOU, an attendance roster, and a signed statement that services were delivered.'], ['Same-day changes by 10:00 a.m.', 'Tell families, the school secretary, your program staff, and OEL. OEL also contacts families by email and phone.'], ['Staff or contact changes', 'Send OEL new or substitute staff names right away. New staff need a cleared background check on file before working with students.'], ['When the program changes', 'Days, times, location, or session length changes go to OEL. Material changes need review before you act.']],
     next: [['Before-launch checklist', '#/step/clear'], ['Something changed', '#/change'], ['Partner FAQs', '#/faq?who=partner']]
   },
   manage: {
     ey: 'OFFICE OF EXTENDED LEARNING', title: 'Manage the portfolio, not a collection of disconnected tasks.',
     why: 'OEL needs one management view that shows what is approved, what is cleared, what is at risk, what has changed, what requires intervention, and what the evidence says about continuation.',
-    custom: 'portfolio',
+    tasks: ['portfolio', 'lookup', 'school', 'change'],
     actions: [['Pipeline', 'PLAN → SUBMIT → REVIEW → APPROVE → CLEAR → OPERATE → MONITOR → ADJUST → EVALUATE → CLOSE → DECIDE'], ['Attention queue', 'Surface missing MOU/vendor clearance, budget conflicts, pending approvals, launch blockers, and unresolved changes.'], ['Participation', 'Compare projected and actual participation using On Track / Watch / Action Required checkpoints.'], ['Quality', 'Connect observations to required follow-up rather than storing observations as isolated records.'], ['Fiscal', 'Use the confirmed $31,321 BOE threshold consistently; reconcile funding-source requirements.'], ['Closeout', 'Connect final invoices, documentation, evaluation, and next-year decisions.']]
   },
   change: {
@@ -158,10 +159,104 @@ function panelHead(p) { return `<p class="eyebrow">${p.ey}</p><h1 tabindex="-1">
 function actionGrid(p) { return p.actions ? `<div class="actiongrid">${p.actions.map(x => `<div class="action"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('')}</div>` : ''; }
 function nextRow(p) { return p.next ? `<div class="next-row"><p class="eyebrow">GO TO THE WORK</p><div>${linkBtns(p.next)}</div></div>` : ''; }
 
+/* ---------- Things people can do (pathway tasks) ---------- */
+const store = { get(k) { try { return JSON.parse(localStorage.getItem('edh-' + k) || 'null'); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem('edh-' + k, JSON.stringify(v)); } catch (e) {} } };
+
+const CHECKLISTS = {
+  launch: { title: 'Can this program start?', items: ['Signed MOU on file with OEL', 'OEL approval recorded', 'Board of Education approval, if the budget is over $31,321 (check this if it is $31,321 or less)', 'Staff list with contact information sent to OEL', 'Cleared fingerprint background check (MSP and FBI) for every staff member, with proof sent to OEL', 'Start date, days, times, and site confirmed with OEL', 'One main contact named for the program'],
+    done: 'Ready to start. Every pre-launch item is checked. If anything is uncertain, confirm with the principal or Dr. Kyle Krol before the first session.',
+    notYet: n => `Not yet: ${n} item${n === 1 ? '' : 's'} left. Time spent running before full approval is not reimbursed.` },
+  package: { title: 'Monthly documentation package', items: ['Invoice Checklist (from your MOU) as page 1', 'Invoice with each date of service, hours, staff, students served, and rates that match the MOU', 'Attendance roster for every session', 'Lesson plans', 'Time and Effort Log or itemized staffing', 'Signed statement that services were delivered as invoiced'],
+    done: 'Package complete. Send everything together in one email to Dr. Kyle Krol, krolk@grps.org. Add staffing changes, mileage, or supplies inventory if they apply.',
+    notYet: n => `${n} piece${n === 1 ? '' : 's'} missing. Missing pieces delay payment, so send it only when everything is together.` },
+  cancel: { title: 'Cancel or change a program day', items: ['Families told, so they can pick up their child or meet the bus', 'School secretary told, so the school can tell scholars', 'Program staff told', 'OEL told (OEL also contacts families by email and phone)'],
+    done: 'Everyone is notified. Aim to have this done by 10:00 a.m. on the day of the change.',
+    notYet: n => `${n} group${n === 1 ? '' : 's'} still to notify. Send updates by 10:00 a.m., or as soon as possible.` }
+};
+function checklistTool(id) {
+  const c = CHECKLISTS[id], st = store.get('cl-' + id) || [];
+  return `<div class="checklist" id="cl-${id}">${c.items.map((t, i) => `<label class="ck"><input type="checkbox" ${st[i] ? 'checked' : ''} onchange="tickChecklist('${id}')"><span>${t}</span></label>`).join('')}<div class="ck-result" aria-live="polite"></div><button type="button" class="ck-reset" onclick="resetChecklist('${id}')">Start over</button></div>`;
+}
+function tickChecklist(id) {
+  const box = document.getElementById('cl-' + id); if (!box) return;
+  const vals = [...box.querySelectorAll('input')].map(i => i.checked), left = vals.filter(v => !v).length, c = CHECKLISTS[id];
+  store.set('cl-' + id, vals);
+  const r = box.querySelector('.ck-result');
+  r.className = 'ck-result ' + (left ? 'todo' : 'ok');
+  r.innerHTML = `<b>${left ? c.notYet(left) : c.done}</b><span class="ck-bar"><i style="width:${Math.round(100 * (vals.length - left) / vals.length)}%"></i></span>`;
+}
+function resetChecklist(id) { store.set('cl-' + id, []); const b = document.getElementById('cl-' + id); if (b) { b.querySelectorAll('input').forEach(i => { i.checked = false; }); tickChecklist(id); } }
+
+const CHANGES = {
+  minor: ['A small operational detail (room inside the same building, a snack, a supply swap)', 'Document only', 'Note it in your program records. No approval is needed as long as scope, cost, provider, funding, and the approved design stay the same.', null],
+  schedule: ['Days, times, location, or session length', 'Tell OEL', 'Send the new schedule to OEL so records and observations stay accurate. If it changes cost, transportation, dismissal, or staffing, it also needs OEL review before you act.', ['Program guidance on schedule changes', '#/guidance/schedule']],
+  staff: ['Staff added, replaced, or a substitute', 'Tell OEL first', 'Send OEL the new names right away. A new person needs a cleared background check on file before working with students.', ['Background check FAQ', '#/faq?topic=approval']],
+  cost: ['Cost, budget, or funding source', 'Funding / MOU review', 'Confirm the available budget with the principal first. The principal submits revised budgets to OEL. Do not commit funds until the review is done.', ['How to revise a budget', '#/principal/budget']],
+  scope: ['The activity, provider, or program design', 'Funding / MOU review, possibly additional approval', 'Do not assume the original approval covers it. Route it to OEL before acting; a material change may need additional approval, including Board approval over $31,321.', ['Program guidance on program changes', '#/guidance/scope']]
+};
+function changeRouter(uid) {
+  return `<div class="router" id="rt-${uid}">${Object.entries(CHANGES).map(([k, v]) => `<button type="button" onclick="routeChange('${uid}','${k}')" data-k="${k}">${v[0]}</button>`).join('')}<div class="rt-result" aria-live="polite"></div></div>`;
+}
+function routeChange(uid, k) {
+  const box = document.getElementById('rt-' + uid), v = CHANGES[k]; if (!box) return;
+  box.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === k));
+  box.querySelector('.rt-result').innerHTML = `<span class="result-tag">${v[1]}</span><p>${v[2]}</p>${v[3] ? linkBtns([v[3]]) : ''}`;
+}
+
+function providers() { return [...new Set(trackerRows().map(r => r['Provider']).filter(Boolean))].sort((a, b) => a.localeCompare(b)); }
+function partnerLookup(uid, sel) {
+  return `<label class="tool-label" for="pl-${uid}">Choose your organization</label><select id="pl-${uid}" class="check" onchange="renderLookup('${uid}')"><option value="">Select a partner…</option>${providers().map(p => `<option${p === sel ? ' selected' : ''}>${esc_(p)}</option>`).join('')}</select><div id="plr-${uid}" class="lookup-result" aria-live="polite"></div>`;
+}
+function renderLookup(uid) {
+  const v = document.getElementById('pl-' + uid).value, out = document.getElementById('plr-' + uid);
+  if (!v) { out.innerHTML = ''; return; }
+  store.set('partner', v);
+  const progs = trackerRows().filter(r => r['Provider'] === v).map(r => ({ r, st: programStatus(r) }));
+  const n = k => progs.filter(p => p.st[0] === k).length;
+  out.innerHTML = `<p class="lookup-sum"><b>${progs.length}</b> program${progs.length === 1 ? '' : 's'} · <b>${n('approved')}</b> moving forward · <b>${n('revise') + n('pending') + n('review')}</b> in progress · <b>${n('declined') + n('denied')}</b> declined</p><div class="prog-list">${progs.map(({ r, st }) => `<details class="prog"><summary><span class="prog-name"><b>${esc_(r['Program Name'])}</b><small>${esc_(schoolsForRow(r).join(', ') || r['School'])}</small></span><span class="prog-st ${st[0]}">${st[1]}</span></summary><div class="prog-next"><p><b>What comes next:</b> ${NEXT_STEP[st[0]][0]}</p><a href="${NEXT_STEP[st[0]][2]}">${NEXT_STEP[st[0]][1]} →</a></div></details>`).join('')}</div>${snapshotNote()}`;
+}
+
+function schoolFinder(uid) {
+  return `<form class="inline-find" onsubmit="event.preventDefault();var v=document.getElementById('sf-${uid}').value;if(v)go('#/schools/'+v)"><label class="tool-label" for="sf-${uid}">Your school</label><div><select id="sf-${uid}" class="check"><option value="">Select a GRPS school…</option>${GRPS_SCHOOLS.map(n => `<option value="${slug(n)}">${esc_(n)}</option>`).join('')}</select><button class="pill-btn" type="submit">Open</button></div></form>`;
+}
+
+const TASKS = {
+  school: ['See my school’s programs', 'Where each program stands and what comes next', () => schoolFinder('t')],
+  launch: ['Can this program start?', 'Tick off the pre-launch checklist', () => checklistTool('launch')],
+  change: ['Something changed', 'Find out who to tell and what review it needs', () => changeRouter('t')],
+  budget: ['Revise a budget', 'What to send and who sends it', () => `<ol class="steps-list"><li><b>Confirm the available budget with the principal.</b> The principal decides what each building can fund.</li><li><b>Update the line-item budget</b> with the revised total.</li><li><b>Write a short note</b> on what changed and why (for example, fewer staffing hours or sessions) and any impact on the program.</li><li><b>The principal submits it to OEL.</b> Partners send revisions to the principal, not directly to OEL.</li></ol>`],
+  guide: ['Check a situation before committing', 'New vendor, more funds, schedule change, low attendance', () => guidanceView('')],
+  faqP: ['Ask a question', 'Principal FAQs', () => `<p>${linkBtns([['Open principal FAQs', '#/faq?who=principal']])}</p>`],
+  myprograms: ['See where my programs stand', 'Every program your organization proposed, by school', () => partnerLookup('t', store.get('partner'))],
+  package: ['Build my monthly package', 'What to include before you send it', () => checklistTool('package')],
+  cancel: ['Cancel or change a program day', 'Who to notify by 10:00 a.m.', () => checklistTool('cancel')],
+  contacts: ['Contact OEL', 'Names, emails, and phone numbers', () => contactsView()],
+  portfolio: ['District portfolio', 'Totals and schools ranked by open items', () => portfolioView()],
+  lookup: ['Look up a partner', 'All programs for one organization', () => partnerLookup('o')]
+};
+const TASK_INTRO = { principal: 'Pick what you need to do. Each one opens right here.', partner: 'Pick what you need to do. Each one opens right here.', manage: 'Pick what you need to do. Each one opens right here.' };
+
+function taskPage(key, p, open) {
+  const first = open && p.tasks.includes(open) ? open : (key === 'manage' ? 'portfolio' : '');
+  return `<div class="panelwrap task-page"><p class="eyebrow">${p.ey}</p><h1 tabindex="-1">What do you need to do?</h1><p class="task-intro">${TASK_INTRO[key]}</p>
+  <div class="tasks">${p.tasks.map(t => { const [title, sub, body] = TASKS[t]; return `<details class="task" id="task-${t}"${t === first ? ' open' : ''} ontoggle="taskToggled(this,'${key}','${t}')"><summary><span><b>${title}</b><small>${sub}</small></span><i aria-hidden="true">+</i></summary><div class="task-body" data-task="${t}">${t === first ? body() : ''}</div></details>`; }).join('')}</div>
+  <details class="background"><summary>Background: ${esc_(p.title)}</summary><p>${p.why}</p>${actionGrid(p)}</details></div>`;
+}
+/* Build a task's tool the first time it opens, so the page stays light. */
+function taskToggled(el, key, t) {
+  const body = el.querySelector('.task-body');
+  if (el.open && !body.innerHTML) { body.innerHTML = TASKS[t][2](); initTools(body); }
+}
+function initTools(root) {
+  root.querySelectorAll('.checklist').forEach(b => tickChecklist(b.id.slice(3)));
+  root.querySelectorAll('[id^="pl-"]').forEach(s => { if (s.value) renderLookup(s.id.slice(3)); });
+}
+
 function viewPage(key, arg, query) {
-  const p = P[key]; let c = `<div class="panelwrap">${panelHead(p)}`;
-  if (p.custom === 'portfolio') c += portfolioView();
-  if (p.custom === 'partner') c += contactsView();
+  const p = P[key];
+  if (p.tasks) return taskPage(key, p, arg);
+  let c = `<div class="panelwrap">${panelHead(p)}`;
+  if (key === 'change') c += `<section class="tool-card"><h2>Which change are you making?</h2>${changeRouter('pg')}</section>`;
   c += actionGrid(p) + nextRow(p);
   if (p.custom === 'schools') c += schoolsView(arg);
   if (p.custom === 'guidance') c += guidanceView(arg);
@@ -239,7 +334,7 @@ function renderFaq() {
 function viewStage(k) {
   const s = STAGES[k], i = STAGE_ORDER.indexOf(k), prev = STAGE_ORDER[i - 1], next = STAGE_ORDER[i + 1];
   const cap = x => x[0].toUpperCase() + x.slice(1);
-  return `<div class="panelwrap stage-detail"><p class="eyebrow">${s.phase} · STEP ${i + 1} OF ${STAGE_ORDER.length}</p><h1 tabindex="-1">${s.title}</h1><div class="why"><b>Why this matters</b><br>${s.why}</div><div class="stage-detail-grid"><div><small>WHAT IS REQUIRED?</small><p>${s.required}</p></div><div><small>WHAT DO I DO NEXT?</small><p>${s.next}</p></div><div class="route"><small>GO TO THE WORK</small><p>${s.route}</p><div>${linkBtns(s.go)}</div></div></div><nav class="stage-nav" aria-label="Journey steps">${prev ? `<a href="#/step/${prev}">← ${cap(prev)}</a>` : '<span></span>'}<a href="#/journey">All steps</a>${next ? `<a href="#/step/${next}">${cap(next)} →</a>` : '<span></span>'}</nav></div>`;
+  return `<div class="panelwrap stage-detail"><p class="eyebrow">${s.phase} · STEP ${i + 1} OF ${STAGE_ORDER.length}</p><h1 tabindex="-1">${s.title}</h1><div class="why"><b>Why this matters</b><br>${s.why}</div><div class="stage-detail-grid"><div><small>WHAT IS REQUIRED?</small><p>${s.required}</p></div><div><small>WHAT DO I DO NEXT?</small><p>${s.next}</p></div><div class="route"><small>GO TO THE WORK</small><p>${s.route}</p><div>${linkBtns(s.go)}</div></div></div>${k === 'clear' ? `<section class="tool-card"><h2>Check it off</h2>${checklistTool('launch')}</section>` : ''}<nav class="stage-nav" aria-label="Journey steps">${prev ? `<a href="#/step/${prev}">← ${cap(prev)}</a>` : '<span></span>'}<a href="#/journey">All steps</a>${next ? `<a href="#/step/${next}">${cap(next)} →</a>` : '<span></span>'}</nav></div>`;
 }
 
 /* ---------- Homepage ---------- */
@@ -281,6 +376,7 @@ function render() {
   }
   content.innerHTML = html;
   if (key === 'faq') renderFaq();
+  initTools(content);
   scrollTo(0, 0);
   if (render.ready) { const h = content.querySelector('h1'); h && h.focus({ preventScroll: true }); }
 }

@@ -66,6 +66,7 @@ for (const width of widths) {
             if (k === 'step') return !!STAGES[a];
             if (!P[k]) return false;
             if (k === 'schools' && a) return !!schoolBySlug(a);
+            if (P[k].tasks && a) return P[k].tasks.includes(a);
             if (k === 'guidance' && a) return !!GUIDANCE[a];
             return true;
           }, l);
@@ -89,6 +90,27 @@ for (const width of widths) {
         await tab.fill('#faqSearch', 'invoice');
         const faqs = await tab.locator('#faqList details').count();
         if (!faqs || faqs === (await tab.evaluate(() => FAQS.length))) note(where(), 'FAQ search did not filter');
+        // Pathway pages are tools: every task opens and builds something.
+        for (const path of ['principal', 'partner', 'manage']) {
+          await tab.evaluate(h => { location.hash = h; }, '#/' + path);
+          await tab.waitForTimeout(50);
+          for (const s of await tab.locator('.task > summary').all()) {
+            const d = s.locator('xpath=..');
+            if (!(await d.evaluate(e => e.open))) await s.click();
+            await tab.waitForTimeout(20);
+            if (!(await d.locator('.task-body').evaluate(e => e.innerHTML.trim().length))) note(where('#/' + path), `task "${(await s.textContent()).trim().slice(0, 40)}" opened empty`);
+          }
+        }
+        await tab.evaluate(() => { location.hash = '#/partner/myprograms'; }); await tab.waitForTimeout(50);
+        await tab.locator('#task-myprograms select').selectOption({ index: 1 }); await tab.waitForTimeout(50);
+        if (!(await tab.locator('#task-myprograms .lookup-result .prog').count())) note(where(), 'partner lookup showed no programs');
+        await tab.evaluate(() => { location.hash = '#/principal/launch'; }); await tab.waitForTimeout(50);
+        for (const box of await tab.locator('#task-launch input[type=checkbox]').all()) if (!(await box.isChecked())) await box.check();
+        if (!(await tab.locator('#task-launch .ck-result.ok').count())) note(where(), 'launch checklist did not show Ready when every item was checked');
+        await tab.locator('#task-launch .ck-reset').click();
+        await tab.evaluate(() => { location.hash = '#/change'; }); await tab.waitForTimeout(50);
+        await tab.locator('.router button[data-k="cost"]').click();
+        if (!(await tab.locator('.rt-result').textContent()).includes('MOU')) note(where(), 'change router did not answer');
         // Every tracker row must belong to at least one school, or it would never be shown.
         if (width === widths[0]) {
           const lost = await tab.evaluate(() => trackerRows().filter(r => !schoolsForRow(r).length).map(r => `${r['Program Name']} (${r['Location/schools']})`));

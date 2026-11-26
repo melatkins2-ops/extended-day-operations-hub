@@ -21,3 +21,69 @@ body{background:#f8f7f4}.welcome{margin:32px 3vw 0;padding:54px 48px 48px;border
 .prog-body small{display:block;color:#7a8894;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
 .snap-note{font-size:13px;color:#5b6b78;margin-top:12px}
 @media(max-width:560px){.prog summary{flex-direction:column;align-items:flex-start}}
+
+/* V39: shareable links, phone navigation, next steps, portfolio view */
+.skip{position:absolute;left:-999px;top:8px;background:#173e70;color:#fff;padding:10px 14px;border-radius:8px;z-index:20}
+.skip:focus{left:12px}
+nav a,a.back{display:inline-block;padding:11px 14px;color:#183d70;font-weight:700;text-decoration:none;border-radius:999px}
+nav a:hover,a.back:hover{background:#f3f5f8}
+nav a[aria-current]{background:#fff0df;color:#8b4a0a}
+.brand-link{display:flex}
+:focus-visible{outline:3px solid #f28c28;outline-offset:2px}
+h1[tabindex]:focus{outline:none}
+.phasegrid{align-items:start}
+.pill-btn,.next-link{display:inline-flex;gap:8px;align-items:center;text-decoration:none;font-weight:800;border-radius:999px;padding:11px 17px}
+.pill-btn{background:#173e70;color:#fff;white-space:nowrap}
+.pill-btn:hover{background:#0f2d54}
+.next-link{background:#fff;color:#173e70;border:1px solid #cad5e2;margin:6px 8px 0 0}
+.next-link:hover{border-color:#f28c28;background:#fffaf4}
+.next-row{margin:6px 0 10px}
+.next-row .eyebrow{margin-bottom:4px}
+.result-tag{display:inline-block;font-size:12px;font-weight:900;letter-spacing:.8px;background:#173e70;color:#fff;border-radius:999px;padding:5px 11px}
+.result p{margin:10px 0 6px;line-height:1.55}
+.school-dashboard b{font-size:30px;margin:6px 0 2px}
+.dash-note{margin:-6px 0 0;color:#5e6878;font-size:14px}
+.program-area h3{font-size:22px;margin:4px 0 12px}
+.prog[open]{border-color:#f2c48f}
+.prog-next{margin:0 14px 12px;padding:12px 14px;background:#fff8ef;border-radius:10px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:space-between}
+.prog-next p{margin:0;line-height:1.45;flex:1 1 260px}
+.prog-next a{color:#173e70;font-weight:800;text-decoration:none;white-space:nowrap}
+.prog-next a:hover{text-decoration:underline}
+.faq-count{margin:0 0 10px;color:#5e6878;font-size:14px}
+.stage-detail-grid .route .next-link{margin-top:10px}
+.stage-nav{display:flex;justify-content:space-between;gap:10px;margin-top:26px;padding-top:18px;border-top:1px solid #e6e8ec}
+.stage-nav a{color:#173e70;font-weight:800;text-decoration:none;padding:8px 4px}
+.stage-nav a:hover{text-decoration:underline}
+.portfolio{margin:8px 0 26px}
+.portfolio h2{font-size:24px;margin:0 0 4px}
+.school-dashboard.five{grid-template-columns:repeat(5,1fr)}
+.school-dashboard>.ok{border-top-color:#2f7d4f}
+.school-dashboard>.warn{border-top-color:#d56b08}
+.attention{border:1px solid #e3e0d8;border-radius:12px;background:#fff}
+.attention summary{cursor:pointer;padding:14px 16px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.attention summary span{color:#5e6878;font-size:14px}
+.attention table{width:100%;border-collapse:collapse;font-size:15px}
+.attention th,.attention td{text-align:left;padding:9px 16px;border-top:1px solid #eef0f3}
+.attention th{font-size:12px;letter-spacing:.06em;color:#6a7486;text-transform:uppercase}
+.attention td:not(:first-child),.attention th:not(:first-child){text-align:right;width:90px}
+.attention td a{color:#173e70;font-weight:700}
+.open-n{color:#a35a00}
+@media(max-width:900px){
+ header{height:auto;position:static;flex-wrap:wrap;padding:12px 5vw 6px;gap:6px}
+ .brand img{width:62px}
+ nav{display:flex;width:100%;overflow-x:auto;gap:2px;margin:0 -6px;padding-bottom:4px;scrollbar-width:none}
+ nav a{white-space:nowrap;padding:9px 11px;font-size:15px}
+ .school-dashboard,.school-dashboard.five{grid-template-columns:repeat(3,1fr);gap:8px}
+ .school-dashboard>div{padding:12px}
+ .school-dashboard small{font-size:11px;letter-spacing:.2px}
+ .school-dashboard b{font-size:24px}
+ .school-dashboard span{font-size:12px}
+ .panelwrap{padding:24px 20px;margin:6px 3vw 36px}
+ .panelwrap h1{font-size:30px}
+ a.back{margin:14px 3vw 0}
+ footer{flex-direction:column;gap:6px}
+ .attention th,.attention td{padding:8px 10px}
+ .attention td:not(:first-child),.attention th:not(:first-child){width:auto}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:520px){.nav-long{display:none}nav{justify-content:space-between}}

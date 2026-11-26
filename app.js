@@ -246,10 +246,11 @@ function viewStage(k) {
 function renderHome() {
   const sel = document.getElementById('homeSchool');
   if (sel && sel.options.length < 2) GRPS_SCHOOLS.forEach(n => sel.add(new Option(n, slug(n))));
-  const pulse = document.getElementById('homePulse'), rows = trackerRows();
-  if (!pulse || !rows.length) return;
+  const box = document.getElementById('edNumbers'), rows = trackerRows();
+  if (!box || !rows.length) return;
   const st = rows.map(programStatus), c = (...k) => st.filter(x => k.includes(x[0])).length;
-  pulse.innerHTML = `<span><b>${rows.length}</b>programs proposed</span><span><b>${c('approved')}</b>moving forward</span><span><b>${c('revise')}</b>need revision</span><span><b>${c('pending', 'review')}</b>awaiting a decision</span><span><em>As of ${fmtDate(window.EXTENDED_DAY_TRACKER_DATE)}</em></span><a href="#/manage">District view →</a>`;
+  const schools = new Set(rows.flatMap(schoolsForRow)).size;
+  box.innerHTML = `<p>This year so far · ${fmtDate(window.EXTENDED_DAY_TRACKER_DATE)}</p><div><b>${rows.length}</b>programs proposed</div><div><b>${schools}</b>schools involved</div><div><b>${c('approved')}</b>moving forward</div><div><b>${c('revise', 'pending', 'review')}</b>still in progress</div><a href="#/manage">See the district view →</a>`;
 }
 
 /* ---------- Routing ---------- */
@@ -273,8 +274,8 @@ function render() {
   if (isHome) {
     content.innerHTML = '';
     renderHome();
-    if (key === 'journey') { const j = document.querySelector('.phasejourney'); j && j.scrollIntoView(); }
-    else if (key === 'start') { const r = document.querySelector('.doors'); r && r.scrollIntoView(); }
+    if (key === 'journey') { const j = document.querySelector('.ed-journey'); j && j.scrollIntoView(); }
+    else if (key === 'start') { const r = document.querySelector('.ed-start'); r && r.scrollIntoView(); }
     else scrollTo(0, 0);
     return;
   }

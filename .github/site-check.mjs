@@ -1,5 +1,7 @@
-// Site check: loads each page at desktop and phone widths and fails on
-// JavaScript errors, missing local files, or sideways scrolling.
+// Site check: opens the site in a real browser at desktop and phone widths and
+// clicks through it the way a person would. It fails on JavaScript errors, missing
+// local files, sideways scrolling, a page that renders empty, a broken in-site link,
+// or a tracker row that does not map to any school.
 import { chromium } from 'playwright';
 import { readdirSync } from 'node:fs';
 
@@ -7,6 +9,7 @@ const BASE = process.env.SITE_URL || 'http://localhost:8000/';
 const pages = readdirSync('.').filter(f => f.endsWith('.html') && !/[()]/.test(f)).sort();
 const widths = [1366, 390];
 const problems = [];
+const note = (where, msg) => problems.push(`${where}: ${msg}`);
 
 const browser = await chromium.launch(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {});
 for (const width of widths) {
@@ -15,17 +18,86 @@ for (const width of widths) {
   await context.route(u => !u.href.startsWith(BASE), r => r.abort());
   for (const page of pages) {
     const tab = await context.newPage();
-    const found = [];
-    tab.on('pageerror', e => found.push(`JavaScript error: ${e.message.split('\n')[0]}`));
-    tab.on('response', r => { if (r.url().startsWith(BASE) && r.status() >= 400) found.push(`Missing file (${r.status()}): ${r.url().slice(BASE.length)}`); });
+    const errors = [];
+    tab.on('pageerror', e => errors.push(`JavaScript error: ${e.message.split('\n')[0]}`));
+    tab.on('response', r => { if (r.url().startsWith(BASE) && r.status() >= 400) errors.push(`Missing file (${r.status()}): ${r.url().slice(BASE.length)}`); });
+    const where = (route = '') => `${page}${route} @ ${width}px`;
+    const sideways = async route => {
+      const extra = await tab.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      if (extra > 1) note(where(route), `page scrolls sideways by ${extra}px`);
+    };
     try {
       await tab.goto(BASE + page, { waitUntil: 'load', timeout: 30000 });
-      await tab.waitForTimeout(1500);
-      const extra = await tab.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-      if (extra > 1) found.push(`Page scrolls sideways by ${extra}px`);
-    } catch (e) { found.push(`Could not load: ${e.message.split('\n')[0]}`); }
-    for (const f of new Set(found)) problems.push(`${page} @ ${width}px: ${f}`);
-    console.log(`${found.length ? '✗' : '✓'} ${page} @ ${width}px`);
+      await tab.waitForTimeout(500);
+      await sideways('');
+
+      if (page === 'index.html') {
+        // Every view the site can show, including each school and journey step.
+        const routes = await tab.evaluate(() => [
+          ...Object.keys(P).map(k => '#/' + k),
+          ...GRPS_SCHOOLS.map(s => '#/schools/' + slug(s)),
+          ...STAGE_ORDER.map(s => '#/step/' + s),
+          ...Object.keys(GUIDANCE).map(g => '#/guidance/' + g),
+          '#/faq?who=principal', '#/faq?topic=invoice', '#/journey', '#/start', '#/'
+        ]);
+        const linked = new Set();
+        for (const r of routes) {
+          await tab.evaluate(h => { location.hash = h; }, r);
+          await tab.waitForTimeout(30);
+          const info = await tab.evaluate(() => {
+            const active = document.querySelector('.page.active');
+            return {
+              id: active && active.id,
+              h1: (active && active.querySelector('h1') || {}).textContent || '',
+              links: [...document.querySelectorAll('a[href^="#/"]')].map(a => a.getAttribute('href'))
+            };
+          });
+          const isHome = ['#/', '#/journey', '#/start'].includes(r);
+          if (!isHome && (info.id !== 'panel' || !info.h1.trim())) note(where(r), 'view did not open or has no heading');
+          if (isHome && info.id !== 'home') note(where(r), 'did not return to Home');
+          info.links.forEach(l => linked.add(l));
+          if (width === 390 || r.startsWith('#/schools/aberdeen') || r === '#/manage') await sideways(r);
+        }
+        // Every in-site link must lead to a real view, not a blank page.
+        for (const l of linked) {
+          const ok = await tab.evaluate(h => {
+            const [path] = h.replace(/^#\/?/, '').split('?'); const [k, a] = path.split('/');
+            if (!k || k === 'journey' || k === 'start') return true;
+            if (k === 'step') return !!STAGES[a];
+            if (!P[k]) return false;
+            if (k === 'schools' && a) return !!schoolBySlug(a);
+            if (k === 'guidance' && a) return !!GUIDANCE[a];
+            return true;
+          }, l);
+          if (!ok) note(where(), `link goes nowhere: ${l}`);
+        }
+        // Choosing a school from the list opens that school and changes the address.
+        await tab.evaluate(() => { location.hash = '#/schools'; });
+        await tab.selectOption('#schoolSelect', 'aberdeen-academy');
+        await tab.waitForTimeout(50);
+        if (!(await tab.url()).endsWith('#/schools/aberdeen-academy')) note(where(), 'choosing a school did not update the address');
+        const progs = await tab.locator('.prog').count();
+        if (!progs) note(where(), 'Aberdeen Academy shows no programs');
+        // Browser Back returns to the previous view.
+        await tab.goBack(); await tab.waitForTimeout(50);
+        if (!(await tab.url()).endsWith('#/schools')) note(where(), 'browser Back did not return to Schools & Programs');
+        // Program Guidance and FAQ controls respond.
+        await tab.evaluate(() => { location.hash = '#/guidance'; });
+        await tab.selectOption('#q', 'launch'); await tab.waitForTimeout(50);
+        if (!/clearance/i.test(await tab.locator('#result').textContent())) note(where(), 'Program Guidance did not show a result');
+        await tab.evaluate(() => { location.hash = '#/faq'; });
+        await tab.fill('#faqSearch', 'invoice');
+        const faqs = await tab.locator('#faqList details').count();
+        if (!faqs || faqs === (await tab.evaluate(() => FAQS.length))) note(where(), 'FAQ search did not filter');
+        // Every tracker row must belong to at least one school, or it would never be shown.
+        if (width === widths[0]) {
+          const lost = await tab.evaluate(() => trackerRows().filter(r => !schoolsForRow(r).length).map(r => `${r['Program Name']} (${r['Location/schools']})`));
+          lost.forEach(l => note('tracker-data.js', `program not matched to any school: ${l}. Add its spelling to SCHOOL_MATCH in app.js.`));
+        }
+      }
+    } catch (e) { note(where(), `could not finish: ${e.message.split('\n')[0]}`); }
+    for (const f of new Set(errors)) note(where(), f);
+    console.log(`checked ${page} @ ${width}px`);
     await tab.close();
   }
   await context.close();
@@ -33,7 +105,7 @@ for (const width of widths) {
 await browser.close();
 
 if (problems.length) {
-  console.log('\nProblems found:\n' + problems.map(p => '  - ' + p).join('\n'));
+  console.log('\nProblems found:\n' + [...new Set(problems)].map(p => '  - ' + p).join('\n'));
   process.exit(1);
 }
-console.log('\nAll pages passed.');
+console.log('\nAll checks passed.');
